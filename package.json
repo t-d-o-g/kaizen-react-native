@@ -1,0 +1,54 @@
+{
+  "name": "my-new-project",
+  "main": "node_modules/expo/AppEntry.js",
+  "private": true,
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "eject": "expo eject",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "pretty": "prettier --semi false --print-width 100 --single-quote --trailing-comma all --write \"src/**/*.js\"",
+    "flow": "flow",
+    "flow-stop": "flow stop",
+    "test": "node ./node_modules/jest/bin/jest.js --watchAll"
+  },
+  "lint-staged": {
+    "*.js": [
+      "yarn pretty",
+      "git add"
+    ]
+  },
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "dependencies": {
+    "@expo/samples": "2.1.1",
+    "expo": "^30.0.1",
+    "prop-types": "15.6.2",
+    "react": "16.3.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
+    "react-navigation": "^2.16.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "10.0.1",
+    "babel-preset-flow": "6.23.0",
+    "enzyme": "3.7.0",
+    "enzyme-adapter-react-16": "1.6.0",
+    "enzyme-to-json": "3.3.4",
+    "eslint": "5.6.1",
+    "eslint-config-airbnb": "17.1.0",
+    "eslint-plugin-flowtype": "2.50.3",
+    "eslint-plugin-import": "2.14.0",
+    "eslint-plugin-jsx-a11y": "6.1.2",
+    "eslint-plugin-react": "7.11.1",
+    "flow-bin": "0.82.0",
+    "husky": "1.1.2",
+    "jest-expo": "30.0.0",
+    "lint-staged": "7.3.0",
+    "prettier": "1.14.3",
+    "react-dom": "16.5.2",
+    "react-test-renderer": "16.5.2"
+  }
+}

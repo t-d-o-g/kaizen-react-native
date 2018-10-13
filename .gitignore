@@ -1,0 +1,6 @@
+node_modules/**/*
+.expo/**/*
+.history
+.vscode
+.DS_Store
+
