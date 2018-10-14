@@ -13,8 +13,8 @@
     "pretty": "prettier --semi false --print-width 100 --single-quote --trailing-comma all --write \"src/**/*.js\"",
     "flow": "flow",
     "flow-stop": "flow stop",
-    "test": "node ./node_modules/jest/bin/jest.js",
-    "test:watch": "node ./node_modules/jest/bin/jest.js --watchAll"
+    "test": "jest",
+    "test:watch": "jest --watchAll"
   },
   "lint-staged": {
     "*.js": [
