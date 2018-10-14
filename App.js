@@ -1,3 +1,5 @@
+/* eslint no-underscore-dangle: 0 */
+
 import React from 'react';
 import {
   Platform, StatusBar, StyleSheet, View,
@@ -21,7 +23,7 @@ export default class App extends React.Component {
     skipLoadingScreen: PropTypes.bool,
   }
 
-  loadResourcesAsync = async () => Promise.all([
+  _loadResourcesAsync = async () => Promise.all([
     Asset.loadAsync([robotDev, robotProd]),
     Font.loadAsync({
       // This is the font that we are using for our tab bar
@@ -32,26 +34,29 @@ export default class App extends React.Component {
     }),
   ])
 
-  handleLoadingError = (error) => {
+  _handleLoadingError = (error) => {
     // In this case, you might want to report the error to your error
     // reporting service, for example Sentry
     // eslint-disable-next-line no-console
     console.warn(error);
   }
 
-  handleFinishLoading = () => {
+  _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
   }
 
   render() {
+    App.defaultProps = {
+      skipLoadingScreen: undefined,
+    };
     const { isLoadingComplete } = this.state;
     const { skipLoadingScreen } = this.props;
     if (!isLoadingComplete && !skipLoadingScreen) {
       return (
         <AppLoading
-          startAsync={this.loadResourcesAsync}
-          onError={this.handleLoadingError}
-          onFinish={this.handleFinishLoading}
+          startAsync={this._loadResourcesAsync}
+          onError={this._handleLoadingError}
+          onFinish={this._handleFinishLoading}
         />
       );
     }

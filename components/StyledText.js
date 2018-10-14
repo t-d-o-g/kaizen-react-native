@@ -1,3 +1,5 @@
+/* eslint react/prefer-stateless-function: 0 */
+
 import React from 'react';
 import { Text } from 'react-native';
 

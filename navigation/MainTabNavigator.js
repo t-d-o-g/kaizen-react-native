@@ -2,6 +2,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
+import PropTypes from 'prop-types';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
@@ -11,18 +12,35 @@ const HomeStack = createStackNavigator({
   Home: HomeScreen,
 });
 
-HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
+const homeStackTabBarIcon = ({ focused }) => (
+  <TabBarIcon
+    focused={focused}
+    name={
         Platform.OS === 'ios'
           ? `ios-information-circle${focused ? '' : '-outline'}`
           : 'md-information-circle'
       }
-    />
-  ),
+  />
+);
+
+homeStackTabBarIcon.propTypes = {
+  focused: PropTypes.bool.isRequired,
+};
+
+HomeStack.navigationOptions = {
+  tabBarLabel: 'Home',
+  tabBarIcon: homeStackTabBarIcon,
+};
+
+const linkStackTabBarIcon = ({ focused }) => (
+  <TabBarIcon
+    focused={focused}
+    name={Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link'}
+  />
+);
+
+linkStackTabBarIcon.propTypes = {
+  focused: PropTypes.bool.isRequired,
 };
 
 const LinksStack = createStackNavigator({
@@ -31,12 +49,18 @@ const LinksStack = createStackNavigator({
 
 LinksStack.navigationOptions = {
   tabBarLabel: 'Links',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link'}
-    />
-  ),
+  tabBarIcon: linkStackTabBarIcon,
+};
+
+const settingsStackTabBarIcon = ({ focused }) => (
+  <TabBarIcon
+    focused={focused}
+    name={Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options'}
+  />
+);
+
+settingsStackTabBarIcon.propTypes = {
+  focused: PropTypes.bool.isRequired,
 };
 
 const SettingsStack = createStackNavigator({
@@ -45,12 +69,7 @@ const SettingsStack = createStackNavigator({
 
 SettingsStack.navigationOptions = {
   tabBarLabel: 'Settings',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options'}
-    />
-  ),
+  tabBarIcon: settingsStackTabBarIcon,
 };
 
 export default createBottomTabNavigator({
