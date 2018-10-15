@@ -1,13 +1,11 @@
-import React from 'react';
-import {
-  Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View,
-} from 'react-native';
-import { WebBrowser } from 'expo';
+import React from 'react'
+import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { WebBrowser } from 'expo'
 
-import MonoText from '../components/StyledText';
+import MonoText from '../components/StyledText'
 
-const robotDev = require('../assets/images/robot-dev.png');
-const robotProd = require('../assets/images/robot-prod.png');
+const robotDev = require('../../assets/images/robot-dev.png')
+const robotProd = require('../../assets/images/robot-prod.png')
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -15,13 +13,13 @@ export default class HomeScreen extends React.Component {
   }
 
   handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
+    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode')
   }
 
   handleHelpPress = () => {
     WebBrowser.openBrowserAsync(
       'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes',
-    );
+    )
   }
 
   maybeRenderDevelopmentModeWarning() {
@@ -30,23 +28,21 @@ export default class HomeScreen extends React.Component {
         <Text onPress={this.handleLearnMorePress} style={styles.helpLinkText}>
           Learn more
         </Text>
-      );
+      )
 
       return (
         <Text style={styles.developmentModeText}>
           Development mode is enabled, your app will be slower but you can use useful development
-          tools.
-          {' '}
-          {learnMoreButton}
+          tools. {learnMoreButton}
         </Text>
-      );
+      )
     }
 
     return (
       <Text style={styles.developmentModeText}>
         You are not in development mode, your app will run at full speed.
       </Text>
-    );
+    )
   }
 
   render() {
@@ -86,7 +82,7 @@ export default class HomeScreen extends React.Component {
           </View>
         </View>
       </View>
-    );
+    )
   }
 }
 
@@ -177,4 +173,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#2e78b7',
   },
-});
+})
