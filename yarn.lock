@@ -2678,6 +2678,20 @@ create-react-context@0.2.2:
     fbjs "^0.8.0"
     gud "^1.0.0"
 
+create-react-native-app@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/create-react-native-app/-/create-react-native-app-2.0.2.tgz#d2578c95d4c7478d5f224bcab9e3d8347854eff6"
+  integrity sha512-xsPgOifP3TJtd+UvqhB4X9amYJq548m8vupcqBukWll2gi3UBu2KigWNtASwVUd6UTYlrJHw3g5Bow9c+/UBmQ==
+  dependencies:
+    babel-runtime "^6.9.2"
+    chalk "^2.0.1"
+    cross-spawn "^5.1.0"
+    fs-extra "^4.0.0"
+    minimist "^1.2.0"
+    path-exists "^3.0.0"
+    semver "^5.0.3"
+    source-map-support "^0.4.1"
+
 cross-spawn@^5.0.1, cross-spawn@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"

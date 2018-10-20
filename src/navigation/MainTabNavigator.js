@@ -7,6 +7,7 @@ import TabBarIcon from '../components/TabBarIcon'
 import HomeScreen from '../screens/HomeScreen'
 import LinksScreen from '../screens/LinksScreen'
 import SettingsScreen from '../screens/SettingsScreen'
+import CameraScreen from '../screens/CameraScreen'
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -72,8 +73,29 @@ SettingsStack.navigationOptions = {
   tabBarIcon: settingsStackTabBarIcon,
 }
 
+const CameraStack = createStackNavigator({
+  Home: CameraScreen,
+})
+
+const cameraStackTabBarIcon = ({ focused }) => (
+  <TabBarIcon
+    focused={focused}
+    name={Platform.OS === 'ios' ? `ios-camera${focused ? '' : '-outline'}` : 'md-camera'}
+  />
+)
+
+cameraStackTabBarIcon.propTypes = {
+  focused: PropTypes.bool.isRequired,
+}
+
+CameraStack.navigationOptions = {
+  tabBarLabel: 'Camera',
+  tabBarIcon: cameraStackTabBarIcon,
+}
+
 export default createBottomTabNavigator({
   HomeStack,
+  CameraStack,
   LinksStack,
   SettingsStack,
 })
