@@ -62,9 +62,7 @@ export default class HomeScreen extends React.Component {
               <MonoText style={styles.codeHighlightText}>screens/HomeScreen.js</MonoText>
             </View>
 
-            <Text style={styles.getStartedText}>
-              Change this text and your app will automatically reload.
-            </Text>
+            <Text style={styles.getStartedText}>hey I am here !! Whats Up !!</Text>
           </View>
 
           <View style={styles.helpContainer}>
