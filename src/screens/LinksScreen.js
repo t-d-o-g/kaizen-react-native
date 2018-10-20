@@ -1,6 +1,6 @@
 import React from 'react'
-import { ScrollView, StyleSheet } from 'react-native'
-import { ExpoLinksView } from '@expo/samples'
+import { StatusBar, Text } from 'react-native'
+import { Body, Container, Content, Header, Icon, Left, Right } from 'native-base'
 
 export default class LinksScreen extends React.Component {
   static navigationOptions = {
@@ -9,19 +9,27 @@ export default class LinksScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView style={styles.container}>
-        {/* Go ahead and delete ExpoLinksView and replace it with your
-           * content, we just wanted to provide you with some helpful links */}
-        <ExpoLinksView />
-      </ScrollView>
+      <Container>
+        <StatusBar hidden />
+        <Header>
+          <Left>
+            <Icon
+              name="ios-menu" /* onPress={() => this.props.navigation.navigate('DrawerOpen')} */
+            />
+          </Left>
+          <Body />
+          <Right />
+        </Header>
+        <Content
+          contentContainerStyle={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Text> Links Screen </Text>
+        </Content>
+      </Container>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 15,
-    backgroundColor: '#fff',
-  },
-})
