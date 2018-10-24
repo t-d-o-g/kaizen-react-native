@@ -34,8 +34,6 @@
     "@expo/vector-icons": "^8.0.0",
     "create-react-native-app": "^2.0.2",
     "expo": "^30.0.1",
-    "expo-cli": "^2.2.0",
-    "global": "^4.3.2",
     "native-base": "^2.8.1",
     "prop-types": "15.6.2",
     "react": "16.3.1",
