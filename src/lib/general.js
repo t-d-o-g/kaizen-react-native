@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react'
 import { Text, TouchableHighlight, Picker } from 'react-native'
 import styles from './styles'

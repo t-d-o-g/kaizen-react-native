@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react'
 import { TouchableHighlight, TouchableOpacity } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
