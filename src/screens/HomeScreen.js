@@ -1,6 +1,6 @@
 import React from 'react'
-import { StatusBar, Text } from 'react-native'
-import { Body, Container, Content, Header, Icon, Left, Right } from 'native-base'
+import { Image, StatusBar, Text } from 'react-native'
+import { Body, Button, Container, Content, Header, Icon, Left, Right } from 'native-base'
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -8,15 +8,21 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
+    const { navigation } = this.props
+
     return (
       <Container>
         <StatusBar hidden />
         <Header>
           <Left>
-            <Icon name="ios-menu" onPress={() => this.props.navigation.openDrawer()} />
+            <Icon name="ios-menu" onPress={() => navigation.openDrawer()} />
           </Left>
           <Body />
-          <Right />
+          <Right>
+            <Button onPress={() => navigation.navigate('Login')} transparent>
+              <Text> Login </Text>
+            </Button>
+          </Right>
         </Header>
         <Content
           contentContainerStyle={{
@@ -25,7 +31,11 @@ export default class HomeScreen extends React.Component {
             justifyContent: 'center',
           }}
         >
-          <Text> Home Screen </Text>
+          <Image
+            // Will be changed in the future to the actual maps.
+            source={require('../../assets/images/Google_Maps_screenshot.png')}
+            style={{ height: '100%', width: '100%' }}
+          />
         </Content>
       </Container>
     )

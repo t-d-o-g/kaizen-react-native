@@ -1,47 +1,70 @@
 // import React from 'react';
-import React, { Component } from 'react'
-import { createDrawerNavigator, DrawerItems } from 'react-navigation'
+import React from 'react'
+import { createDrawerNavigator, createStackNavigator, DrawerItems } from 'react-navigation'
 
-import { Body, Container, Content, Header, Image } from 'native-base'
+import { Body, Container, Content, Header, Thumbnail } from 'native-base'
 
 /* import MainTabNavigator from './MainTabNavigator' */
 import HomeScreen from '../screens/HomeScreen'
 import CameraScreen from '../screens/CameraScreen'
-import LinksScreen from '../screens/LinksScreen'
-import SettingsScreen from '../screens/SettingsScreen'
+import EditProfile from '../screens/EditProfile'
 
-class AppNavigator extends Component {
-  render() {
-    return <DrawerNavigation />
-  }
+/* Screens to be used in a Stack Navigator */
+import RegisterScreen from '../screens/RegisterScreen'
+import LoginScreen from '../screens/LoginScreen'
+
+const AppNavigator = () => {
+  return <DrawerNavigation />
 }
+
+export default AppNavigator
+
+const StackNavigation = createStackNavigator(
+  {
+    Home: {
+      screen: HomeScreen,
+    },
+    Login: {
+      screen: LoginScreen,
+    },
+    Register: {
+      screen: RegisterScreen,
+    },
+  },
+  {
+    headerMode: 'none',
+    initialRouteName: 'Home',
+    navigationOptions: {
+      headerVisible: false,
+    },
+  },
+)
 
 const DrawerNavigation = createDrawerNavigator(
   {
     // You could add another route here for authentication.
     // Read more at https://reactnavigation.org/docs/en/auth-flow.html
     Home: {
-      screen: HomeScreen,
+      screen: StackNavigation,
     },
     Camera: {
       screen: CameraScreen,
     },
-    Links: {
-      screen: LinksScreen,
-    },
-    Settings: {
-      screen: SettingsScreen,
+    EditProfile: {
+      screen: EditProfile,
     },
   },
   {
     initialRouteName: 'Home',
     contentComponent: props => (
       <Container>
-        <Header>
+        <Header style={{ height: 150 }}>
           <Body>
-            {/* <Image
-            source={require('../../assets/images/icon.png')}
-          /> */}
+            <Thumbnail
+              large
+              source={{ uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
+              style={{ alignSelf: 'center' }}
+            />
           </Body>
         </Header>
         <Content>
@@ -53,4 +76,6 @@ const DrawerNavigation = createDrawerNavigator(
   },
 )
 
-export default AppNavigator
+/* const StackNavigation = createStackNavigator({
+
+}) */
