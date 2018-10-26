@@ -12,6 +12,7 @@ import EditProfile from '../screens/EditProfile'
 /* Screens to be used in a Stack Navigator */
 import RegisterScreen from '../screens/RegisterScreen'
 import LoginScreen from '../screens/LoginScreen'
+import AddTicket from '../screens/AddTicketScreen'
 
 const AppNavigator = () => {
   return <DrawerNavigation />
@@ -30,6 +31,9 @@ const StackNavigation = createStackNavigator(
     Register: {
       screen: RegisterScreen,
     },
+    AddTicket: {
+      screen: AddTicket,
+    },
   },
   {
     headerMode: 'none',
@@ -42,8 +46,8 @@ const StackNavigation = createStackNavigator(
 
 const DrawerNavigation = createDrawerNavigator(
   {
-    // You could add another route here for authentication.
-    // Read more at https://reactnavigation.org/docs/en/auth-flow.html
+    // You could add another route here for autg/hentication.
+    // Read more at https://reactnavigation.ordocs/en/auth-flow.html
     Home: {
       screen: StackNavigation,
     },

@@ -1,6 +1,6 @@
 import React from 'react'
-import { Image, StatusBar, Text } from 'react-native'
-import { Body, Button, Container, Content, Header, Icon, Left, Right } from 'native-base'
+import { ImageBackground, StatusBar, StyleSheet, Text, View } from 'react-native'
+import { Body, Button, Container, Content, Fab, Header, Icon, Left, Right } from 'native-base'
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -31,13 +31,38 @@ export default class HomeScreen extends React.Component {
             justifyContent: 'center',
           }}
         >
-          <Image
+          <ImageBackground
             // Will be changed in the future to the actual maps.
             source={require('../../assets/images/Google_Maps_screenshot.png')}
-            style={{ height: '100%', width: '100%' }}
-          />
+            style={styles.testImage}
+          >
+            <View style={{ flex: 1 }}>
+              <Fab
+                containerStyle={{}}
+                style={{ backgroundColor: '#5067FF' }}
+                position="bottomRight"
+                onPress={() => navigation.navigate('AddTicket')}
+              >
+                <Text> + </Text>
+              </Fab>
+            </View>
+          </ImageBackground>
         </Content>
       </Container>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  testAddTicketButton: {
+    alignSelf: 'flex-end',
+    borderRadius: 50,
+    margin: 50,
+    padding: 20,
+  },
+
+  testImage: {
+    height: '100%',
+    width: '100%',
+  },
+})
