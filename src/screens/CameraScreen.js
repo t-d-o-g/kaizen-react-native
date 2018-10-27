@@ -11,9 +11,7 @@ import {
   Alert,
   FlatList,
 } from 'react-native'
-import {
-  Header, Icon, Left, Body, Right
-} from 'native-base'
+import { Header, Icon, Left, Body, Right } from 'native-base'
 
 import { Permissions, Camera, FileSystem } from 'expo'
 import store from 'react-native-simple-store'
@@ -121,14 +119,12 @@ export default class CameraScreen extends React.Component {
     return (
       <View style={styles.wrapper}>
         <StatusBar hidden />
-        <Header style={{backgroundColor: '#333'}}>
+        <Header style={{ backgroundColor: '#333' }}>
           <Left>
             <Icon name="ios-menu" onPress={() => this.props.navigation.openDrawer()} />
           </Left>
-          <Body style={{alignSelf: 'center'}}>
-            <Text style={{alignSelf: 'center', color: '#FFF'}}>
-              Take Picture
-            </Text>
+          <Body style={{ alignSelf: 'center' }}>
+            <Text style={{ alignSelf: 'center', color: '#FFF' }}>Take Picture</Text>
           </Body>
           <Right>
             <IconButton
