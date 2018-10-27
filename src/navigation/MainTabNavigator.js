@@ -5,8 +5,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 import PropTypes from 'prop-types'
 import TabBarIcon from '../components/TabBarIcon'
 import HomeScreen from '../screens/HomeScreen'
-import LinksScreen from '../screens/LinksScreen'
-import SettingsScreen from '../screens/SettingsScreen'
+import LinksScreen from '../screens/EditProfile'
 import CameraScreen from '../screens/CameraScreen'
 
 const HomeStack = createStackNavigator({
@@ -64,14 +63,14 @@ settingsStackTabBarIcon.propTypes = {
   focused: PropTypes.bool.isRequired,
 }
 
-const SettingsStack = createStackNavigator({
+/* const SettingsStack = createStackNavigator({
   Settings: SettingsScreen,
 })
 
 SettingsStack.navigationOptions = {
   tabBarLabel: 'Settings',
   tabBarIcon: settingsStackTabBarIcon,
-}
+} */
 
 const CameraStack = createStackNavigator({
   Home: CameraScreen,
