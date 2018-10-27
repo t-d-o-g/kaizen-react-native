@@ -5,11 +5,15 @@ import {
   Text,
   TouchableHighlight,
   Image,
+  StatusBar,
   StyleSheet,
   Modal,
   Alert,
   FlatList,
 } from 'react-native'
+import {
+  Header, Icon, Left, Body, Right
+} from 'native-base'
 
 import { Permissions, Camera, FileSystem } from 'expo'
 import store from 'react-native-simple-store'
@@ -21,29 +25,6 @@ import AlertBox from '../components/AlertBox'
 import { getPathSafeDatetime, uniqid, friendlyDate } from '../lib/general'
 
 export default class CameraScreen extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    const { params } = navigation.state
-
-    return {
-      headerTitle: 'Take Picture',
-      headerRight: (
-        <IconButton
-          size={25}
-          color="#FFF"
-          onPress={() => {
-            params.openCamera()
-          }}
-        />
-      ),
-      headerStyle: {
-        backgroundColor: '#333',
-      },
-      headerTitleStyle: {
-        color: '#FFF',
-      },
-    }
-  }
-
   state = {
     is_camera_visible: false,
     is_photo_visible: false,
@@ -139,6 +120,26 @@ export default class CameraScreen extends React.Component {
   render() {
     return (
       <View style={styles.wrapper}>
+        <StatusBar hidden />
+        <Header style={{backgroundColor: '#333'}}>
+          <Left>
+            <Icon name="ios-menu" onPress={() => this.props.navigation.openDrawer()} />
+          </Left>
+          <Body style={{alignSelf: 'center'}}>
+            <Text style={{alignSelf: 'center', color: '#FFF'}}>
+              Take Picture
+            </Text>
+          </Body>
+          <Right>
+            <IconButton
+              size={25}
+              color="#FFF"
+              onPress={() => {
+                this.props.navigation.state.params.openCamera()
+              }}
+            />
+          </Right>
+        </Header>
         <Modal
           animationType="slide"
           transparent={false}
