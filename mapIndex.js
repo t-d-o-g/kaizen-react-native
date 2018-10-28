@@ -1,3 +1,5 @@
+/* eslint no-underscore-dangle: 0 */
+
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import MapView from 'react-native-maps'
@@ -61,23 +63,50 @@ export default class Main extends React.Component {
     this._loadTickets = this._loadTickets.bind(this)
   }
 
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        /* eslint-disable no-console */
+        console.log(position.coords)
+        /* eslint-enable no-console */
+        const region = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }
+        this.setState({
+          region,
+        })
+      },
+      error => {
+        throw error
+      },
+      { enableHighAccuracy: false, maximumAge: 1000 },
+    )
+
+    this._loadTickets()
+  }
+
   _loadTickets() {
     API.getAllTickets()
       .then(res => {
-        let tickets = []
+        const tickets = []
 
-        for (i = 0; i < res.data.length; i++) {
-          let ticket = {}
+        for (let i = 0; i < res.data.length; i++) {
+          const ticket = {}
+          const [latitude] = res.data[i].TicketLocation.location.coordinates[0]
+          const [longitude] = res.data[i].TicketLocation.location.coordinates[1]
           ticket.user = `${res.data[i].User.first_name}  ${res.data[i].User.last_name}`
-          ticket.latitude = res.data[i].TicketLocation.location.coordinates[0]
-          ticket.longitude = res.data[i].TicketLocation.location.coordinates[1]
+          ticket.latitude = latitude
+          ticket.longitude = longitude
           ticket.category = res.data[i].Category.category
           ticket.description = res.data[i].Ticket.ticket
           ticket.createdAt = res.data[i].Ticket.createdAt
           ticket.lastUpdatedAt = res.data[i].Ticket.updatedAt
           ticket.status = res.data[i].Status.status
           ticket.id = res.data[i].id
-          ticket.ticketId = res.data[i].Ticket.id //informations needed to pass to update page
+          ticket.ticketId = res.data[i].Ticket.id // informations needed to pass to update page
           ticket.userId = res.data[i].User.id
           ticket.ticketLocationId = res.data[i].TicketLocation.id
 
@@ -85,10 +114,12 @@ export default class Main extends React.Component {
         }
 
         this.setState({
-          tickets: tickets,
+          tickets,
         })
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        throw err
+      })
   }
 
   _onRegionChange(region) {
@@ -97,7 +128,8 @@ export default class Main extends React.Component {
   }
 
   _onPress(e) {
-    let locationInfo = {
+    const { navigation } = this.props
+    const locationInfo = {
       latitude: e.nativeEvent.coordinate.latitude,
       longitude: e.nativeEvent.coordinate.longitude,
     }
@@ -112,18 +144,20 @@ export default class Main extends React.Component {
       ],
     })
 
-    this.props.navigation.navigate('CreateTicket', {
-      locationInfo: locationInfo,
+    navigation.navigate('CreateTicket', {
+      locationInfo,
     })
   }
 
   _onMarkerPress(e) {
+    const { navigation } = this.props
+    const { tickets } = this.state
+    /* eslint-disable no-console */
     console.log(e.nativeEvent)
-    var result = this.state.tickets.filter(obj => {
-      return obj.id === parseInt(e.nativeEvent.id)
-    })
+    /* eslint-enable no-console */
+    const result = tickets.filter(obj => obj.id === parseInt(e.nativeEvent.id))
 
-    let ticketInfo = {
+    const ticketInfo = {
       category: result[0].category,
       description: result[0].description,
       status: result[0].status,
@@ -145,53 +179,33 @@ export default class Main extends React.Component {
       },
     })
 
-    this.props.navigation.navigate('TicketDetails', {
-      ticketInfo: ticketInfo,
+    navigation.navigate('TicketDetails', {
+      ticketInfo,
     })
   }
 
-  componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        console.log(position.coords)
-        let region = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }
-        this.setState({
-          region: region,
-        })
-      },
-      error => console.log(error),
-      { enableHighAccuracy: false, maximumAge: 1000 },
-    )
-
-    this._loadTickets()
-  }
-
   render() {
+    const { region, markers, tickets } = this.state
     return (
       <View style={{ flex: 1 }}>
         <MapView
-          showsUserLocation={true}
-          zoomEnabled={true}
+          showsUserLocation
+          zoomEnabled
           style={styles.fullScreenMap}
           initialRegion={this.initialRegion}
-          region={this.state.region}
+          region={region}
           onRegionChange={this._onRegionChange.bind(this)}
           onPress={this._onPress}
         >
-          {this.state.tickets.map((ticket, i) => (
+          {tickets.map(ticket => (
             <MapView.Marker
-              key={i}
+              key={ticket.id}
               coordinate={ticket}
               onPress={this._onMarkerPress}
               identifier={ticket.id.toString()}
             />
           ))}
-          {this.state.markers.map((marker, i) => (
+          {markers.map((marker, i) => (
             <MapView.Marker key={i} coordinate={marker} />
           ))}
         </MapView>

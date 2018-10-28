@@ -19,12 +19,12 @@ export default class TicketDetails extends React.Component {
         <Text style={styles.status}>Last updated at: {ticketInfo.updated}</Text>
 
         <View style={styles.buttonContainer}>
-          <Button title="Home" onPress={() => this.props.navigation.navigate('Home')} />
-          <Text> </Text>
+          <Button title="Home" onPress={() => navigation.navigate('Home')} />
+          <Text />
           <Button
             title="Review"
             onPress={() =>
-              this.props.navigation.navigate('UpdateTicket', {
+              navigation.navigate('UpdateTicket', {
                 ticketInfo: {
                   category: ticketInfo.category,
                   description: ticketInfo.description,

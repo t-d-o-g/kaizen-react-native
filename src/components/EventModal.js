@@ -1,27 +1,38 @@
+/* eslint react/prefer-stateless-function: 0 */
+
 import React from 'react'
-import { Modal, View, Text, Animated, Easing, TouchableOpacity, StyleSheet } from 'react-native'
+import PropTypes from 'prop-types'
+import { Modal, View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native'
 
 export default class EventModal extends React.Component {
+  static propTypes = {
+    visible: PropTypes.bool.isRequired,
+    eventInfo: PropTypes.string.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onReview: PropTypes.func.isRequired,
+  }
+
   render() {
+    const { visible, eventInfo, onClose, onReview } = this.props
     return (
       <Modal
-        visible={this.props.visible}
-        transparent={true}
+        visible={visible}
+        transparent
         onRequestClose={() => {
           Alert.alert('Modal has been closed.')
         }}
       >
         <View style={styles.overlay}>
           <View style={styles.container}>
-            <Text style={styles.title}>Title: {this.props.eventInfo.title}</Text>
-            <Text style={styles.description}>Description: {this.props.eventInfo.description}</Text>
-            <Text style={styles.status}>Status: {this.props.eventInfo.status}</Text>
+            <Text style={styles.title}>Title: {eventInfo.title}</Text>
+            <Text style={styles.description}>Description: {eventInfo.description}</Text>
+            <Text style={styles.status}>Status: {eventInfo.status}</Text>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.closeButton} onPress={this.props.onClose}>
+              <TouchableOpacity style={styles.closeButton} onPress={onClose}>
                 <Text style={styles.closeButtonText}>X</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.reviewButton} onPress={this.props.onReview}>
+              <TouchableOpacity style={styles.reviewButton} onPress={onReview}>
                 <Text style={styles.reviewButtonText}>review</Text>
               </TouchableOpacity>
             </View>

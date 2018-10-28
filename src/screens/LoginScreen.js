@@ -48,7 +48,7 @@ export default class LoginScreen extends React.Component {
           </Form>
           <Text style={styles.registerText}>
             {' '}
-            Don't have an account?
+            Don not have an account?
             <Text style={styles.anchorText} onPress={() => navigation.navigate('Register')}>
               {' '}
               Register here.{' '}

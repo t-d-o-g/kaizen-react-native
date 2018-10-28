@@ -13,8 +13,7 @@ export default class TabBarIcon extends React.Component {
   }
 
   render() {
-    const { name } = this.props
-    const { focused } = this.props
+    const { name, focused } = this.props
 
     return (
       <Icon.Ionicons

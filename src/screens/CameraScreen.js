@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react'
 import {
   View,
@@ -24,9 +23,9 @@ import { getPathSafeDatetime, uniqid, friendlyDate } from '../lib/general'
 
 export default class CameraScreen extends React.Component {
   state = {
-    is_camera_visible: false,
-    is_photo_visible: false,
-    has_camera_permission: null,
+    isCameraVisible: false,
+    isPhotoVisible: false,
+    hasCameraPermission: null,
     type: Camera.Constants.Type.back,
     progressPhotos: [],
   }
@@ -40,13 +39,14 @@ export default class CameraScreen extends React.Component {
   componentWillMount() {
     Permissions.askAsync(Permissions.CAMERA).then(response => {
       this.setState({
-        has_camera_permission: response.status === 'granted',
+        hasCameraPermission: response.status === 'granted',
       })
     })
   }
 
   componentDidMount() {
-    this.props.navigation.setParams({
+    const { navigation } = this.props
+    navigation.setParams({
       openCamera: this.openCamera,
     })
 
@@ -61,20 +61,22 @@ export default class CameraScreen extends React.Component {
 
   openCamera = () => {
     this.setState({
-      is_camera_visible: true,
+      isCameraVisible: true,
     })
   }
 
   closeCamera = () => {
     this.setState({
-      is_camera_visible: false,
+      isCameraVisible: false,
     })
   }
 
   flipCamera = () => {
+    const { type } = this.state
+
     this.setState({
       type:
-        this.state.type === Camera.Constants.Type.back
+        type === Camera.Constants.Type.back
           ? Camera.Constants.Type.front
           : Camera.Constants.Type.back,
     })
@@ -82,7 +84,7 @@ export default class CameraScreen extends React.Component {
 
   closePhoto = () => {
     this.setState({
-      is_photo_visible: false,
+      isPhotoVisible: false,
     })
   }
 
@@ -95,7 +97,7 @@ export default class CameraScreen extends React.Component {
         FileSystem.moveAsync({
           from: data.uri,
           to: filePath,
-        }).then(response => {
+        }).then(() => {
           const photoData = {
             key: uniqid(),
             name: datetime,
@@ -104,7 +106,9 @@ export default class CameraScreen extends React.Component {
 
           const progressPhotos = [...this.state.progressPhotos]
           progressPhotos.push(photoData)
+          /* eslint-disable no-console */
           console.log(data)
+          /* eslint-enable no-console */
           this.setState({
             progressPhotos,
           })
@@ -115,13 +119,54 @@ export default class CameraScreen extends React.Component {
     }
   }
 
+  showPhoto = item => {
+    this.setState({
+      isPhotoVisible: true,
+      currentImage: {
+        url: `${this.document_dir}${this.filename_prefix}${item.name}.jpg`,
+        label: friendlyDate(item.name),
+      },
+    })
+  }
+
+  renderItem = ({ item }) => {
+    const name = friendlyDate(item.name)
+    const photoUrl = `${this.document_dir}${this.filename_prefix}${item.name}.jpg`
+
+    return (
+      <TouchableHighlight
+        key={item.key}
+        style={styles.list_item}
+        underlayColor="#ccc"
+        onPress={() => {
+          this.showPhoto(item)
+        }}
+      >
+        <View style={styles.image_container}>
+          <Image source={{ uri: photoUrl }} style={styles.image} ImageResizeMode="contain" />
+          <Text style={styles.image_text}>{name}</Text>
+        </View>
+      </TouchableHighlight>
+    )
+  }
+
   render() {
+    const { navigation } = this.props
+    const {
+      type,
+      isCameraVisible,
+      hasCameraPermission,
+      isPhotoVisible,
+      currentImage,
+      progressPhotos,
+    } = this.state
+
     return (
       <View style={styles.wrapper}>
         <StatusBar hidden />
         <Header style={{ backgroundColor: '#333' }}>
           <Left>
-            <Icon name="ios-menu" onPress={() => this.props.navigation.openDrawer()} />
+            <Icon name="ios-menu" onPress={() => navigation.openDrawer()} />
           </Left>
           <Body style={{ alignSelf: 'center' }}>
             <Text style={{ alignSelf: 'center', color: '#FFF' }}>Take Picture</Text>
@@ -131,7 +176,7 @@ export default class CameraScreen extends React.Component {
               size={25}
               color="#FFF"
               onPress={() => {
-                this.props.navigation.state.params.openCamera()
+                navigation.state.params.openCamera()
               }}
             />
           </Right>
@@ -139,18 +184,18 @@ export default class CameraScreen extends React.Component {
         <Modal
           animationType="slide"
           transparent={false}
-          visible={this.state.is_camera_visible}
+          visible={isCameraVisible}
           onRequestClose={() => {
             this.setState({
-              is_camera_visible: false,
+              isCameraVisible: false,
             })
           }}
         >
           <View style={styles.modal}>
-            {this.state.has_camera_permission && (
+            {hasCameraPermission && (
               <Camera
                 style={styles.wrapper}
-                type={this.state.type}
+                type={type}
                 ref={ref => {
                   this.camera = ref
                 }}
@@ -189,18 +234,18 @@ export default class CameraScreen extends React.Component {
         <Modal
           animationType="slide"
           transparent={false}
-          visible={this.state.is_photo_visible}
+          visible={isPhotoVisible}
           onRequestClose={() => {
             this.setState({
-              is_photo_visible: false,
+              isPhotoVisible: false,
             })
           }}
         >
           <View style={styles.modal}>
-            {this.state.current_image && (
+            {currentImage && (
               <View style={styles.wrapper}>
                 <Image
-                  source={{ uri: this.state.current_image.url }}
+                  source={{ uri: currentImage.url }}
                   style={styles.wrapper}
                   ImageResizeMode="contain"
                 />
@@ -213,52 +258,21 @@ export default class CameraScreen extends React.Component {
                 />
 
                 <View style={styles.photo_label}>
-                  <Text style={styles.photo_label_text}>{this.state.current_image.label}</Text>
+                  <Text style={styles.photo_label_text}>{currentImage.label}</Text>
                 </View>
               </View>
             )}
           </View>
         </Modal>
 
-        {this.state.progressPhotos.length === 0 && (
+        {progressPhotos.length === 0 && (
           <AlertBox text="You haven't taken any pictures yet." type="info" />
         )}
 
-        {this.state.progressPhotos.length > 0 && (
-          <FlatList data={this.state.progressPhotos} numColumns={2} renderItem={this.renderItem} />
+        {progressPhotos.length > 0 && (
+          <FlatList data={progressPhotos} numColumns={2} renderItem={this.renderItem} />
         )}
       </View>
-    )
-  }
-
-  showPhoto = item => {
-    this.setState({
-      is_photo_visible: true,
-      current_image: {
-        url: `${this.document_dir}${this.filename_prefix}${item.name}.jpg`,
-        label: friendlyDate(item.name),
-      },
-    })
-  }
-
-  renderItem = ({ item }) => {
-    const name = friendlyDate(item.name)
-    const photoUrl = `${this.document_dir}${this.filename_prefix}${item.name}.jpg`
-
-    return (
-      <TouchableHighlight
-        key={item.key}
-        style={styles.list_item}
-        underlayColor="#ccc"
-        onPress={() => {
-          this.showPhoto(item)
-        }}
-      >
-        <View style={styles.image_container}>
-          <Image source={{ uri: photoUrl }} style={styles.image} ImageResizeMode="contain" />
-          <Text style={styles.image_text}>{name}</Text>
-        </View>
-      </TouchableHighlight>
     )
   }
 }

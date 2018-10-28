@@ -5,7 +5,6 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native'
 import { AppLoading, Asset, Font, Icon } from 'expo'
 import PropTypes from 'prop-types'
 import AppNavigator from './src/navigation/AppNavigator'
-import Map from './Map'
 
 const robotDev = require('./assets/images/robot-dev.png')
 const robotProd = require('./assets/images/robot-prod.png')
