@@ -1,21 +1,17 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import MapView from 'react-native-maps'
-
-import EventModal from './src/components/EventModal'
-import EventCallout from './src/components/EventCallout'
-import EventInfo from './src/components/EventInfo'
+import API from './utils/API'
 
 export default class Main extends React.Component {
+  static navigationOptions = {
+    title: 'Main',
+  }
+
   constructor(props) {
     super(props)
     this.state = {
-      eventModalVisible: false,
-      eventInfo: {
-        title: 'Why always me?',
-        description: 'I made a brilliant goal',
-        status: 'open',
-      },
+      ticketInfo: {},
       markers: [],
       region: {
         latitude: 37.78825,
@@ -23,6 +19,7 @@ export default class Main extends React.Component {
         latitudeDelta: 0.00922,
         longitudeDelta: 0.00421,
       },
+      tickets: [],
       markerLocations: [
         {
           rotation: 78,
@@ -61,15 +58,50 @@ export default class Main extends React.Component {
       latitudeDelta: 0.00922,
       longitudeDelta: 0.00421,
     }
+    this._loadTickets = this._loadTickets.bind(this)
+  }
+
+  _loadTickets() {
+    API.getAllTickets()
+      .then(res => {
+        let tickets = []
+
+        for (i = 0; i < res.data.length; i++) {
+          let ticket = {}
+          ticket.user = `${res.data[i].User.first_name}  ${res.data[i].User.last_name}`
+          ticket.latitude = res.data[i].TicketLocation.location.coordinates[0]
+          ticket.longitude = res.data[i].TicketLocation.location.coordinates[1]
+          ticket.category = res.data[i].Category.category
+          ticket.description = res.data[i].Ticket.ticket
+          ticket.createdAt = res.data[i].Ticket.createdAt
+          ticket.lastUpdatedAt = res.data[i].Ticket.updatedAt
+          ticket.status = res.data[i].Status.status
+          ticket.id = res.data[i].id
+          ticket.ticketId = res.data[i].Ticket.id //informations needed to pass to update page
+          ticket.userId = res.data[i].User.id
+          ticket.ticketLocationId = res.data[i].TicketLocation.id
+
+          tickets.push(ticket)
+        }
+
+        this.setState({
+          tickets: tickets,
+        })
+      })
+      .catch(err => console.log(err))
   }
 
   _onRegionChange(region) {
     // this.setState({ region: region });
-    console.log(this.state.region)
+    // console.log(this.state.region);
   }
 
   _onPress(e) {
-    // console.log(e.nativeEvent.coordinate);
+    let locationInfo = {
+      latitude: e.nativeEvent.coordinate.latitude,
+      longitude: e.nativeEvent.coordinate.longitude,
+    }
+
     this.setState({
       markers: [
         //   ...this.state.markers,
@@ -79,28 +111,42 @@ export default class Main extends React.Component {
         },
       ],
     })
-    console.log(this.state.markers)
+
+    this.props.navigation.navigate('CreateTicket', {
+      locationInfo: locationInfo,
+    })
   }
 
   _onMarkerPress(e) {
     console.log(e.nativeEvent)
-    var result = this.state.markerLocations.filter(obj => {
-      return obj.identifier === e.nativeEvent.id
+    var result = this.state.tickets.filter(obj => {
+      return obj.id === parseInt(e.nativeEvent.id)
     })
 
-    console.log(result)
-    // this.setState({
-    //     region
-    // });
+    let ticketInfo = {
+      category: result[0].category,
+      description: result[0].description,
+      status: result[0].status,
+      user: result[0].user,
+      updated: result[0].lastUpdatedAt.toString(),
+      ticketXrefsId: result[0].id,
+      ticketId: result[0].ticketId,
+      userId: result[0].userId,
+      ticketLocationId: result[0].ticketLocationId,
+    }
+
     this.setState({
-      eventInfo: {
-        title: result[0].title,
+      ticketInfo: {
+        category: result[0].category,
         description: result[0].description,
         status: result[0].status,
+        user: result[0].user,
+        updated: result[0].lastUpdatedAt.toString(),
       },
     })
-    this.setState({
-      eventModalVisible: true,
+
+    this.props.navigation.navigate('TicketDetails', {
+      ticketInfo: ticketInfo,
     })
   }
 
@@ -121,6 +167,8 @@ export default class Main extends React.Component {
       error => console.log(error),
       { enableHighAccuracy: false, maximumAge: 1000 },
     )
+
+    this._loadTickets()
   }
 
   render() {
@@ -135,50 +183,18 @@ export default class Main extends React.Component {
           onRegionChange={this._onRegionChange.bind(this)}
           onPress={this._onPress}
         >
-          {this.state.markerLocations.map((markerLocation, i) => (
+          {this.state.tickets.map((ticket, i) => (
             <MapView.Marker
               key={i}
-              coordinate={markerLocation}
+              coordinate={ticket}
               onPress={this._onMarkerPress}
-              identifier={markerLocation.identifier}
-            >
-              {/* <MapView.Callout 
-                    tooltip
-                    >
-                        <EventCallout
-                          onClose={() => {
-                              console.log("what's up?");
-                          }}
-                          onReview={() => {
-                            console.log("linking to review page...");
-                          }}
-                        >
-                            <EventInfo
-                              eventInfo={this.state.eventInfo}
-                            />
-                        </EventCallout>
-                    </MapView.Callout> */}
-            </MapView.Marker>
+              identifier={ticket.id.toString()}
+            />
           ))}
           {this.state.markers.map((marker, i) => (
             <MapView.Marker key={i} coordinate={marker} />
           ))}
         </MapView>
-        <EventModal
-          visible={this.state.eventModalVisible}
-          onClose={() => {
-            this.setState({
-              eventModalVisible: false,
-            })
-          }}
-          onReview={() => {
-            this.setState({
-              eventModalVisible: false,
-            })
-            console.log('linking to review page...')
-          }}
-          eventInfo={this.state.eventInfo}
-        />
       </View>
     )
   }
