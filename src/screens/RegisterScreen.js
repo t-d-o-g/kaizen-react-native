@@ -14,10 +14,33 @@ import {
   Left,
   Right,
 } from 'native-base'
+import API from '../../utils/API'
 
 export default class RegisterScreen extends React.Component {
   static navigationOptions = {
     title: 'Register',
+  }
+
+  state = {
+    firstName: undefined,
+    lastName: undefined,
+    email: undefined,
+    userName: undefined,
+    password: undefined,
+  }
+
+  registerUser = () => {
+    // console.warn("In registerUser")
+    // VIK_TODO: Do form validation
+
+    API.registerUser({ email: this.state.email, password: this.state.password })
+      .then(response => {
+        console.warn(JSON.stringify(response))
+      })
+      .catch(error => {
+        console.warn(error)
+      })
+    // console.warn("submitted");
   }
 
   render() {
@@ -40,25 +63,50 @@ export default class RegisterScreen extends React.Component {
         <Content>
           <Form>
             <Item floatingLabel>
-              <Label> Full Name </Label>
-              <Input style={styles.input} />
+              <Label> First Name </Label>
+              <Input
+                style={styles.input}
+                value={this.state.firstName}
+                onChangeText={inputValue => this.setState({ firstName: inputValue })}
+              />
+            </Item>
+            <Item floatingLabel>
+              <Label> Last Name </Label>
+              <Input
+                style={styles.input}
+                value={this.state.lastName}
+                onChangeText={inputValue => this.setState({ lastName: inputValue })}
+              />
             </Item>
             <Item floatingLabel>
               <Label> Email </Label>
-              <Input style={styles.input} />
+              <Input
+                style={styles.input}
+                value={this.state.email}
+                onChangeText={inputValue => this.setState({ email: inputValue })}
+              />
             </Item>
             <Item floatingLabel>
               <Label> Username </Label>
-              <Input style={styles.input} />
+              <Input
+                style={styles.input}
+                value={this.state.userName}
+                onChangeText={inputValue => this.setState({ userName: inputValue })}
+              />
             </Item>
             <Item floatingLabel last>
               <Label> Password </Label>
-              <Input style={styles.input} />
+              <Input
+                style={styles.input}
+                secureTextEntry={true}
+                value={this.state.password}
+                onChangeText={inputValue => this.setState({ password: inputValue })}
+              />
             </Item>
-            <Button primary style={styles.registerButton}>
-              <Text style={styles.registerText}> Register </Text>
-            </Button>
           </Form>
+          <Button primary style={styles.registerButton} onPress={this.registerUser}>
+            <Text style={styles.registerText}> Register </Text>
+          </Button>
         </Content>
       </Container>
     )
