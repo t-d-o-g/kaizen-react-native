@@ -1,13 +1,21 @@
+/* eslint react/prefer-stateless-function: 0 */
+
 import React from 'react'
+import PropTypes from 'prop-types'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
 export default class EventInfo extends React.Component {
+  static propTypes = {
+    eventInfo: PropTypes.string.isRequired,
+  }
+
   render() {
+    const { eventInfo } = this.props
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Title: {this.props.eventInfo.title}</Text>
-        <Text style={styles.description}>Description: {this.props.eventInfo.description}</Text>
-        <Text style={styles.status}>Status: {this.props.eventInfo.status}</Text>
+        <Text style={styles.title}>Title: {eventInfo.title}</Text>
+        <Text style={styles.description}>Description: {eventInfo.description}</Text>
+        <Text style={styles.status}>Status: {eventInfo.status}</Text>
         {/* <View
                     style={styles.buttonContainer}
                 >

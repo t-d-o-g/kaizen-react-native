@@ -1,5 +1,5 @@
 import React from 'react'
-import { StatusBar, StyleSheet, Text, View } from 'react-native'
+import { StatusBar, StyleSheet, Text } from 'react-native'
 import {
   Body,
   Button,
@@ -11,9 +11,7 @@ import {
   Input,
   Item,
   Left,
-  ListItem,
   Picker,
-  Radio,
   Right,
   Textarea,
 } from 'native-base'
@@ -33,18 +31,19 @@ export default class AddTicket extends React.Component {
 
   setCategory(category) {
     this.setState({
-      category: category,
+      category,
     })
   }
 
   setStatus(status) {
     this.setState({
-      status: status,
+      status,
     })
   }
 
   render() {
     const { navigation } = this.props
+    const { category, status } = this.state
 
     return (
       <Container>
@@ -63,7 +62,7 @@ export default class AddTicket extends React.Component {
               note
               mode="dropdown"
               style={styles.input}
-              selectedValue={this.state.category}
+              selectedValue={category}
               onValueChange={this.setCategory.bind(this)}
             >
               <Picker.Item label="None" value="key0" />
@@ -73,7 +72,7 @@ export default class AddTicket extends React.Component {
               <Picker.Item label="Other" value="key4" />
             </Picker>
 
-            <Text style={styles.text}> What's the Issue? </Text>
+            <Text style={styles.text}> What is the Issue? </Text>
             <Textarea style={styles.input} rowSpan={5} bordered />
 
             <Text style={styles.text}> Select Status : </Text>
@@ -81,7 +80,7 @@ export default class AddTicket extends React.Component {
               note
               mode="dropdown"
               style={styles.input}
-              selectedValue={this.state.status}
+              selectedValue={status}
               onValueChange={this.setStatus.bind(this)}
             >
               <Picker.Item label="None" value="key0" />

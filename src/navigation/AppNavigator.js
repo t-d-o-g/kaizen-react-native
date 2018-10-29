@@ -14,9 +14,7 @@ import RegisterScreen from '../screens/RegisterScreen'
 import LoginScreen from '../screens/LoginScreen'
 import AddTicket from '../screens/AddTicketScreen'
 
-const AppNavigator = () => {
-  return <DrawerNavigation />
-}
+const AppNavigator = () => <DrawerNavigation />
 
 export default AppNavigator
 

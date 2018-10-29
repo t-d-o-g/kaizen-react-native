@@ -1,10 +1,11 @@
+/* eslint no-underscore-dangle: 0 */
+
 import React, { Component } from 'react'
 import { View, Button, StyleSheet } from 'react-native'
+import t from 'tcomb-form-native'
 import API from './utils/API'
 
-import t from 'tcomb-form-native'
-
-const Form = t.form.Form
+const { Form } = t.form
 
 // const category = t.enums({
 //     None: 'None',
@@ -95,9 +96,9 @@ export default class UpdateTicket extends Component {
     })
 
     this.Ticket = t.struct({
-      category: category,
+      category,
       description: t.String,
-      status: status,
+      status,
       createdBy: t.String,
     })
 
@@ -143,12 +144,20 @@ export default class UpdateTicket extends Component {
     }
   }
 
+  componentDidMount() {}
+
   handleUpdate = idInfo => {
     const value = this._form.getValue()
+    /* eslint-disable no-console */
     console.log(value)
     console.log(idInfo.ticketLocationId)
+    /* eslint-enable no-console */
 
-    let categoryId, statusId, ticketLocationId, ticketId, userId
+    let categoryId
+    let statusId
+    let ticketLocationId
+    let ticketId
+    let userId
 
     if (value.category === 'None') {
       categoryId = 1
@@ -168,12 +177,12 @@ export default class UpdateTicket extends Component {
       statusId = 3
     }
 
-    let updatedTicket = {
+    const updatedTicket = {
       id: idInfo.ticketId,
       ticket: value.description,
     }
 
-    let updatedTicketXrefs = {
+    const updatedTicketXrefs = {
       id: idInfo.ticketXrefsId,
       TicketId: idInfo.ticketId,
       TicketLocationId: idInfo.ticketLocationId,
@@ -184,19 +193,25 @@ export default class UpdateTicket extends Component {
 
     API.updateTicket(updatedTicket)
       .then(res => {
+        /* eslint-disable no-console */
         console.log(res)
+        /* eslint-enable no-console */
       })
       .then(
         API.updateTicketXrefs(updatedTicketXrefs)
           .then(res => {
+            /* eslint-disable no-console */
             console.log(res)
+            /* eslint-enable no-console */
           })
-          .catch(err => console.log(err)),
+          .catch(err => {
+            throw err
+          }),
       )
-      .catch(err => console.log(err))
+      .catch(err => {
+        throw err
+      })
   }
-
-  componentDidMount() {}
 
   render() {
     const { navigation } = this.props
@@ -206,7 +221,10 @@ export default class UpdateTicket extends Component {
     return (
       <View style={styles.container}>
         <Form
-          ref={c => (this._form = c)}
+          ref={c => {
+            this._form = c
+            return this._form
+          }}
           type={this.Ticket}
           value={ticketInfo}
           options={this.options}

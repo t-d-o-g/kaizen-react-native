@@ -1,10 +1,11 @@
+/* eslint no-underscore-dangle: 0 */
+
 import React, { Component } from 'react'
 import { View, Button, StyleSheet } from 'react-native'
+import t from 'tcomb-form-native'
 import API from './utils/API'
 
-import t from 'tcomb-form-native'
-
-const Form = t.form.Form
+const { Form } = t.form
 
 // const category = t.enums({
 //     None: 'None',
@@ -64,7 +65,7 @@ const Form = t.form.Form
 //     stylesheet: formStyles,
 //   };
 
-export default class CreatTicket extends Component {
+export default class CreateTicket extends Component {
   static navigationOptions = {
     title: 'Create a Ticket...',
   }
@@ -86,9 +87,9 @@ export default class CreatTicket extends Component {
     })
 
     this.Ticket = t.struct({
-      category: category,
+      category,
       description: t.String,
-      status: status,
+      status,
     })
 
     const formStyles = {
@@ -134,7 +135,11 @@ export default class CreatTicket extends Component {
   handleSubmit = location => {
     const value = this._form.getValue()
 
-    let categoryId, statusId, ticketLocationId, ticketId, userId
+    let categoryId
+    let statusId
+    let ticketLocationId
+    let ticketId
+    let userId
 
     if (value.category === 'None') {
       categoryId = 1
@@ -168,19 +173,25 @@ export default class CreatTicket extends Component {
           .then(res => {
             ticketLocationId = res.data.id
           })
-          .catch(err => console.log(err)),
+          .catch(err => {
+            throw err
+          }),
       )
       .then(() => {
-        let newTicketXref = {
+        const newTicketXref = {
           CategoryId: categoryId,
           StatusId: statusId,
           TicketLocationId: ticketLocationId,
           TicketId: ticketId,
           UserId: 12,
         }
+        /* eslint-disable no-console */
         API.saveTicketXrefs(newTicketXref).then(res => console.log(res))
+        /* eslint-enable no-console */
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        throw err
+      })
   }
 
   render() {
@@ -189,7 +200,14 @@ export default class CreatTicket extends Component {
 
     return (
       <View style={styles.container}>
-        <Form ref={c => (this._form = c)} type={this.Ticket} options={this.options} />
+        <Form
+          ref={c => {
+            this._form = c
+            return this._form
+          }}
+          type={this.Ticket}
+          options={this.options}
+        />
         <Button
           title="Submit"
           onPress={() => {

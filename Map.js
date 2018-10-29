@@ -1,10 +1,11 @@
+/* eslint react/prefer-stateless-function: 0 */
+
 import React from 'react'
+import { createStackNavigator } from 'react-navigation'
 import Main from './mapIndex'
 import TicketDetails from './ticketDetail'
 import CreateTicket from './createTicket'
 import UpdateTicket from './updateTicket'
-
-import { createStackNavigator } from 'react-navigation'
 
 const RootStack = createStackNavigator(
   {

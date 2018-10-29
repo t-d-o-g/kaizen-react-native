@@ -1,23 +1,24 @@
 import axios from 'axios'
-let url = 'https://kaizen-72441.herokuapp.com/api/ticketxrefs'
+
+const url = 'https://kaizen-72441.herokuapp.com/api/ticketxrefs'
 
 export default {
-  getAllTickets: function() {
+  getAllTickets() {
     return axios.get(url)
   },
-  saveTicket: function(ticketDescription) {
+  saveTicket(ticketDescription) {
     return axios.post('https://kaizen-72441.herokuapp.com/api/tickets', ticketDescription)
   },
-  saveLocation: function(location) {
+  saveLocation(location) {
     return axios.post('https://kaizen-72441.herokuapp.com/api/locations', location)
   },
-  saveTicketXrefs: function(newTicketXrefs) {
+  saveTicketXrefs(newTicketXrefs) {
     return axios.post('https://kaizen-72441.herokuapp.com/api/ticketxrefs', newTicketXrefs)
   },
-  updateTicket: function(updatedTicket) {
+  updateTicket(updatedTicket) {
     return axios.put('https://kaizen-72441.herokuapp.com/api/tickets', updatedTicket)
   },
-  updateTicketXrefs: function(updatedTicketXrefs) {
+  updateTicketXrefs(updatedTicketXrefs) {
     return axios.put('https://kaizen-72441.herokuapp.com/api/ticketxrefs', updatedTicketXrefs)
   },
 }

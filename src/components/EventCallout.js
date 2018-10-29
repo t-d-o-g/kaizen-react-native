@@ -1,15 +1,27 @@
+/* eslint react/prefer-stateless-function: 0 */
+
 import React from 'react'
+import PropTypes from 'prop-types'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
 export default class EventCallout extends React.Component {
+  static propTypes = {
+    onClose: PropTypes.func.isRequired,
+    onReview: PropTypes.func.isRequired,
+    style: PropTypes.string.isRequired,
+    children: PropTypes.element.isRequired,
+  }
+
   render() {
-    const { onClose, onReview } = this.props
+    const { onClose, onReview, style, children } = this.props
+    /* eslint-disable no-console */
     console.log(onClose)
+    /* eslint-enable no-console */
     return (
-      <View style={[styles.container, this.props.style]}>
+      <View style={[styles.container, style]}>
         <View style={styles.bubble}>
           <View style={styles.amount}>
-            {this.props.children}
+            {children}
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.closeButton} onPress={onClose}>
                 <Text style={styles.closeButtonText}>X</Text>
