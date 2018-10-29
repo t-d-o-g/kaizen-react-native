@@ -13,6 +13,8 @@ import EditProfile from '../screens/EditProfile'
 import RegisterScreen from '../screens/RegisterScreen'
 import LoginScreen from '../screens/LoginScreen'
 import AddTicket from '../screens/AddTicketScreen'
+import TicketDetails from '../screens/TicketDetails'
+import UpdateTicket from '../screens/UpdateTicket'
 
 const AppNavigator = () => <DrawerNavigation />
 
@@ -29,8 +31,15 @@ const StackNavigation = createStackNavigator(
     Register: {
       screen: RegisterScreen,
     },
+
     AddTicket: {
       screen: AddTicket,
+    },
+    UpdateTicket: {
+      screen: UpdateTicket,
+    },
+    TicketDetails: {
+      screen: TicketDetails,
     },
   },
   {

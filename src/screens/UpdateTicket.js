@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { View, Button, StyleSheet } from 'react-native'
 import t from 'tcomb-form-native'
-import API from './utils/API'
+import API from '../../utils/API'
 
 const { Form } = t.form
 
@@ -65,13 +65,22 @@ const { Form } = t.form
 //     stylesheet: formStyles,
 //   };
 
-export default class CreateTicket extends Component {
+export default class UpdateTicket extends Component {
   static navigationOptions = {
-    title: 'Create a Ticket...',
+    title: 'Update the Ticket...',
   }
 
   constructor(props) {
     super(props)
+
+    this.state = {
+      value: {
+        category: '',
+        description: '',
+        status: '',
+        createdBy: '',
+      },
+    }
 
     const category = t.enums({
       None: 'None',
@@ -90,6 +99,7 @@ export default class CreateTicket extends Component {
       category,
       description: t.String,
       status,
+      createdBy: t.String,
     })
 
     const formStyles = {
@@ -122,6 +132,8 @@ export default class CreateTicket extends Component {
           error: 'Please choose Catetory',
         },
         description: {
+          multiline: true,
+          numberOfLines: 4,
           error: 'error',
         },
         status: {
@@ -132,8 +144,14 @@ export default class CreateTicket extends Component {
     }
   }
 
-  handleSubmit = location => {
+  componentDidMount() {}
+
+  handleUpdate = idInfo => {
     const value = this._form.getValue()
+    /* eslint-disable no-console */
+    console.log(value)
+    console.log(idInfo.ticketLocationId)
+    /* eslint-enable no-console */
 
     let categoryId
     let statusId
@@ -159,36 +177,37 @@ export default class CreateTicket extends Component {
       statusId = 3
     }
 
-    const newLocation = {
-      newLat: location.latitude,
-      newLng: location.longitude,
+    const updatedTicket = {
+      id: idInfo.ticketId,
+      ticket: value.description,
     }
 
-    API.saveTicket({ ticket: value.description })
+    const updatedTicketXrefs = {
+      id: idInfo.ticketXrefsId,
+      TicketId: idInfo.ticketId,
+      TicketLocationId: idInfo.ticketLocationId,
+      CaegoryId: categoryId,
+      StatusId: statusId,
+      UserId: idInfo.userId,
+    }
+
+    API.updateTicket(updatedTicket)
       .then(res => {
-        ticketId = res.data.id
+        /* eslint-disable no-console */
+        console.log(res)
+        /* eslint-enable no-console */
       })
       .then(
-        API.saveLocation(newLocation)
+        API.updateTicketXrefs(updatedTicketXrefs)
           .then(res => {
-            ticketLocationId = res.data.id
+            /* eslint-disable no-console */
+            console.log(res)
+            /* eslint-enable no-console */
           })
           .catch(err => {
             throw err
           }),
       )
-      .then(() => {
-        const newTicketXref = {
-          CategoryId: categoryId,
-          StatusId: statusId,
-          TicketLocationId: ticketLocationId,
-          TicketId: ticketId,
-          UserId: 12,
-        }
-        /* eslint-disable no-console */
-        API.saveTicketXrefs(newTicketXref).then(res => console.log(res))
-        /* eslint-enable no-console */
-      })
       .catch(err => {
         throw err
       })
@@ -196,7 +215,8 @@ export default class CreateTicket extends Component {
 
   render() {
     const { navigation } = this.props
-    const location = navigation.getParam('locationInfo')
+    const ticketInfo = navigation.getParam('ticketInfo')
+    const idInfo = navigation.getParam('idInfo')
 
     return (
       <View style={styles.container}>
@@ -206,12 +226,13 @@ export default class CreateTicket extends Component {
             return this._form
           }}
           type={this.Ticket}
+          value={ticketInfo}
           options={this.options}
         />
         <Button
-          title="Submit"
+          title="Update"
           onPress={() => {
-            this.handleSubmit(location)
+            this.handleUpdate(idInfo)
           }}
         />
       </View>
