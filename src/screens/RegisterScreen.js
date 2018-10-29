@@ -32,8 +32,15 @@ export default class RegisterScreen extends React.Component {
   registerUser = () => {
     // console.warn("In registerUser")
     // VIK_TODO: Do form validation
+    const user = {
+      firstName : this.state.firstName,
+      lastName: this.state.lastName,
+      email: this.state.email,
+      username: this.state.userName,
+      password: this.state.password
+    }
 
-    API.registerUser({ email: this.state.email, password: this.state.password })
+    API.registerUser(user)
       .then(response => {
         console.warn(JSON.stringify(response))
       })

@@ -31,11 +31,24 @@ export default class LoginScreen extends React.Component {
     // console.warn("In login user")
     // VIK_TODO: Do validation
     // VIK_TODO: Make changes so we use email instead of username
-    API.loginUser({ email: this.state.username, password: this.state.password })
+    API.loginUser({ username: this.state.username, password: this.state.password })
       .then(response => {
         console.warn(JSON.stringify(response))
+        if (response.status === 200) {
+          userInfo.saveUserInfo(response.data)
+            .then(resp => {
+              console.warn(JSON.stringify(resp))
+            })
+            .catch(error => {
+              console.warn(JSON.stringify(error))
+            })
+        }
+        else {
+          // VIK_TODO: Give msg to user
+        }
       })
       .catch(error => {
+        // VIK_TODO: Give msg to user
         console.warn(error)
       })
     // console.warn("submitted");
@@ -54,7 +67,7 @@ export default class LoginScreen extends React.Component {
   // retrieveAsyncStorage = () => {
   //   userInfo.getUserInfo()
   //   .then(response => {
-  //     console.warn( JSON.stringify(response))
+  //     console.warn( 'getUserInfo:', JSON.stringify(response))
   //   })
   //   .catch(error => {
   //     console.warn( JSON.stringify(error))
