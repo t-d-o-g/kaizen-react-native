@@ -136,7 +136,6 @@ export default class Main extends React.Component {
       latitude: e.nativeEvent.coordinate.latitude,
       longitude: e.nativeEvent.coordinate.longitude,
     }
-
     this.setState({
       markers: [
         //   ...this.state.markers,
@@ -186,7 +185,6 @@ export default class Main extends React.Component {
       ticketInfo,
     })
   }
-
   render() {
     const { region, markers, tickets } = this.state
     const { navigation } = this.props
