@@ -35,7 +35,7 @@
   "dependencies": {
     "@expo/samples": "2.1.1",
     "@expo/vector-icons": "^8.0.0",
-    "axios": "0.18.0",
+    "axios": "^0.18.0",
     "create-react-native-app": "^2.0.2",
     "expo": "^30.0.1",
     "expo-cli": "^2.2.4",
