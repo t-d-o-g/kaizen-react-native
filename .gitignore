@@ -1,0 +1,6 @@
+node_modules/**/*
+yarn-error.log
+.expo/**/*
+.history
+.vscode
+.DS_Store
