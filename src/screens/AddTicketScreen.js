@@ -15,14 +15,28 @@ import {
   Right,
   Textarea,
 } from 'native-base'
+import API from '../../utils/API'
 
 export default class AddTicket extends React.Component {
+  state = {
+    category: '',
+    status: '',
+    ticketText: 'Description',
+    location: '',
+    ticketID: '',
+    userID: '',
+  }
+
   static navigationOptions = {
     title: 'AddTicket',
   }
 
   constructor(props) {
     super(props)
+
+    const { navigation } = this.props
+    location = navigation.getParam('locationInfo')
+
     this.state = {
       category: 'key0',
       status: 'key0',
@@ -41,9 +55,50 @@ export default class AddTicket extends React.Component {
     })
   }
 
+  handleTextChange(event) {
+    this.setState({ ticketText: event.nativeEvent.text })
+  }
+
+  handleSubmit = location => {
+    let categoryID, statusID, ticketLocationID, ticketID, userID
+
+    const ticketsLocation = {
+      newLat: location.latitude,
+      newLong: location.longitude,
+    }
+
+    console.log('CATEGORY:', this.state.category.substring(3))
+    console.log('TICKETTEXT:', this.state.ticketText)
+    console.log('STATUS:', this.state.status.substring(3))
+
+    API.saveTicket({ ticket: this.state.ticketText })
+      .then(response => {
+        ticketID = response.data.id
+      })
+      .then(
+        API.saveLocation(ticketsLocation)
+          .then(response => {
+            ticketLocationID = response.data.id
+          })
+          .catch(error => console.log(err)),
+      )
+      .then(() => {
+        let TicketRef = {
+          category: this.state.category.substring(3),
+          status: this.state.status.substring(3),
+          location: ticketLocationID,
+          id: ticketID,
+          userID: 12,
+        }
+        API.saveTicketXrefs(TicketRef).then(response => console.log(response))
+      })
+      .catch(error => console.log(error))
+  }
+
   render() {
     const { navigation } = this.props
     const { category, status } = this.state
+    const location = navigation.getParam('locationInfo')
 
     return (
       <Container>
@@ -73,7 +128,13 @@ export default class AddTicket extends React.Component {
             </Picker>
 
             <Text style={styles.text}> What is the Issue? </Text>
-            <Textarea style={styles.input} rowSpan={5} bordered />
+            <Textarea
+              bordered
+              onChange={this.handleTextChange.bind(this)}
+              rowSpan={5}
+              style={styles.input}
+              value={this.state.ticketText}
+            />
 
             <Text style={styles.text}> Select Status : </Text>
             <Picker
@@ -90,10 +151,17 @@ export default class AddTicket extends React.Component {
 
             <Text style={styles.text}> Location : </Text>
             <Item style={styles.input} regular>
-              <Input />
+              <Input
+                disabled
+                value={
+                  Math.round(location.latitude * 10000) / 10000 +
+                  ', ' +
+                  Math.round(location.longitude * 10000) / 10000
+                }
+              />
             </Item>
 
-            <Button success style={styles.submitButton}>
+            <Button onPress={() => this.handleSubmit(location)} success style={styles.submitButton}>
               <Text> Submit Ticket </Text>
             </Button>
           </Form>
