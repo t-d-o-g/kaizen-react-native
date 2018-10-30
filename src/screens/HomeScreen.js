@@ -97,6 +97,7 @@ export default class Main extends React.Component {
   _loadTickets() {
     API.getAllTickets()
       .then(res => {
+        console.log('TICKETS: ', res)
         const tickets = []
 
         for (let i = 0; i < res.data.length; i++) {
