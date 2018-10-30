@@ -30,28 +30,32 @@ export default class RegisterScreen extends React.Component {
   }
 
   registerUser = () => {
+    const { firstName, lastName, email, userName, password } = this.state
     // console.warn("In registerUser")
     // VIK_TODO: Do form validation
     const user = {
-      firstName : this.state.firstName,
-      lastName: this.state.lastName,
-      email: this.state.email,
-      username: this.state.userName,
-      password: this.state.password
+      firstName,
+      lastName,
+      email,
+      username: userName,
+      password,
     }
 
     API.registerUser(user)
       .then(response => {
+        /* eslint-disable no-console */
         console.warn(JSON.stringify(response))
       })
       .catch(error => {
         console.warn(error)
+        /* eslint-enable no-console */
       })
     // console.warn("submitted");
   }
 
   render() {
     const { navigation } = this.props
+    const { firstName, lastName, email, userName, password } = this.state
 
     return (
       <Container>
@@ -73,7 +77,7 @@ export default class RegisterScreen extends React.Component {
               <Label> First Name </Label>
               <Input
                 style={styles.input}
-                value={this.state.firstName}
+                value={firstName}
                 onChangeText={inputValue => this.setState({ firstName: inputValue })}
               />
             </Item>
@@ -81,7 +85,7 @@ export default class RegisterScreen extends React.Component {
               <Label> Last Name </Label>
               <Input
                 style={styles.input}
-                value={this.state.lastName}
+                value={lastName}
                 onChangeText={inputValue => this.setState({ lastName: inputValue })}
               />
             </Item>
@@ -89,7 +93,7 @@ export default class RegisterScreen extends React.Component {
               <Label> Email </Label>
               <Input
                 style={styles.input}
-                value={this.state.email}
+                value={email}
                 onChangeText={inputValue => this.setState({ email: inputValue })}
               />
             </Item>
@@ -97,7 +101,7 @@ export default class RegisterScreen extends React.Component {
               <Label> Username </Label>
               <Input
                 style={styles.input}
-                value={this.state.userName}
+                value={userName}
                 onChangeText={inputValue => this.setState({ userName: inputValue })}
               />
             </Item>
@@ -105,8 +109,8 @@ export default class RegisterScreen extends React.Component {
               <Label> Password </Label>
               <Input
                 style={styles.input}
-                secureTextEntry={true}
-                value={this.state.password}
+                secureTextEntry
+                value={password}
                 onChangeText={inputValue => this.setState({ password: inputValue })}
               />
             </Item>

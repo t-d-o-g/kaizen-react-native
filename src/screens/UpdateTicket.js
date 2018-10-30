@@ -73,14 +73,14 @@ export default class UpdateTicket extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      value: {
-        category: '',
-        description: '',
-        status: '',
-        createdBy: '',
-      },
-    }
+    // this.state = {
+    //   value: {
+    //     category: '',
+    //     description: '',
+    //     status: '',
+    //     createdBy: '',
+    //   },
+    // }
 
     const category = t.enums({
       None: 'None',
@@ -155,9 +155,9 @@ export default class UpdateTicket extends Component {
 
     let categoryId
     let statusId
-    let ticketLocationId
-    let ticketId
-    let userId
+    // let ticketLocationId
+    // let ticketId
+    // let userId
 
     if (value.category === 'None') {
       categoryId = 1

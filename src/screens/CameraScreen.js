@@ -14,7 +14,7 @@ import { Header, Icon, Left, Body, Right } from 'native-base'
 
 import { Permissions, Camera, FileSystem } from 'expo'
 import store from 'react-native-simple-store'
-import { MaterialIcons } from '@expo/vector-icons'
+// import { MaterialIcons } from '@expo/vector-icons'
 
 import IconButton from '../components/IconButton'
 import AlertBox from '../components/AlertBox'
