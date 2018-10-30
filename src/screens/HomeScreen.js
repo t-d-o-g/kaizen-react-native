@@ -17,6 +17,7 @@ export default class Main extends React.Component {
 
   constructor(props) {
     super(props)
+    // this._onRegionChange = this._onRegionChange.bind(this)
     this.state = {
       // ticketInfo: {},
       markers: [],
@@ -100,8 +101,8 @@ export default class Main extends React.Component {
 
         for (let i = 0; i < res.data.length; i++) {
           const ticket = {}
-          const [latitude] = res.data[i].TicketLocation.location.coordinates[0]
-          const [longitude] = res.data[i].TicketLocation.location.coordinates[1]
+          const latitude = res.data[i].TicketLocation.location.coordinates[0]
+          const longitude = res.data[i].TicketLocation.location.coordinates[1]
           ticket.user = `${res.data[i].User.first_name}  ${res.data[i].User.last_name}`
           ticket.latitude = latitude
           ticket.longitude = longitude
@@ -127,10 +128,10 @@ export default class Main extends React.Component {
       })
   }
 
-  _onRegionChange(region) {
-    // this.setState({ region: region });
-    // console.log(region);
-  }
+  // _onRegionChange(region) {
+  // this.setState({ region: region });
+  // console.log(region);
+  // }
 
   _onPress(e) {
     const { navigation } = this.props
@@ -197,7 +198,7 @@ export default class Main extends React.Component {
         <StatusBar hidden />
         <Header>
           <Left>
-            <Icon name="ios-menu" onPress={() => navigation.openDrawer()} />
+            <Icon name="md-menu" onPress={() => navigation.openDrawer()} />
           </Left>
           <Body />
           <Right>
@@ -213,7 +214,7 @@ export default class Main extends React.Component {
             style={styles.fullScreenMap}
             initialRegion={this.initialRegion}
             region={region}
-            onRegionChange={this._onRegionChange.bind(this)}
+            // onRegionChange={this._onRegionChange}
             onPress={this._onPress}
           >
             {tickets.map(ticket => (
@@ -225,7 +226,9 @@ export default class Main extends React.Component {
               />
             ))}
             {markers.map((marker, i) => (
+              /* eslint-disable react/no-array-index-key */
               <MapView.Marker key={i} coordinate={marker} />
+              /* eslint-enable react/no-array-index-key */
             ))}
           </MapView>
         </View>

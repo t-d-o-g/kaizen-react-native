@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { TouchableHighlight, TouchableOpacity } from 'react-native'
+import { TouchableHighlight, TouchableOpacity, ViewPropTypes } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
-// import stylePropType from 'react-style-proptype'
 import styles from './styles'
 
 const IconButton = props => {
@@ -16,7 +15,7 @@ const IconButton = props => {
     icon: PropTypes.string,
     color: PropTypes.string,
     size: PropTypes.number,
-    // styles: stylePropType,
+    styles: ViewPropTypes.style,
     isTransparent: PropTypes.bool,
     onPress: PropTypes.func.isRequired,
   }
@@ -25,7 +24,7 @@ const IconButton = props => {
     icon: undefined,
     color: undefined,
     size: undefined,
-    // styles: undefined,
+    styles: undefined,
     isTransparent: undefined,
   }
 
