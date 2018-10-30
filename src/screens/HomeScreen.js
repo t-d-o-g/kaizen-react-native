@@ -1,12 +1,14 @@
+/* eslint no-underscore-dangle: 0 */
+
 import React from 'react'
 import { View, Text, StatusBar, StyleSheet } from 'react-native'
 import { Body, Button, Container, Header, Icon, Left, Right } from 'native-base'
 import MapView from 'react-native-maps'
 import API from '../../utils/API'
 
-import EventModal from '../components/EventModal'
-import EventCallout from '../components/EventCallout'
-import EventInfo from '../components/EventInfo'
+// import EventModal from '../components/EventModal'
+// import EventCallout from '../components/EventCallout'
+// import EventInfo from '../components/EventInfo'
 
 export default class Main extends React.Component {
   static navigationOptions = {
@@ -15,8 +17,9 @@ export default class Main extends React.Component {
 
   constructor(props) {
     super(props)
+    // this._onRegionChange = this._onRegionChange.bind(this)
     this.state = {
-      ticketInfo: {},
+      // ticketInfo: {},
       markers: [],
       region: {
         latitude: 37.78825,
@@ -25,35 +28,35 @@ export default class Main extends React.Component {
         longitudeDelta: 0.00421,
       },
       tickets: [],
-      markerLocations: [
-        {
-          rotation: 78,
-          latitude: 40.731734,
-          longitude: -74.0605,
-          identifier: 'test1',
-          title: "it's noisy",
-          description: 'noisy after 10pm here',
-          status: 'open',
-        },
-        {
-          rotation: -10,
-          latitude: 40.730255,
-          longitude: -74.0656,
-          identifier: 'test2',
-          title: "it's quiet",
-          description: 'too quiet in this community',
-          status: 'open',
-        },
-        {
-          rotation: 262,
-          latitude: 40.732206,
-          longitude: -74.0669,
-          identifier: 'test3',
-          title: "it's rainy",
-          description: 'too much rain during fall here',
-          status: 'open',
-        },
-      ],
+      // markerLocations: [
+      //   {
+      //     rotation: 78,
+      //     latitude: 40.731734,
+      //     longitude: -74.0605,
+      //     identifier: 'test1',
+      //     title: "it's noisy",
+      //     description: 'noisy after 10pm here',
+      //     status: 'open',
+      //   },
+      //   {
+      //     rotation: -10,
+      //     latitude: 40.730255,
+      //     longitude: -74.0656,
+      //     identifier: 'test2',
+      //     title: "it's quiet",
+      //     description: 'too quiet in this community',
+      //     status: 'open',
+      //   },
+      //   {
+      //     rotation: 262,
+      //     latitude: 40.732206,
+      //     longitude: -74.0669,
+      //     identifier: 'test3',
+      //     title: "it's rainy",
+      //     description: 'too much rain during fall here',
+      //     status: 'open',
+      //   },
+      // ],
     }
     this._onPress = this._onPress.bind(this)
     this._onMarkerPress = this._onMarkerPress.bind(this)
@@ -98,8 +101,8 @@ export default class Main extends React.Component {
 
         for (let i = 0; i < res.data.length; i++) {
           const ticket = {}
-          const [latitude] = res.data[i].TicketLocation.location.coordinates[0]
-          const [longitude] = res.data[i].TicketLocation.location.coordinates[1]
+          const latitude = res.data[i].TicketLocation.location.coordinates[0]
+          const longitude = res.data[i].TicketLocation.location.coordinates[1]
           ticket.user = `${res.data[i].User.first_name}  ${res.data[i].User.last_name}`
           ticket.latitude = latitude
           ticket.longitude = longitude
@@ -125,10 +128,10 @@ export default class Main extends React.Component {
       })
   }
 
-  _onRegionChange(region) {
-    // this.setState({ region: region });
-    // console.log(this.state.region);
-  }
+  // _onRegionChange(region) {
+  // this.setState({ region: region });
+  // console.log(region);
+  // }
 
   _onPress(e) {
     const { navigation } = this.props
@@ -157,7 +160,7 @@ export default class Main extends React.Component {
     /* eslint-disable no-console */
     console.log(e.nativeEvent)
     /* eslint-enable no-console */
-    const result = tickets.filter(obj => obj.id === parseInt(e.nativeEvent.id))
+    const result = tickets.filter(obj => obj.id === parseInt(e.nativeEvent.id, 10))
 
     const ticketInfo = {
       category: result[0].category,
@@ -171,20 +174,21 @@ export default class Main extends React.Component {
       ticketLocationId: result[0].ticketLocationId,
     }
 
-    this.setState({
-      ticketInfo: {
-        category: result[0].category,
-        description: result[0].description,
-        status: result[0].status,
-        user: result[0].user,
-        updated: result[0].lastUpdatedAt.toString(),
-      },
-    })
+    // this.setState({
+    //   ticketInfo: {
+    //     category: result[0].category,
+    //     description: result[0].description,
+    //     status: result[0].status,
+    //     user: result[0].user,
+    //     updated: result[0].lastUpdatedAt.toString(),
+    //   },
+    // })
 
     navigation.navigate('TicketDetails', {
       ticketInfo,
     })
   }
+
   render() {
     const { region, markers, tickets } = this.state
     const { navigation } = this.props
@@ -194,7 +198,7 @@ export default class Main extends React.Component {
         <StatusBar hidden />
         <Header>
           <Left>
-            <Icon name="ios-menu" onPress={() => navigation.openDrawer()} />
+            <Icon name="md-menu" onPress={() => navigation.openDrawer()} />
           </Left>
           <Body />
           <Right>
@@ -210,7 +214,7 @@ export default class Main extends React.Component {
             style={styles.fullScreenMap}
             initialRegion={this.initialRegion}
             region={region}
-            onRegionChange={this._onRegionChange.bind(this)}
+            // onRegionChange={this._onRegionChange}
             onPress={this._onPress}
           >
             {tickets.map(ticket => (
@@ -222,7 +226,9 @@ export default class Main extends React.Component {
               />
             ))}
             {markers.map((marker, i) => (
+              /* eslint-disable react/no-array-index-key */
               <MapView.Marker key={i} coordinate={marker} />
+              /* eslint-enable react/no-array-index-key */
             ))}
           </MapView>
         </View>

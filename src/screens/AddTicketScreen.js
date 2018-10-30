@@ -23,6 +23,8 @@ export default class AddTicket extends React.Component {
 
   constructor(props) {
     super(props)
+    this.setCategory = this.setCategory.bind(this)
+    this.setStatus = this.setStatus.bind(this)
     this.state = {
       category: 'key0',
       status: 'key0',
@@ -50,7 +52,7 @@ export default class AddTicket extends React.Component {
         <StatusBar hidden />
         <Header>
           <Left>
-            <Icon name="home" onPress={() => navigation.navigate('Home')} />
+            <Icon name="md-home" onPress={() => navigation.navigate('Home')} />
           </Left>
           <Body />
           <Right />
@@ -63,7 +65,7 @@ export default class AddTicket extends React.Component {
               mode="dropdown"
               style={styles.input}
               selectedValue={category}
-              onValueChange={this.setCategory.bind(this)}
+              onValueChange={this.setCategory}
             >
               <Picker.Item label="None" value="key0" />
               <Picker.Item label="Parking" value="key1" />
@@ -81,7 +83,7 @@ export default class AddTicket extends React.Component {
               mode="dropdown"
               style={styles.input}
               selectedValue={status}
-              onValueChange={this.setStatus.bind(this)}
+              onValueChange={this.setStatus}
             >
               <Picker.Item label="None" value="key0" />
               <Picker.Item label="Open" value="key1" />
