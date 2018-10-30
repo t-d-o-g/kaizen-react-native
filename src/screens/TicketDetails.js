@@ -22,6 +22,13 @@ export default class TicketDetails extends React.Component {
     title: 'Ticket Details',
   }
 
+  getStatus = (status) => {
+    if (status === 'Open'){
+      return 'ios-checkmark-circle'
+    }
+    return 'ios-close-circle'
+  }
+
   render() {
     const { navigation } = this.props
     const ticketInfo = navigation.getParam('ticketInfo')
@@ -49,63 +56,59 @@ export default class TicketDetails extends React.Component {
                   source={kaizenImg}
                   square
                   // source={{ kaizenImg }}
-                  style={{ alignSelf: 'center' }}
+                  style={{ alignSelf: 'center', borderWidth: 1 }}
                 />
                 <Body>
-                  <Text> Name Here </Text>
-                  <Text note> April 15, 2016 </Text>
+                  <Text> {ticketInfo.user} </Text>
+                  <Text note> {ticketInfo.updated} </Text>
                 </Body>
               </Left>
             </CardItem>
             <CardItem>
               <Body>
-                <Text>Category</Text>
+                <Text style={styles.category}>{ticketInfo.category}</Text>
+                <Text>Description: {"\n"}</Text>
+                <Text style={{fontSize: 18, paddingBottom: 15}}>{ticketInfo.description}</Text>
                 {/* <Image source={{uri: 'Image URL'}} style={{height: 200, width: 200, flex: 1}}/> */}
                 <Text>Insert an Image Here (Optional)</Text>
-                <Text>Description:</Text>
               </Body>
             </CardItem>
             <CardItem>
-              <Left>
-                <Button transparent textStyle={{ color: '#87838B' }}>
-                  {/* Create an Icon for Open and Closed */}
-                  <Icon name="logo-github" />
-                  <Text> Open / Closed </Text>
+              <Body>
+                <Icon 
+                  name={this.getStatus(ticketInfo.status)}
+                  style={{alignSelf: 'center'}}> 
+                </Icon>
+                <Text style={{alignSelf: 'center'}}>{ticketInfo.status}</Text> 
+              </Body>
+            </CardItem>
+            <CardItem>
+              <Body>
+                <Button
+                  style={{alignSelf: 'center', justifyContent: 'center', width: 150}}
+                  title="Review"
+                  onPress={() =>
+                    navigation.navigate('UpdateTicket', {
+                      ticketInfo: {
+                        category: ticketInfo.category,
+                        description: ticketInfo.description,
+                        status: ticketInfo.status,
+                        createdBy: ticketInfo.user,
+                      },
+                      idInfo: {
+                        ticketId: ticketInfo.ticketId,
+                        ticketXrefsId: ticketInfo.ticketXrefsId,
+                        userId: ticketInfo.userId,
+                        ticketLocationId: ticketInfo.ticketLocationId,
+                      },
+                    })
+                  }
+                  > 
+                  <Text style={{alignSelf: 'center', color: 'white'}}> Review </Text>
                 </Button>
-                <Button primary textStyle={{ color: '#87838B' }}>
-                  {/* Review Button Here */}
-                  <Text> Review </Text>
-                </Button>
-              </Left>
+              </Body>
             </CardItem>
           </Card>
-          <Text style={styles.title}>Title: {ticketInfo.category}</Text>
-          <Text style={styles.title}>Description: {ticketInfo.description}</Text>
-          <Text style={styles.status}>Status: {ticketInfo.status}</Text>
-          <Text style={styles.status}>Created By: {ticketInfo.user}</Text>
-          <Text style={styles.status}>Last updated at: {ticketInfo.updated}</Text>
-
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Review"
-              onPress={() =>
-                navigation.navigate('UpdateTicket', {
-                  ticketInfo: {
-                    category: ticketInfo.category,
-                    description: ticketInfo.description,
-                    status: ticketInfo.status,
-                    createdBy: ticketInfo.user,
-                  },
-                  idInfo: {
-                    ticketId: ticketInfo.ticketId,
-                    ticketXrefsId: ticketInfo.ticketXrefsId,
-                    userId: ticketInfo.userId,
-                    ticketLocationId: ticketInfo.ticketLocationId,
-                  },
-                })
-              }
-            />
-          </View>
         </Content>
       </Container>
     )
@@ -113,27 +116,16 @@ export default class TicketDetails extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    textAlign: 'left',
-    fontFamily: '',
-    paddingTop: 5,
-    fontSize: 18,
-  },
-  description: {
-    textAlign: 'left',
-    fontFamily: '',
-    paddingTop: 5,
-    fontSize: 12,
+  category: {
+    alignSelf: 'center',
+    fontSize: 24
   },
   status: {
-    textAlign: 'left',
-    fontFamily: '',
-    paddingTop: 5,
-    fontSize: 18,
+    alignContent: 'center'
   },
-  buttonContainer: {
-    // flex: 1,
-    flexDirection: 'row',
+  reviewButton: {
+    alignSelf: 'center',
     justifyContent: 'center',
-  },
+    width: '33%'
+  }
 })

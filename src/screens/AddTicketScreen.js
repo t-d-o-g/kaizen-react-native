@@ -33,15 +33,12 @@ export default class AddTicket extends React.Component {
 
   constructor(props) {
     super(props)
-<<<<<<< HEAD
     this.setCategory = this.setCategory.bind(this)
     this.setStatus = this.setStatus.bind(this)
-=======
 
     const { navigation } = this.props
     location = navigation.getParam('locationInfo')
 
->>>>>>> 8d1e209ab390d673a6fe86c85ea13640bc06857e
     this.state = {
       category: 'key0',
       status: 'key0',
