@@ -433,15 +433,12 @@ exports[`renders the root without loading screen 1`] = `
               >
                 <Image
                   large={true}
-                  source={
-                    Object {
-                      "uri": "https://facebook.github.io/react-native/docs/assets/favicon.png",
-                    }
-                  }
+                  source={1}
+                  square={true}
                   style={
                     Array [
                       Object {
-                        "borderRadius": 40,
+                        "borderRadius": 0,
                         "height": 80,
                         "width": 80,
                       },

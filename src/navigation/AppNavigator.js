@@ -17,6 +17,7 @@ import TicketDetails from '../screens/TicketDetails'
 import UpdateTicket from '../screens/UpdateTicket'
 
 const AppNavigator = () => <DrawerNavigation />
+const kaizenImg = require('../../assets/images/kaizen.png')
 
 export default AppNavigator
 
@@ -73,7 +74,9 @@ const DrawerNavigation = createDrawerNavigator(
           <Body>
             <Thumbnail
               large
-              source={{ uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
+              source={kaizenImg}
+              square
+              // source={{ kaizenImg }}
               style={{ alignSelf: 'center' }}
             />
           </Body>
