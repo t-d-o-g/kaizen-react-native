@@ -122,11 +122,9 @@ export default class AddTicket extends React.Component {
               selectedValue={category}
               onValueChange={this.setCategory}
             >
-              <Picker.Item label="None" value="key0" />
-              <Picker.Item label="Parking" value="key1" />
-              <Picker.Item label="Noise" value="key2" />
-              <Picker.Item label="Traffic" value="key3" />
-              <Picker.Item label="Other" value="key4" />
+              <Picker.Item label="Parking" value="key0" />
+              <Picker.Item label="Noise" value="key1" />
+              <Picker.Item label="Traffic" value="key2" />
             </Picker>
 
             <Text style={styles.text}> What is the Issue? </Text>
@@ -146,9 +144,8 @@ export default class AddTicket extends React.Component {
               selectedValue={status}
               onValueChange={this.setStatus}
             >
-              <Picker.Item label="None" value="key0" />
-              <Picker.Item label="Open" value="key1" />
-              <Picker.Item label="Closed" value="key2" />
+              <Picker.Item label="Open" value="key0" />
+              <Picker.Item label="Closed" value="key1" />
             </Picker>
 
             <Text style={styles.text}> Location : </Text>
@@ -156,9 +153,9 @@ export default class AddTicket extends React.Component {
               <Input
                 disabled
                 value={
-                  Math.round(location.latitude * 10000) / 10000 +
+                  Math.round(location.latitude * 1000000) / 1000000 +
                   ', ' +
-                  Math.round(location.longitude * 10000) / 10000
+                  Math.round(location.longitude * 1000000) / 1000000
                 }
               />
             </Item>
