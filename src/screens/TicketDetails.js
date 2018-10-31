@@ -1,9 +1,32 @@
 import React from 'react'
-import { View, Text, Button, StyleSheet } from 'react-native'
+import { View, Text, StatusBar, StyleSheet } from 'react-native'
+import {
+  Body,
+  Button,
+  Card,
+  CardItem,
+  Container,
+  Content,
+  Header,
+  Icon,
+  Image,
+  Left,
+  Right,
+  Thumbnail,
+} from 'native-base'
+
+const kaizenImg = require('../../assets/images/kaizen.png')
 
 export default class TicketDetails extends React.Component {
   static navigationOptions = {
     title: 'Ticket Details',
+  }
+
+  getStatus = (status) => {
+    if (status === 'Open'){
+      return 'ios-checkmark-circle'
+    }
+    return 'ios-close-circle'
   }
 
   render() {
@@ -11,72 +34,98 @@ export default class TicketDetails extends React.Component {
     const ticketInfo = navigation.getParam('ticketInfo')
 
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Title: {ticketInfo.category}</Text>
-        <Text style={styles.title}>Description: {ticketInfo.description}</Text>
-        <Text style={styles.status}>Status: {ticketInfo.status}</Text>
-        <Text style={styles.status}>Created By: {ticketInfo.user}</Text>
-        <Text style={styles.status}>Last updated at: {ticketInfo.updated}</Text>
-
-        <View style={styles.buttonContainer}>
-          <Button title="Home" onPress={() => navigation.navigate('Home')} />
-          <Text />
-          <Button
-            title="Review"
-            onPress={() =>
-              navigation.navigate('UpdateTicket', {
-                ticketInfo: {
-                  category: ticketInfo.category,
-                  description: ticketInfo.description,
-                  status: ticketInfo.status,
-                  createdBy: ticketInfo.user,
-                },
-                idInfo: {
-                  ticketId: ticketInfo.ticketId,
-                  ticketXrefsId: ticketInfo.ticketXrefsId,
-                  userId: ticketInfo.userId,
-                  ticketLocationId: ticketInfo.ticketLocationId,
-                },
-              })
-            }
-          />
-        </View>
-      </View>
+      <Container>
+        <StatusBar hidden />
+        <Header>
+          <Left>
+            <Icon
+              ios="ios-arrow-back"
+              android="md-arrow-back"
+              onPress={() => navigation.navigate('Home')}
+            />
+          </Left>
+          <Body />
+          <Right />
+        </Header>
+        <Content>
+          <Card style={{ flex: 0 }}>
+            <CardItem>
+              <Left>
+                <Thumbnail
+                  large
+                  source={kaizenImg}
+                  square
+                  // source={{ kaizenImg }}
+                  style={{ alignSelf: 'center', borderWidth: 1 }}
+                />
+                <Body>
+                  <Text> {ticketInfo.user} </Text>
+                  <Text note> {ticketInfo.updated} </Text>
+                </Body>
+              </Left>
+            </CardItem>
+            <CardItem>
+              <Body>
+                <Text style={styles.category}>{ticketInfo.category}</Text>
+                <Text>Description: {"\n"}</Text>
+                <Text style={{fontSize: 18, paddingBottom: 15}}>{ticketInfo.description}</Text>
+                {/* <Image source={{uri: 'Image URL'}} style={{height: 200, width: 200, flex: 1}}/> */}
+                <Text>Insert an Image Here (Optional)</Text>
+              </Body>
+            </CardItem>
+            <CardItem>
+              <Body>
+                <Icon 
+                  name={this.getStatus(ticketInfo.status)}
+                  style={{alignSelf: 'center'}}> 
+                </Icon>
+                <Text style={{alignSelf: 'center'}}>{ticketInfo.status}</Text> 
+              </Body>
+            </CardItem>
+            <CardItem>
+              <Body>
+                <Button
+                  style={{alignSelf: 'center', justifyContent: 'center', width: 150}}
+                  title="Review"
+                  onPress={() =>
+                    navigation.navigate('UpdateTicket', {
+                      ticketInfo: {
+                        category: ticketInfo.category,
+                        description: ticketInfo.description,
+                        status: ticketInfo.status,
+                        createdBy: ticketInfo.user,
+                      },
+                      idInfo: {
+                        ticketId: ticketInfo.ticketId,
+                        ticketXrefsId: ticketInfo.ticketXrefsId,
+                        userId: ticketInfo.userId,
+                        ticketLocationId: ticketInfo.ticketLocationId,
+                      },
+                    })
+                  }
+                  > 
+                  <Text style={{alignSelf: 'center', color: 'white'}}> Review </Text>
+                </Button>
+              </Body>
+            </CardItem>
+          </Card>
+        </Content>
+      </Container>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    alignItems: 'flex-start',
-    justifyContent: 'space-around',
-  },
-  title: {
-    textAlign: 'left',
-    fontFamily: '',
-    paddingTop: 5,
-    fontSize: 18,
-  },
-  description: {
-    textAlign: 'left',
-    fontFamily: '',
-    paddingTop: 5,
-    fontSize: 12,
+  category: {
+    alignSelf: 'center',
+    fontSize: 24
   },
   status: {
-    textAlign: 'left',
-    fontFamily: '',
-    paddingTop: 5,
-    fontSize: 18,
+    alignContent: 'center'
   },
-  buttonContainer: {
-    // flex: 1,
-    flexDirection: 'row',
+  reviewButton: {
+    alignSelf: 'center',
     justifyContent: 'center',
-  },
+    width: '33%'
+  }
 })
