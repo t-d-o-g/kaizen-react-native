@@ -7,6 +7,10 @@ export default {
     return axios.get(url)
   },
 
+  getTicketsByUserId(id) {
+    return axios.get(`${url}?user_id=${id}`)
+  },
+
   saveTicket(ticketDescription) {
     return axios.post('https://kaizen-72441.herokuapp.com/api/tickets', ticketDescription)
   },
