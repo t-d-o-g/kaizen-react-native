@@ -19,14 +19,14 @@ import {
 import API from '../../utils/API'
 
 export default class UpdateTicket extends React.Component {
+  static navigationOptions = {
+    title: 'Update Ticket',
+  }
+
   state = {
     category: '',
     status: '',
     ticketText: '',
-  }
-
-  static navigationOptions = {
-    title: 'Update Ticket',
   }
 
   constructor(props) {
@@ -34,22 +34,6 @@ export default class UpdateTicket extends React.Component {
     this.setCategory = this.setCategory.bind(this)
     this.setStatus = this.setStatus.bind(this)
     this.handleTextChange = this.handleTextChange.bind(this)
-  }
-
-  setCategory(category) {
-    this.setState({
-      category,
-    })
-  }
-
-  setStatus(status) {
-    this.setState({
-      status,
-    })
-  }
-
-  handleTextChange(event) {
-    this.setState({ ticketText: event.nativeEvent.text })
   }
 
   componentDidMount() {
@@ -75,31 +59,48 @@ export default class UpdateTicket extends React.Component {
     this.setState({ ticketText: ticketInfo.description })
   }
 
+  setCategory(category) {
+    this.setState({
+      category,
+    })
+  }
+
+  setStatus(status) {
+    this.setState({
+      status,
+    })
+  }
+
   handleUpdate = idInfo => {
     const { navigation } = this.props
+    const { category, status, ticketText } = this.state
 
     const updatedTicket = {
       id: idInfo.ticketId,
-      ticket: this.state.ticketText,
+      ticket: ticketText,
     }
 
     const updatedTicketRef = {
       id: idInfo.ticketXrefsId,
       TicketId: idInfo.ticketId,
       TicketLocationId: idInfo.ticketLocationId,
-      CategoryId: this.state.category.substring(3),
-      StatusId: this.state.status.substring(3),
+      CategoryId: category.substring(3),
+      StatusId: status.substring(3),
       UserId: idInfo.userId,
     }
 
     API.updateTicket(updatedTicket)
       .then(response => {
+        /* eslint-disable no-console */
         console.log(response)
+        /* eslint-enable no-console */
       })
       .then(
         API.updateTicketXrefs(updatedTicketRef)
           .then(response => {
+            /* eslint-disable no-console */
             console.log(response)
+            /* eslint-enable no-console */
           })
           .catch(error => {
             throw error
@@ -111,9 +112,13 @@ export default class UpdateTicket extends React.Component {
       })
   }
 
+  handleTextChange(event) {
+    this.setState({ ticketText: event.nativeEvent.text })
+  }
+
   render() {
     const { navigation } = this.props
-    const { category, status } = this.state
+    const { category, status, ticketText } = this.state
     const ticketInfo = navigation.getParam('ticketInfo')
     const idInfo = navigation.getParam('idInfo')
 
@@ -151,7 +156,7 @@ export default class UpdateTicket extends React.Component {
               onChange={this.handleTextChange}
               rowSpan={5}
               style={styles.input}
-              value={this.state.ticketText}
+              value={ticketText}
             />
 
             <Text style={styles.text}> Select Status : </Text>

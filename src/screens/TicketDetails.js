@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StatusBar, StyleSheet } from 'react-native'
+import { Text, StatusBar, StyleSheet } from 'react-native'
 import {
   Body,
   Button,
@@ -9,7 +9,6 @@ import {
   Content,
   Header,
   Icon,
-  Image,
   Left,
   Right,
   Thumbnail,
@@ -22,8 +21,8 @@ export default class TicketDetails extends React.Component {
     title: 'Ticket Details',
   }
 
-  getStatus = (status) => {
-    if (status === 'Open'){
+  getStatus = status => {
+    if (status === 'Open') {
       return 'ios-checkmark-circle'
     }
     return 'ios-close-circle'
@@ -67,25 +66,22 @@ export default class TicketDetails extends React.Component {
             <CardItem>
               <Body>
                 <Text style={styles.category}>{ticketInfo.category}</Text>
-                <Text>Description: {"\n"}</Text>
-                <Text style={{fontSize: 18, paddingBottom: 15}}>{ticketInfo.description}</Text>
+                <Text>Description: {'\n'}</Text>
+                <Text style={{ fontSize: 18, paddingBottom: 15 }}>{ticketInfo.description}</Text>
                 {/* <Image source={{uri: 'Image URL'}} style={{height: 200, width: 200, flex: 1}}/> */}
                 <Text>Insert an Image Here (Optional)</Text>
               </Body>
             </CardItem>
             <CardItem>
               <Body>
-                <Icon 
-                  name={this.getStatus(ticketInfo.status)}
-                  style={{alignSelf: 'center'}}> 
-                </Icon>
-                <Text style={{alignSelf: 'center'}}>{ticketInfo.status}</Text> 
+                <Icon name={this.getStatus(ticketInfo.status)} style={{ alignSelf: 'center' }} />
+                <Text style={{ alignSelf: 'center' }}>{ticketInfo.status}</Text>
               </Body>
             </CardItem>
             <CardItem>
               <Body>
                 <Button
-                  style={{alignSelf: 'center', justifyContent: 'center', width: 150}}
+                  style={{ alignSelf: 'center', justifyContent: 'center', width: 150 }}
                   title="Review"
                   onPress={() =>
                     navigation.navigate('UpdateTicket', {
@@ -103,8 +99,8 @@ export default class TicketDetails extends React.Component {
                       },
                     })
                   }
-                  > 
-                  <Text style={{alignSelf: 'center', color: 'white'}}> Review </Text>
+                >
+                  <Text style={{ alignSelf: 'center', color: 'white' }}> Review </Text>
                 </Button>
               </Body>
             </CardItem>
@@ -118,14 +114,14 @@ export default class TicketDetails extends React.Component {
 const styles = StyleSheet.create({
   category: {
     alignSelf: 'center',
-    fontSize: 24
+    fontSize: 24,
   },
   status: {
-    alignContent: 'center'
+    alignContent: 'center',
   },
   reviewButton: {
     alignSelf: 'center',
     justifyContent: 'center',
-    width: '33%'
-  }
+    width: '33%',
+  },
 })

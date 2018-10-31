@@ -268,7 +268,9 @@ exports[`renders the root without loading screen 1`] = `
                           allowFontScaling={true}
                           ellipsizeMode="tail"
                         >
-                           Login 
+                           
+                          Login
+                           
                         </Text>
                       </View>
                     </View>

@@ -7,6 +7,7 @@ import { Body, Container, Content, Header, Thumbnail } from 'native-base'
 /* import MainTabNavigator from './MainTabNavigator' */
 import HomeScreen from '../screens/HomeScreen'
 import CameraScreen from '../screens/CameraScreen'
+import TicketScreen from '../screens/TicketScreen'
 import EditProfile from '../screens/EditProfile'
 
 /* Screens to be used in a Stack Navigator */
@@ -61,6 +62,9 @@ const DrawerNavigation = createDrawerNavigator(
     },
     Camera: {
       screen: CameraScreen,
+    },
+    Ticket: {
+      screen: TicketScreen,
     },
     EditProfile: {
       screen: EditProfile,
