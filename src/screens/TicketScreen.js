@@ -27,10 +27,18 @@ export default class ListSeparatorExample extends Component {
   }
 
   componentDidMount() {
+    const userTickets = []
+    let userTicket = {}
+
     const tickets = userInfo
       .getUserInfo()
       .then(response => {
-        return API.getTicketsByUserId(response.id)
+        if (response !== null) {
+          return API.getTicketsByUserId(response.id)
+        }
+        userTicket = 'Login to see your improvements.'
+        userTickets.push(userTicket)
+        return undefined
       })
       .catch(err => {
         throw err
@@ -38,15 +46,18 @@ export default class ListSeparatorExample extends Component {
 
     tickets
       .then(response => {
-        const userTickets = []
-
-        for (let i = 0; i < response.data.length; i++) {
-          let userTicket = {}
-
-          userTicket = response.data[i].Ticket.ticket
-          userTickets.push(userTicket)
-          console.log(JSON.stringify(response.data[i].Ticket.ticket))
+        if (response !== undefined) {
+          if (response.data.length === 0) {
+            userTicket = 'You do not have any improvements yet.'
+            userTickets.push(userTicket)
+          } else {
+            for (let i = 0; i < response.data.length; i++) {
+              userTicket = response.data[i].Ticket.ticket
+              userTickets.push(userTicket)
+            }
+          }
         }
+
         this.setState({
           userTickets,
         })
@@ -71,10 +82,11 @@ export default class ListSeparatorExample extends Component {
         </Header>
         <Content>
           <Separator>
-            <Text>My Open Improvements</Text>
+            <Text>My Improvements</Text>
           </Separator>
-          {userTickets.map(userTicket => (
-            <ListItem>
+          {userTickets.map((userTicket, i) => (
+            /* eslint-disable react/no-array-index-key */
+            <ListItem key={i}>
               <Left>
                 <Text>{userTicket}</Text>
               </Left>
@@ -82,13 +94,14 @@ export default class ListSeparatorExample extends Component {
                 <Icon type="FontAwesome" name="angle-right" />
               </Right>
             </ListItem>
+            /* eslint-enable react/no-array-index-key */
           ))}
           <Separator>
             <Text>Improvements I like</Text>
           </Separator>
           <ListItem>
             <Left>
-              <Text>Caroline Aaron</Text>
+              <Text>You have not liked any improvements yet.</Text>
             </Left>
             <Right>
               <Icon type="FontAwesome" name="angle-right" />

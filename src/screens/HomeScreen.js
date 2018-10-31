@@ -110,7 +110,7 @@ export default class Main extends React.Component {
   isLoggedIn = () => {
     userInfo.getUserInfo().then(resp => {
       this.setState({
-        userLoggedIn: resp ? true : false,
+        userLoggedIn: !!resp,
       })
     })
   }
@@ -118,17 +118,19 @@ export default class Main extends React.Component {
   logoutUser = () => {
     userInfo
       .removeUser()
-      .then(resp => {
+      .then(() => {
         // console.log("logoutUser then", resp)
         this.setState({
           userLoggedIn: false,
         })
       })
       .catch(err => {
+        /* eslint-disable no-console */
         console.log('logoutUser catch', err)
+        /* eslint-enable no-console */
       })
   }
-  
+
   _loadTickets() {
     API.getAllTickets()
       .then(res => {
@@ -226,7 +228,7 @@ export default class Main extends React.Component {
   }
 
   render() {
-    const { region, markers, tickets } = this.state
+    const { region, markers, tickets, userLoggedIn } = this.state
     const { navigation } = this.props
 
     return (
@@ -239,12 +241,10 @@ export default class Main extends React.Component {
           <Body />
           <Right>
             <Button
-              onPress={() =>
-                this.state.userLoggedIn ? this.logoutUser() : navigation.navigate('Login')
-              }
+              onPress={() => (userLoggedIn ? this.logoutUser() : navigation.navigate('Login'))}
               transparent
             >
-              <Text> {this.state.userLoggedIn ? 'Logout' : 'Login'} </Text>
+              <Text> {userLoggedIn ? 'Logout' : 'Login'} </Text>
             </Button>
           </Right>
         </Header>

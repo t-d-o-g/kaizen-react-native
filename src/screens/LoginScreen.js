@@ -52,7 +52,7 @@ export default class LoginScreen extends React.Component {
           // VIK_TODO: Give msg to user
         }
       })
-      .catch(error => {
+      .catch(() => {
         // VIK_TODO: Give msg to user
         this.setState({
           loginFailedMsg: 'Login failed. Please retry',
