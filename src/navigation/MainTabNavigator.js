@@ -96,5 +96,5 @@ export default createBottomTabNavigator({
   HomeStack,
   CameraStack,
   LinksStack,
-  SettingsStack,
+  // SettingsStack,
 })

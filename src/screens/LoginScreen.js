@@ -28,28 +28,31 @@ export default class LoginScreen extends React.Component {
   }
 
   loginUser = () => {
+    const { username, password } = this.state
     // console.warn("In login user")
     // VIK_TODO: Do validation
     // VIK_TODO: Make changes so we use email instead of username
-    API.loginUser({ username: this.state.username, password: this.state.password })
+    API.loginUser({ username, password })
       .then(response => {
+        /* eslint-disable no-console */
         console.warn(JSON.stringify(response))
         if (response.status === 200) {
-          userInfo.saveUserInfo(response.data)
+          userInfo
+            .saveUserInfo(response.data)
             .then(resp => {
               console.warn(JSON.stringify(resp))
             })
             .catch(error => {
               console.warn(JSON.stringify(error))
             })
-        }
-        else {
+        } else {
           // VIK_TODO: Give msg to user
         }
       })
       .catch(error => {
         // VIK_TODO: Give msg to user
         console.warn(error)
+        /* eslint-enable no-console */
       })
     // console.warn("submitted");
   }
@@ -76,12 +79,14 @@ export default class LoginScreen extends React.Component {
 
   render() {
     const { navigation } = this.props
+    const { username, password } = this.state
+
     return (
       <Container>
         <StatusBar hidden />
         <Header>
           <Left>
-            <Icon name="home" onPress={() => navigation.navigate('Home')} />
+            <Icon name="md-home" onPress={() => navigation.navigate('Home')} />
           </Left>
           <Body />
           <Right />
@@ -92,7 +97,7 @@ export default class LoginScreen extends React.Component {
               <Label> Username </Label>
               <Input
                 style={styles.input}
-                value={this.state.username}
+                value={username}
                 onChangeText={inputValue => this.setState({ username: inputValue })}
               />
             </Item>
@@ -100,8 +105,8 @@ export default class LoginScreen extends React.Component {
               <Label> Password </Label>
               <Input
                 style={styles.input}
-                secureTextEntry={true}
-                value={this.state.password}
+                secureTextEntry
+                value={password}
                 onChangeText={inputValue => this.setState({ password: inputValue })}
               />
             </Item>

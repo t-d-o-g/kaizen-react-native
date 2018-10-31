@@ -29,7 +29,7 @@
       "/.history/"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!react-native|expo|react-navigation|native-base-shoutem-theme|@shoutem/theme|@shoutem/animation|@shoutem/ui|tcomb-form-native)"
+      "node_modules/(?!react-native|expo|react-navigation|native-base-shoutem-theme|@shoutem/theme|@shoutem/animation|@shoutem/ui|tcomb-form-native|@expo/vector-icons)"
     ]
   },
   "dependencies": {
@@ -46,7 +46,6 @@
     "react-native-maps": "0.22.0",
     "react-native-simple-store": "^1.3.0",
     "react-navigation": "^2.16.0",
-    "react-style-proptype": "3.2.2",
     "tcomb-form-native": "^0.6.20"
   },
   "devDependencies": {

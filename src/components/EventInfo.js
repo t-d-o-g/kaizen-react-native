@@ -2,7 +2,12 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import {
+  View,
+  Text,
+  //  TouchableOpacity,
+  StyleSheet,
+} from 'react-native'
 
 export default class EventInfo extends React.Component {
   static propTypes = {

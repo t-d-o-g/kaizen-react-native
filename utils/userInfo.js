@@ -6,8 +6,10 @@ export default {
       return await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
     } catch (error) {
       // Error saving data
+      /* eslint-disable no-console */
       console.warn('Error saving user info:', error)
-      return "Error saving user info"
+      /* eslint-enable no-console */
+      return 'Error saving user info'
     }
   },
 
@@ -17,8 +19,10 @@ export default {
       return JSON.parse(item)
     } catch (error) {
       // Error retrieving  data
+      /* eslint-disable no-console */
       console.warn(error)
-      return "Error retrieving user info"
+      /* eslint-enable no-console */
+      return 'Error retrieving user info'
     }
   },
 }

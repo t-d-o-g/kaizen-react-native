@@ -10,11 +10,11 @@ import {
   Alert,
   FlatList,
 } from 'react-native'
-import { Header, Icon, Left, Body, Right } from 'native-base'
+import { Header, Icon, Left, Right } from 'native-base'
 
 import { Permissions, Camera, FileSystem } from 'expo'
 import store from 'react-native-simple-store'
-import { MaterialIcons } from '@expo/vector-icons'
+// import { MaterialIcons } from '@expo/vector-icons'
 
 import IconButton from '../components/IconButton'
 import AlertBox from '../components/AlertBox'
@@ -104,7 +104,8 @@ export default class CameraScreen extends React.Component {
           }
           store.push('progressPhotos', photoData)
 
-          const progressPhotos = [...this.state.progressPhotos]
+          let { progressPhotos } = this.state
+          progressPhotos = [...progressPhotos]
           progressPhotos.push(photoData)
           /* eslint-disable no-console */
           console.log(data)
@@ -164,17 +165,14 @@ export default class CameraScreen extends React.Component {
     return (
       <View style={styles.wrapper}>
         <StatusBar hidden />
-        <Header style={{ backgroundColor: '#333' }}>
+        <Header>
           <Left>
-            <Icon name="ios-menu" onPress={() => navigation.openDrawer()} />
+            <Icon name="md-menu" onPress={() => navigation.openDrawer()} />
           </Left>
-          <Body style={{ alignSelf: 'center' }}>
-            <Text style={{ alignSelf: 'center', color: '#FFF' }}>Take Picture</Text>
-          </Body>
           <Right>
             <IconButton
               size={25}
-              color="#FFF"
+              color="#333"
               onPress={() => {
                 navigation.state.params.openCamera()
               }}

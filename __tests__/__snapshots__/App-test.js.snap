@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`App snapshot renders the loading screen 1`] = `null`;
+exports[`renders the loading screen 1`] = `null`;
 
-exports[`App snapshot renders the root without loading screen 1`] = `
+exports[`renders the root without loading screen 1`] = `
 <View
   style={
     Object {
@@ -190,7 +190,7 @@ exports[`App snapshot renders the root without loading screen 1`] = `
                         }
                         virtual={undefined}
                       >
-                        
+                        
                       </Text>
                     </View>
                     <View
@@ -273,6 +273,44 @@ exports[`App snapshot renders the root without loading screen 1`] = `
                       </View>
                     </View>
                   </View>
+                </View>
+                <View
+                  style={
+                    Object {
+                      "flex": 1,
+                    }
+                  }
+                >
+                  <MapView
+                    initialRegion={
+                      Object {
+                        "latitude": 40.73136,
+                        "latitudeDelta": 0.00922,
+                        "longitude": -74.0628,
+                        "longitudeDelta": 0.00421,
+                      }
+                    }
+                    onPress={[Function]}
+                    region={
+                      Object {
+                        "latitude": 37.78825,
+                        "latitudeDelta": 0.00922,
+                        "longitude": -122.4324,
+                        "longitudeDelta": 0.00421,
+                      }
+                    }
+                    showsUserLocation={true}
+                    style={
+                      Object {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      }
+                    }
+                    zoomEnabled={true}
+                  />
                 </View>
               </View>
             </View>
@@ -395,15 +433,12 @@ exports[`App snapshot renders the root without loading screen 1`] = `
               >
                 <Image
                   large={true}
-                  source={
-                    Object {
-                      "uri": "https://facebook.github.io/react-native/docs/assets/favicon.png",
-                    }
-                  }
+                  source={1}
+                  square={true}
                   style={
                     Array [
                       Object {
-                        "borderRadius": 40,
+                        "borderRadius": 0,
                         "height": 80,
                         "width": 80,
                       },
