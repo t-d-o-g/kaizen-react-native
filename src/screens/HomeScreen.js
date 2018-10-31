@@ -134,7 +134,9 @@ export default class Main extends React.Component {
   _loadTickets() {
     API.getAllTickets()
       .then(res => {
+        /* eslint-disable no-console */
         console.log('TICKETS: ', res)
+        /* eslint-enable no-console */
         const tickets = []
 
         for (let i = 0; i < res.data.length; i++) {

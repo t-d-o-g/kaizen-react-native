@@ -18,26 +18,26 @@ import {
 import API from '../../utils/API'
 
 export default class AddTicket extends React.Component {
+  static navigationOptions = {
+    title: 'AddTicket',
+  }
+
   state = {
     category: '',
     status: '',
     ticketText: 'Description',
-    location: '',
-    ticketID: '',
-    userID: '',
-  }
-
-  static navigationOptions = {
-    title: 'AddTicket',
+    // location: '',
+    // ticketID: '',
+    // userID: '',
   }
 
   constructor(props) {
     super(props)
     this.setCategory = this.setCategory.bind(this)
     this.setStatus = this.setStatus.bind(this)
+    this.handleTextChange = this.handleTextChange.bind(this)
 
-    const { navigation } = this.props
-    location = navigation.getParam('locationInfo')
+    // const { navigation } = this.props
 
     this.state = {
       category: 'key2',
@@ -57,23 +57,24 @@ export default class AddTicket extends React.Component {
     })
   }
 
-  handleTextChange(event) {
-    this.setState({ ticketText: event.nativeEvent.text })
-  }
-
   handleSubmit = location => {
-    let categoryID, statusID, ticketLocationID, ticketID, userID
+    // let categoryID; let statusID; let userID
+    let ticketLocationID
+    let ticketID
+    const { category, ticketText, status } = this.state
 
     const ticketsLocation = {
       newLat: location.latitude,
       newLong: location.longitude,
     }
 
-    console.log('CATEGORY:', this.state.category.substring(3))
-    console.log('TICKETTEXT:', this.state.ticketText)
-    console.log('STATUS:', this.state.status.substring(3))
+    /* eslint-disable no-console */
+    console.log('CATEGORY:', category.substring(3))
+    console.log('TICKETTEXT:', ticketText)
+    console.log('STATUS:', status.substring(3))
+    /* eslint-enable no-console */
 
-    API.saveTicket({ ticket: this.state.ticketText })
+    API.saveTicket({ ticket: ticketText })
       .then(response => {
         ticketID = response.data.id
       })
@@ -82,24 +83,36 @@ export default class AddTicket extends React.Component {
           .then(response => {
             ticketLocationID = response.data.id
           })
-          .catch(error => console.log(error)),
+          .catch(error => {
+            throw error
+          }),
       )
       .then(() => {
-        let TicketRef = {
-          category: this.state.category.substring(3),
-          status: this.state.status.substring(3),
+        const TicketRef = {
+          category: category.substring(3),
+          status: status.substring(3),
           location: ticketLocationID,
           id: ticketID,
           userID: 12,
         }
-        API.saveTicketXrefs(TicketRef).then(response => console.log(response))
+        API.saveTicketXrefs(TicketRef).then(response => {
+          /* eslint-disable no-console */
+          console.log(response)
+          /* eslint-enable no-console */
+        })
       })
-      .catch(error => console.log(error))
+      .catch(error => {
+        throw error
+      })
+  }
+
+  handleTextChange(event) {
+    this.setState({ ticketText: event.nativeEvent.text })
   }
 
   render() {
     const { navigation } = this.props
-    const { category, status } = this.state
+    const { category, status, ticketText } = this.state
     const location = navigation.getParam('locationInfo')
 
     return (
@@ -130,10 +143,10 @@ export default class AddTicket extends React.Component {
             <Text style={styles.text}> What is the Issue? </Text>
             <Textarea
               bordered
-              onChange={this.handleTextChange.bind(this)}
+              onChange={this.handleTextChange}
               rowSpan={5}
               style={styles.input}
-              value={this.state.ticketText}
+              value={ticketText}
             />
 
             <Text style={styles.text}> Select Status : </Text>
@@ -152,11 +165,9 @@ export default class AddTicket extends React.Component {
             <Item style={styles.input} regular>
               <Input
                 disabled
-                value={
-                  Math.round(location.latitude * 10000) / 10000 +
-                  ', ' +
-                  Math.round(location.longitude * 10000) / 10000
-                }
+                value={`${Math.round(location.latitude * 10000) / 10000}, ${Math.round(
+                  location.longitude * 10000,
+                ) / 10000}`}
               />
             </Item>
 
