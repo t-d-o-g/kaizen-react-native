@@ -21,8 +21,16 @@ export default {
       // Error retrieving  data
       /* eslint-disable no-console */
       console.warn(error)
-      /* eslint-enable no-console */
       return 'Error retrieving user info'
+    }
+  },
+
+  removeUser: async () => {
+    try {
+      return await AsyncStorage.removeItem('userInfo')
+    } catch (error) {
+      console.warn('Error removing user info', error)
+      return 'Error removing user info'
     }
   },
 }

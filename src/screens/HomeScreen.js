@@ -5,6 +5,7 @@ import { View, Text, StatusBar, StyleSheet } from 'react-native'
 import { Body, Button, Container, Header, Icon, Left, Right } from 'native-base'
 import MapView from 'react-native-maps'
 import API from '../../utils/API'
+import userInfo from '../../utils/userInfo'
 
 // import EventModal from '../components/EventModal'
 // import EventCallout from '../components/EventCallout'
@@ -19,6 +20,8 @@ export default class Main extends React.Component {
     super(props)
     // this._onRegionChange = this._onRegionChange.bind(this)
     this.state = {
+      // Is user logged in
+      userLoggedIn: false,
       // ticketInfo: {},
       markers: [],
       region: {
@@ -92,8 +95,40 @@ export default class Main extends React.Component {
     )
 
     this._loadTickets()
+    this.isLoggedIn()
   }
 
+  componentDidUpdate = () => {
+    const { navigation } = this.props
+    // HACK: Call only once when we come to this page
+    if (navigation.getParam('getLoginStatus', false)) {
+      navigation.setParams({ getLoginStatus: false })
+      this.isLoggedIn()
+    }
+  }
+
+  isLoggedIn = () => {
+    userInfo.getUserInfo().then(resp => {
+      this.setState({
+        userLoggedIn: resp ? true : false,
+      })
+    })
+  }
+
+  logoutUser = () => {
+    userInfo
+      .removeUser()
+      .then(resp => {
+        // console.log("logoutUser then", resp)
+        this.setState({
+          userLoggedIn: false,
+        })
+      })
+      .catch(err => {
+        console.log('logoutUser catch', err)
+      })
+  }
+  
   _loadTickets() {
     API.getAllTickets()
       .then(res => {
@@ -202,8 +237,13 @@ export default class Main extends React.Component {
           </Left>
           <Body />
           <Right>
-            <Button onPress={() => navigation.navigate('Login')} transparent>
-              <Text> Login </Text>
+            <Button
+              onPress={() =>
+                this.state.userLoggedIn ? this.logoutUser() : navigation.navigate('Login')
+              }
+              transparent
+            >
+              <Text> {this.state.userLoggedIn ? 'Logout' : 'Login'} </Text>
             </Button>
           </Right>
         </Header>
