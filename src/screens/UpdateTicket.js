@@ -18,7 +18,6 @@ import {
 } from 'native-base'
 import API from '../../utils/API'
 
-
 export default class UpdateTicket extends React.Component {
   state = {
     category: '',
@@ -57,24 +56,23 @@ export default class UpdateTicket extends React.Component {
     const { navigation } = this.props
     const ticketInfo = navigation.getParam('ticketInfo')
 
-    ticketInfo.status === 'Open' ? this.setState({status: 'key0'}) : this.setState({status: 'key1'})
+    ticketInfo.status === 'Open'
+      ? this.setState({ status: 'key2' })
+      : this.setState({ status: 'key3' })
 
-    switch(ticketInfo.category) {
+    switch (ticketInfo.category) {
       case 'Parking':
-        this.setState({category: 'key0'})
+        this.setState({ category: 'key2' })
         break
       case 'Noise':
-        this.setState({category: 'key1'})
-        break
-      case 'Traffic':
-        this.setState({category: 'key2'})
+        this.setState({ category: 'key3' })
         break
       default:
-        this.setState({category: 'key3'})
+        this.setState({ category: 'key4' })
         break
     }
 
-    this.setState({ticketText: ticketInfo.description})
+    this.setState({ ticketText: ticketInfo.description })
   }
 
   handleUpdate = idInfo => {
@@ -82,7 +80,7 @@ export default class UpdateTicket extends React.Component {
 
     const updatedTicket = {
       id: idInfo.ticketId,
-      ticket: this.state.ticketText
+      ticket: this.state.ticketText,
     }
 
     const updatedTicketRef = {
@@ -91,7 +89,7 @@ export default class UpdateTicket extends React.Component {
       TicketLocationId: idInfo.ticketLocationId,
       CategoryId: this.state.category.substring(3),
       StatusId: this.state.status.substring(3),
-      UserId: idInfo.userId
+      UserId: idInfo.userId,
     }
 
     API.updateTicket(updatedTicket)
@@ -132,11 +130,7 @@ export default class UpdateTicket extends React.Component {
         <Content>
           <Form>
             <Text style={styles.text}> Created By : </Text>
-            <Input
-              disabled
-              style={styles.input}
-              value={ticketInfo.createdBy}
-            />
+            <Input disabled style={styles.input} value={ticketInfo.createdBy} />
 
             <Text style={styles.text}> Select Category : </Text>
             <Picker
@@ -146,9 +140,9 @@ export default class UpdateTicket extends React.Component {
               selectedValue={category}
               onValueChange={this.setCategory}
             >
-              <Picker.Item label="Noise" value="key1" />
-              <Picker.Item label="Traffic" value="key2" />
-              <Picker.Item label="Other" value="key3" />
+              <Picker.Item label="Parking" value="key2" />
+              <Picker.Item label="Noise" value="key3" />
+              <Picker.Item label="Traffic" value="key4" />
             </Picker>
 
             <Text style={styles.text}> What is the Issue? </Text>
@@ -168,8 +162,12 @@ export default class UpdateTicket extends React.Component {
               selectedValue={status}
               onValueChange={this.setStatus}
             >
-              <Picker.Item label="Open" value="key0" />
-              <Picker.Item label="Closed" value="key1" />
+              <Picker.Item label="Open" value="key2" />
+              <Picker.Item
+                label="Closed"
+                value="key3
+              "
+              />
             </Picker>
             <Button
               info
@@ -208,4 +206,3 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
   },
 })
-

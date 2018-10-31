@@ -40,8 +40,8 @@ export default class AddTicket extends React.Component {
     location = navigation.getParam('locationInfo')
 
     this.state = {
-      category: 'key0',
-      status: 'key0',
+      category: 'key2',
+      status: 'key2',
     }
   }
 
@@ -82,7 +82,7 @@ export default class AddTicket extends React.Component {
           .then(response => {
             ticketLocationID = response.data.id
           })
-          .catch(error => console.log(err)),
+          .catch(error => console.log(error)),
       )
       .then(() => {
         let TicketRef = {
@@ -122,9 +122,9 @@ export default class AddTicket extends React.Component {
               selectedValue={category}
               onValueChange={this.setCategory}
             >
-              <Picker.Item label="Parking" value="key0" />
-              <Picker.Item label="Noise" value="key1" />
-              <Picker.Item label="Traffic" value="key2" />
+              <Picker.Item label="Parking" value="key2" />
+              <Picker.Item label="Noise" value="key3" />
+              <Picker.Item label="Traffic" value="key4" />
             </Picker>
 
             <Text style={styles.text}> What is the Issue? </Text>
@@ -144,8 +144,8 @@ export default class AddTicket extends React.Component {
               selectedValue={status}
               onValueChange={this.setStatus}
             >
-              <Picker.Item label="Open" value="key0" />
-              <Picker.Item label="Closed" value="key1" />
+              <Picker.Item label="Open" value="key2" />
+              <Picker.Item label="Closed" value="key3" />
             </Picker>
 
             <Text style={styles.text}> Location : </Text>
@@ -153,9 +153,9 @@ export default class AddTicket extends React.Component {
               <Input
                 disabled
                 value={
-                  Math.round(location.latitude * 1000000) / 1000000 +
+                  Math.round(location.latitude * 10000) / 10000 +
                   ', ' +
-                  Math.round(location.longitude * 1000000) / 1000000
+                  Math.round(location.longitude * 10000) / 10000
                 }
               />
             </Item>
