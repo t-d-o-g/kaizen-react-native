@@ -27,7 +27,11 @@ export default class LinksScreen extends React.Component {
         <StatusBar hidden />
         <Header>
           <Left>
-            <Icon name="md-menu" onPress={() => navigation.openDrawer()} />
+            <Icon
+              name="md-menu"
+              style={{ color: 'white' }}
+              onPress={() => navigation.openDrawer()}
+            />
           </Left>
           <Body />
           <Right />

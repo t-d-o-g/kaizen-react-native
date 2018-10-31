@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StatusBar, StyleSheet } from 'react-native'
+import { Text, StatusBar, StyleSheet, Image } from 'react-native'
 import {
   Body,
   Button,
@@ -9,24 +9,51 @@ import {
   Content,
   Header,
   Icon,
-  Image,
   Left,
   Right,
   Thumbnail,
 } from 'native-base'
 
-const kaizenImg = require('../../assets/images/kaizen.png')
+const person = require('../../assets/images/person.jpg')
+const mockTraffic = require('../../assets/images/traffic.jpg')
 
 export default class TicketDetails extends React.Component {
   static navigationOptions = {
     title: 'Ticket Details',
   }
 
-  getStatus = (status) => {
-    if (status === 'Open'){
+  getStatus = status => {
+    if (status === 'Open') {
       return 'ios-checkmark-circle'
     }
     return 'ios-close-circle'
+  }
+
+  getStatusColor = status => {
+    if (status === 'Open') {
+      return 'green'
+    }
+    return 'red'
+  }
+
+  getDateFormat = date => {
+    const time = this.getTimeFormat(date.substring(11, 16))
+    return date.substring(5, 10) + '-' + date.substring(0, 4) + ' ' + time
+  }
+
+  getTimeFormat = time => {
+    const hour = parseInt(time.substring(0, 2))
+    if (hour === 0) {
+      return '12' + time.substring(2) + ' AM'
+    } else if (hour < 10) {
+      return time.substring(1) + ' AM'
+    } else if (hour >= 10 && hour < 12) {
+      return time + ' AM'
+    } else if (hour === 12) {
+      return time + ' PM'
+    } else {
+      return hour - 12 + time.substring(2) + ' PM'
+    }
   }
 
   render() {
@@ -41,6 +68,7 @@ export default class TicketDetails extends React.Component {
             <Icon
               ios="ios-arrow-back"
               android="md-arrow-back"
+              style={{ color: 'white' }}
               onPress={() => navigation.navigate('Home')}
             />
           </Left>
@@ -53,39 +81,37 @@ export default class TicketDetails extends React.Component {
               <Left>
                 <Thumbnail
                   large
-                  source={kaizenImg}
-                  square
-                  // source={{ kaizenImg }}
+                  source={person}
+                  circle
                   style={{ alignSelf: 'center', borderWidth: 1 }}
                 />
                 <Body>
                   <Text> {ticketInfo.user} </Text>
-                  <Text note> {ticketInfo.updated} </Text>
+                  <Text note> {this.getDateFormat(ticketInfo.updated)} </Text>
                 </Body>
               </Left>
             </CardItem>
             <CardItem>
               <Body>
                 <Text style={styles.category}>{ticketInfo.category}</Text>
-                <Text>Description: {"\n"}</Text>
-                <Text style={{fontSize: 18, paddingBottom: 15}}>{ticketInfo.description}</Text>
-                {/* <Image source={{uri: 'Image URL'}} style={{height: 200, width: 200, flex: 1}}/> */}
-                <Text>Insert an Image Here (Optional)</Text>
+                <Text>Description: {'\n'}</Text>
+                <Text style={{ fontSize: 18, paddingBottom: 15 }}>{ticketInfo.description}</Text>
+                <Image source={mockTraffic} style={{ alignSelf: 'center', maxWidth: 300 }} />
               </Body>
             </CardItem>
             <CardItem>
               <Body>
-                <Icon 
+                <Icon
                   name={this.getStatus(ticketInfo.status)}
-                  style={{alignSelf: 'center'}}> 
-                </Icon>
-                <Text style={{alignSelf: 'center'}}>{ticketInfo.status}</Text> 
+                  style={{ alignSelf: 'center', color: this.getStatusColor(ticketInfo.status) }}
+                />
+                <Text style={{ alignSelf: 'center' }}>{ticketInfo.status}</Text>
               </Body>
             </CardItem>
             <CardItem>
               <Body>
                 <Button
-                  style={{alignSelf: 'center', justifyContent: 'center', width: 150}}
+                  style={{ alignSelf: 'center', justifyContent: 'center', width: 150 }}
                   title="Review"
                   onPress={() =>
                     navigation.navigate('UpdateTicket', {
@@ -103,8 +129,8 @@ export default class TicketDetails extends React.Component {
                       },
                     })
                   }
-                  > 
-                  <Text style={{alignSelf: 'center', color: 'white'}}> Review </Text>
+                >
+                  <Text style={{ alignSelf: 'center', color: 'white' }}> Review </Text>
                 </Button>
               </Body>
             </CardItem>
@@ -118,14 +144,14 @@ export default class TicketDetails extends React.Component {
 const styles = StyleSheet.create({
   category: {
     alignSelf: 'center',
-    fontSize: 24
+    fontSize: 24,
   },
   status: {
-    alignContent: 'center'
+    alignContent: 'center',
   },
   reviewButton: {
     alignSelf: 'center',
     justifyContent: 'center',
-    width: '33%'
-  }
+    width: '33%',
+  },
 })

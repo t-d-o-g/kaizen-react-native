@@ -128,7 +128,7 @@ export default class Main extends React.Component {
         console.log('logoutUser catch', err)
       })
   }
-  
+
   _loadTickets() {
     API.getAllTickets()
       .then(res => {
@@ -234,7 +234,11 @@ export default class Main extends React.Component {
         <StatusBar hidden />
         <Header>
           <Left>
-            <Icon name="md-menu" onPress={() => navigation.openDrawer()} />
+            <Icon
+              name="md-menu"
+              style={{ color: 'white' }}
+              onPress={() => navigation.openDrawer()}
+            />
           </Left>
           <Body />
           <Right>
@@ -244,7 +248,10 @@ export default class Main extends React.Component {
               }
               transparent
             >
-              <Text> {this.state.userLoggedIn ? 'Logout' : 'Login'} </Text>
+              <Text style={{ color: 'white' }}>
+                {' '}
+                {this.state.userLoggedIn ? 'Logout' : 'Login'}{' '}
+              </Text>
             </Button>
           </Right>
         </Header>
