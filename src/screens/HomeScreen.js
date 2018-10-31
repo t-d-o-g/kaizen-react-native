@@ -238,7 +238,11 @@ export default class Main extends React.Component {
         <StatusBar hidden />
         <Header>
           <Left>
-            <Icon name="md-menu" onPress={() => navigation.openDrawer()} />
+            <Icon
+              name="md-menu"
+              style={{ color: 'white' }}
+              onPress={() => navigation.openDrawer()}
+            />
           </Left>
           <Body />
           <Right>
@@ -246,7 +250,9 @@ export default class Main extends React.Component {
               onPress={() => (userLoggedIn ? this.logoutUser() : navigation.navigate('Login'))}
               transparent
             >
-              <Text> {userLoggedIn ? 'Logout' : 'Login'} </Text>
+              <Text style={{ color: 'white' }}>
+                {userLoggedIn ? 'Logout' : 'Login'}
+              </Text>
             </Button>
           </Right>
         </Header>
