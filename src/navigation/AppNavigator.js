@@ -1,7 +1,7 @@
 import React from 'react'
 import { createDrawerNavigator, createStackNavigator, DrawerItems } from 'react-navigation'
 
-import { Body, Container, Content, Header, Thumbnail } from 'native-base'
+import { Body, Container, Content, Header, Root, Thumbnail } from 'native-base'
 
 /* import MainTabNavigator from './MainTabNavigator' */
 import HomeScreen from '../screens/HomeScreen'
@@ -18,7 +18,13 @@ import UpdateTicket from '../screens/UpdateTicket'
 
 import userInfo from '../../utils/userInfo'
 
-const AppNavigator = () => <DrawerNavigator />
+const AppNavigator = () => {
+  return (
+    <Root>
+      <DrawerNavigator />
+    </Root>
+  )
+}
 const kaizenImg = require('../../assets/images/kaizen.png')
 
 export default AppNavigator
