@@ -49,7 +49,9 @@ export default class TicketDetails extends React.Component {
   }
 
   getStatusName = status => {
+    /* eslint-disable no-console */
     console.log(status)
+    /* eslint-enable no-console */
     if (status === 'Close' || status === 'Closed') {
       return 'Closed'
     }

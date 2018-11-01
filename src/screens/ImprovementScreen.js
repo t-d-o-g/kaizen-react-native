@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { StatusBar, Text } from 'react-native'
+import React from 'react'
+import { StatusBar, Text, FlatList } from 'react-native'
 import {
   Container,
   Header,
@@ -14,7 +14,7 @@ import {
 import API from '../../utils/API'
 import userInfo from '../../utils/userInfo'
 
-export default class ListSeparatorExample extends Component {
+export default class ImprovementScreen extends React.Component {
   static navigationOptions = {
     title: 'Improvements',
   }
@@ -24,6 +24,7 @@ export default class ListSeparatorExample extends Component {
     this.state = {
       userTickets: [],
     }
+    this.onTicketPress = this.onTicketPress.bind(this)
   }
 
   componentDidMount() {
@@ -36,7 +37,7 @@ export default class ListSeparatorExample extends Component {
         if (response !== null) {
           return API.getTicketsByUserId(response.id)
         }
-        userTicket = 'Login to see your improvements.'
+        userTicket.ticket = 'Login to see your improvements.'
         userTickets.push(userTicket)
         return undefined
       })
@@ -48,16 +49,16 @@ export default class ListSeparatorExample extends Component {
       .then(response => {
         if (response !== undefined) {
           if (response.data.length === 0) {
-            userTicket = 'You do not have any improvements yet.'
+            userTicket.ticket = 'You do not have any improvements yet.'
             userTickets.push(userTicket)
           } else {
             for (let i = 0; i < response.data.length; i++) {
-              userTicket = response.data[i].Ticket.ticket
-              userTickets.push(userTicket)
+              userTickets.push(response.data[i].Ticket)
             }
           }
         }
 
+        console.log('userTickets', userTickets)
         this.setState({
           userTickets,
         })
@@ -67,9 +68,40 @@ export default class ListSeparatorExample extends Component {
       })
   }
 
-  render() {
+  onTicketPress(e) {
     const { navigation } = this.props
     const { userTickets } = this.state
+    // const result = userTickets.filter(obj => obj.id === parseInt(e.nativeEvent.id, 10))
+    const result = userTickets
+
+    /* eslint-disable no-console */
+    console.log('e', e.nativeEvent)
+    console.log('RESULT:', result[0])
+    /* eslint-enable no-console */
+
+    /*
+    const ticketInfo = {
+      // category: result[0].category,
+      description: result[0].ticket,
+      // status: result[0].status,
+      // user: result[0].user,
+      updated: result[0].updatedAt.toString(),
+      // ticketXrefsId: result[0].id,
+      ticketId: result[0].id,
+      // userId: result[0].userId,
+      // ticketLocationId: result[0].ticketLocationId,
+    }
+
+    navigation.navigate('TicketDetails', {
+      ticketInfo,
+    })
+    */
+  }
+
+  render() {
+    const { userTickets } = this.state
+    const { navigation } = this.props
+
     return (
       <Container>
         <StatusBar hidden />
@@ -90,9 +122,9 @@ export default class ListSeparatorExample extends Component {
           </Separator>
           {userTickets.map((userTicket, i) => (
             /* eslint-disable react/no-array-index-key */
-            <ListItem key={i}>
+            <ListItem key={userTicket.ticket} onPress={this.onTicketPress}>
               <Left>
-                <Text>{userTicket}</Text>
+                <Text>{userTicket.ticket}</Text>
               </Left>
               <Right>
                 <Icon type="FontAwesome" name="angle-right" />

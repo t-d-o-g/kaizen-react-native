@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { View, Text, StatusBar, StyleSheet } from 'react-native'
-import { Body, Button, Container, Header, Icon, Left, Right } from 'native-base'
+import { Body, Button, Container, Header, Icon, Left, Right, Toast } from 'native-base'
 import MapView, { Marker, Callout } from 'react-native-maps'
 import API from '../../utils/API'
 import userInfo from '../../utils/userInfo'
@@ -142,7 +142,7 @@ export default class Main extends React.Component {
     if (!userLoggedIn) {
       // I want to show a Toast here.
       Toast.show({
-        text: 'Log in to post a ticket!',
+        text: 'Log in to add an improvement!',
         textStyle: { textAlign: 'center' },
         type: 'danger',
       })
@@ -170,6 +170,7 @@ export default class Main extends React.Component {
   _onMarkerPress(e) {
     const { navigation } = this.props
     const { tickets } = this.state
+    console.log('e', e.nativeEvent.id)
     const result = tickets.filter(obj => obj.id === parseInt(e.nativeEvent.id, 10))
 
     /* eslint-disable no-console */
