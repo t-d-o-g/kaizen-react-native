@@ -60,7 +60,7 @@ export default class RegisterScreen extends React.Component {
     return (
       <Container>
         <StatusBar hidden />
-        <Header>
+        <Header style={{ backgroundColor: '#282828' }}>
           <Left>
             <Icon
               ios="ios-arrow-back"

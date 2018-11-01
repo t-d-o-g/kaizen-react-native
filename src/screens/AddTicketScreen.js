@@ -16,6 +16,7 @@ import {
   Textarea,
 } from 'native-base'
 import API from '../../utils/API'
+import userInfo from '../../utils/userInfo'
 
 export default class AddTicket extends React.Component {
   static navigationOptions = {
@@ -26,9 +27,7 @@ export default class AddTicket extends React.Component {
     category: '',
     status: '',
     ticketText: 'Description',
-    // location: '',
-    // ticketID: '',
-    // userID: '',
+    userID: '',
   }
 
   constructor(props) {
@@ -43,6 +42,21 @@ export default class AddTicket extends React.Component {
       category: 'key2',
       status: 'key2',
     }
+  }
+
+  componentDidMount() {
+    userInfo
+      .getUserInfo()
+      .then(response => {
+        if (response !== null) {
+          console.log(response)
+          this.setState({ userID: response.id })
+        }
+        return ''
+      })
+      .catch(err => {
+        throw err
+      })
   }
 
   setCategory(category) {
@@ -65,44 +79,39 @@ export default class AddTicket extends React.Component {
 
     const ticketsLocation = {
       newLat: location.latitude,
-      newLong: location.longitude,
+      newLng: location.longitude,
     }
-
-    /* eslint-disable no-console */
-    console.log('CATEGORY:', category.substring(3))
-    console.log('TICKETTEXT:', ticketText)
-    console.log('STATUS:', status.substring(3))
-    /* eslint-enable no-console */
 
     API.saveTicket({ ticket: ticketText })
       .then(response => {
         ticketID = response.data.id
+        console.log(ticketID)
       })
       .then(
         API.saveLocation(ticketsLocation)
           .then(response => {
             ticketLocationID = response.data.id
+            console.log(ticketLocationID)
+          })
+          .then(() => {
+            const TicketRef = {
+              CategoryId: category.substring(3),
+              StatusId: status.substring(3),
+              TicketLocationId: ticketLocationID,
+              TicketId: ticketID,
+              UserId: this.state.userID,
+            }
+            console.log('TICKETREF', TicketRef)
+            API.saveTicketXrefs(TicketRef)
+              .then(response => console.log(response))
+              .catch(error => console.log(error))
           })
           .catch(error => {
             throw error
           }),
       )
-      .then(() => {
-        const TicketRef = {
-          category: category.substring(3),
-          status: status.substring(3),
-          location: ticketLocationID,
-          id: ticketID,
-          userID: 12,
-        }
-        API.saveTicketXrefs(TicketRef).then(response => {
-          /* eslint-disable no-console */
-          console.log(response)
-          /* eslint-enable no-console */
-        })
-      })
       .catch(error => {
-        throw error
+        console.log(error)
       })
   }
 
@@ -118,7 +127,7 @@ export default class AddTicket extends React.Component {
     return (
       <Container>
         <StatusBar hidden />
-        <Header>
+        <Header style={{ backgroundColor: '#282828' }}>
           <Left>
             <Icon
               name="md-home"

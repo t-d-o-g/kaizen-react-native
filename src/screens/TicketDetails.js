@@ -13,13 +13,32 @@ import {
   Right,
   Thumbnail,
 } from 'native-base'
+import userInfo from '../../utils/userInfo'
 
 const person = require('../../assets/images/person.jpg')
 const mockTraffic = require('../../assets/images/traffic.jpg')
 
 export default class TicketDetails extends React.Component {
+  state = {
+    userID: '',
+  }
+
   static navigationOptions = {
     title: 'Ticket Details',
+  }
+
+  componentDidMount() {
+    userInfo
+      .getUserInfo()
+      .then(response => {
+        if (response !== null) {
+          this.setState({ userID: response.id })
+        }
+        return ''
+      })
+      .catch(err => {
+        throw err
+      })
   }
 
   getStatus = status => {
@@ -56,6 +75,44 @@ export default class TicketDetails extends React.Component {
     }
   }
 
+  showReviewButton = () => {
+    const { navigation } = this.props
+    const ticketInfo = navigation.getParam('ticketInfo')
+
+    console.log('TICKETINFO', ticketInfo, this.state.userID)
+
+    if (this.state.userID === ticketInfo.userId) {
+      return (
+        <CardItem>
+          <Body>
+            <Button
+              style={{ alignSelf: 'center', justifyContent: 'center', width: 150 }}
+              title="Review"
+              onPress={() =>
+                navigation.navigate('UpdateTicket', {
+                  ticketInfo: {
+                    category: ticketInfo.category,
+                    description: ticketInfo.description,
+                    status: ticketInfo.status,
+                    createdBy: ticketInfo.user,
+                  },
+                  idInfo: {
+                    ticketId: ticketInfo.ticketId,
+                    ticketXrefsId: ticketInfo.ticketXrefsId,
+                    userId: ticketInfo.userId,
+                    ticketLocationId: ticketInfo.ticketLocationId,
+                  },
+                })
+              }
+            >
+              <Text style={{ alignSelf: 'center', color: 'white' }}> Review </Text>
+            </Button>
+          </Body>
+        </CardItem>
+      )
+    }
+  }
+
   render() {
     const { navigation } = this.props
     const ticketInfo = navigation.getParam('ticketInfo')
@@ -63,7 +120,7 @@ export default class TicketDetails extends React.Component {
     return (
       <Container>
         <StatusBar hidden />
-        <Header>
+        <Header style={{ backgroundColor: '#282828' }}>
           <Left>
             <Icon
               ios="ios-arrow-back"
@@ -108,32 +165,7 @@ export default class TicketDetails extends React.Component {
                 <Text style={{ alignSelf: 'center' }}>{ticketInfo.status}</Text>
               </Body>
             </CardItem>
-            <CardItem>
-              <Body>
-                <Button
-                  style={{ alignSelf: 'center', justifyContent: 'center', width: 150 }}
-                  title="Review"
-                  onPress={() =>
-                    navigation.navigate('UpdateTicket', {
-                      ticketInfo: {
-                        category: ticketInfo.category,
-                        description: ticketInfo.description,
-                        status: ticketInfo.status,
-                        createdBy: ticketInfo.user,
-                      },
-                      idInfo: {
-                        ticketId: ticketInfo.ticketId,
-                        ticketXrefsId: ticketInfo.ticketXrefsId,
-                        userId: ticketInfo.userId,
-                        ticketLocationId: ticketInfo.ticketLocationId,
-                      },
-                    })
-                  }
-                >
-                  <Text style={{ alignSelf: 'center', color: 'white' }}> Review </Text>
-                </Button>
-              </Body>
-            </CardItem>
+            {this.showReviewButton()}
           </Card>
         </Content>
       </Container>

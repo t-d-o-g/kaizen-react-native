@@ -73,9 +73,13 @@ export default class ListSeparatorExample extends Component {
     return (
       <Container>
         <StatusBar hidden />
-        <Header>
+        <Header style={{ backgroundColor: '#282828' }}>
           <Left>
-            <Icon name="md-menu" onPress={() => navigation.openDrawer()} />
+            <Icon
+              name="md-menu"
+              style={{ color: 'white' }}
+              onPress={() => navigation.openDrawer()}
+            />
           </Left>
           <Body />
           <Right />

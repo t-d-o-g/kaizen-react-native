@@ -67,7 +67,7 @@ export default class LoginScreen extends React.Component {
     return (
       <Container>
         <StatusBar hidden />
-        <Header>
+        <Header style={{ backgroundColor: '#282828' }}>
           <Left>
             <Icon
               name="md-home"
