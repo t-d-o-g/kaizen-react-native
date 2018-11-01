@@ -3,7 +3,7 @@
 import React from 'react'
 import { View, Text, StatusBar, StyleSheet } from 'react-native'
 import { Body, Button, Container, Header, Icon, Left, Right, Toast } from 'native-base'
-import MapView, {Marker, Callout} from 'react-native-maps'
+import MapView, { Marker, Callout } from 'react-native-maps'
 import API from '../../utils/API'
 import userInfo from '../../utils/userInfo'
 
@@ -72,8 +72,7 @@ export default class Main extends React.Component {
     if (navigation.getParam('getLoginStatus', false)) {
       navigation.setParams({ getLoginStatus: false })
       this.isLoggedIn()
-    }
-    else if (navigation.getParam('reloadTickets', false)) {
+    } else if (navigation.getParam('reloadTickets', false)) {
       navigation.setParams({ reloadTickets: false })
       this._loadTickets()
     }
@@ -229,13 +228,14 @@ export default class Main extends React.Component {
                 coordinate={ticket}
                 onPress={this._onMarkerPress}
                 // onCalloutPress={this._onMarkerPress}
-                identifier={ticket.id.toString()}>
-                  <Callout tooltip style={styles.customView}>
-                    <View style={styles.calloutText}>
+                identifier={ticket.id.toString()}
+              >
+                <Callout tooltip style={styles.customView}>
+                  <View style={styles.calloutText}>
                     {/* Limit the callout to 20 chars */}
-                      <Text>{ticket.description ? ticket.description.substring(0, 20) : ""}</Text>
-                    </View>
-                  </Callout>
+                    <Text>{ticket.description ? ticket.description.substring(0, 20) : ''}</Text>
+                  </View>
+                </Callout>
               </Marker>
             ))}
 
