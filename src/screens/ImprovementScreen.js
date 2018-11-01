@@ -27,9 +27,9 @@ export default class ImprovementScreen extends React.Component {
         if (response !== null) {
           return API.getTicketsByUserId(response.id)
         }
-        userTicket.Ticket.ticket = 'Login to see your improvements.'
-        userTicket.Ticket.id = 1
-        userTickets.push(userTicket)
+        // userTicket.Ticket.ticket = 'Login to see your improvements.'
+        // userTicket.Ticket.id = 1
+        // userTickets.push(userTicket)
         return undefined
       })
       .catch(err => {
@@ -40,9 +40,9 @@ export default class ImprovementScreen extends React.Component {
       .then(response => {
         if (response !== undefined) {
           if (response.data.length === 0) {
-            userTicket.Ticket.ticket = 'You do not have any improvements yet.'
-            userTicket.Ticket.id = 1
-            userTickets.push(userTicket)
+            // userTicket.Ticket.ticket = 'You do not have any improvements yet.'
+            // userTicket.Ticket.id = 1
+            // userTickets.push(userTicket)
           } else {
             for (let i = 0; i < response.data.length; i++) {
               userTickets.push(response.data[i])
