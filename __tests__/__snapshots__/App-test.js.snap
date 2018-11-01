@@ -436,6 +436,7 @@ exports[`renders the root without loading screen 1`] = `
                       "top": 0,
                     },
                     Object {
+                      "backgroundColor": "#606060",
                       "height": 150,
                     },
                   ]

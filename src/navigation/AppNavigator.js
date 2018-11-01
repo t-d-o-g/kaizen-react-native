@@ -6,8 +6,7 @@ import { Body, Container, Content, Header, Root, Thumbnail } from 'native-base'
 /* import MainTabNavigator from './MainTabNavigator' */
 import HomeScreen from '../screens/HomeScreen'
 import CameraScreen from '../screens/CameraScreen'
-import TicketScreen from '../screens/TicketScreen'
-import ImprovementScreen from '../screens/ImprovementScreen
+import ImprovementScreen from '../screens/ImprovementScreen'
 
 /* Screens to be used in a Stack Navigator */
 import RegisterScreen from '../screens/RegisterScreen'
@@ -94,7 +93,7 @@ const DrawerNavigator = createDrawerNavigator(
     initialRouteName: 'Home',
     contentComponent: props => (
       <Container>
-        <Header style={{ height: 150 }}>
+        <Header style={{ height: 150, backgroundColor: '#606060' }}>
           <Body>
             <Thumbnail
               large

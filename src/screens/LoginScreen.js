@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dimensions, StatusBar, StyleSheet, Text } from 'react-native'
+import { StatusBar, StyleSheet, Text } from 'react-native'
 import {
   Body,
   Button,
