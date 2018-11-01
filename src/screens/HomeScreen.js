@@ -2,9 +2,10 @@
 
 import React from 'react'
 import { View, Text, StatusBar, StyleSheet } from 'react-native'
-import { Body, Button, Container, Header, Icon, Left, Right } from 'native-base'
-import MapView from 'react-native-maps'
+import { Body, Button, Container, Header, Icon, Left, Right, Toast } from 'native-base'
+import MapView, { Marker, Callout } from 'react-native-maps'
 import API from '../../utils/API'
+import userInfo from '../../utils/userInfo'
 
 // import EventModal from '../components/EventModal'
 // import EventCallout from '../components/EventCallout'
@@ -19,6 +20,8 @@ export default class Main extends React.Component {
     super(props)
     // this._onRegionChange = this._onRegionChange.bind(this)
     this.state = {
+      // Is user logged in
+      userLoggedIn: false,
       // ticketInfo: {},
       markers: [],
       region: {
@@ -28,35 +31,6 @@ export default class Main extends React.Component {
         longitudeDelta: 0.00421,
       },
       tickets: [],
-      // markerLocations: [
-      //   {
-      //     rotation: 78,
-      //     latitude: 40.731734,
-      //     longitude: -74.0605,
-      //     identifier: 'test1',
-      //     title: "it's noisy",
-      //     description: 'noisy after 10pm here',
-      //     status: 'open',
-      //   },
-      //   {
-      //     rotation: -10,
-      //     latitude: 40.730255,
-      //     longitude: -74.0656,
-      //     identifier: 'test2',
-      //     title: "it's quiet",
-      //     description: 'too quiet in this community',
-      //     status: 'open',
-      //   },
-      //   {
-      //     rotation: 262,
-      //     latitude: 40.732206,
-      //     longitude: -74.0669,
-      //     identifier: 'test3',
-      //     title: "it's rainy",
-      //     description: 'too much rain during fall here',
-      //     status: 'open',
-      //   },
-      // ],
     }
     this._onPress = this._onPress.bind(this)
     this._onMarkerPress = this._onMarkerPress.bind(this)
@@ -72,9 +46,6 @@ export default class Main extends React.Component {
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       position => {
-        /* eslint-disable no-console */
-        console.log(position.coords)
-        /* eslint-enable no-console */
         const region = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -92,6 +63,47 @@ export default class Main extends React.Component {
     )
 
     this._loadTickets()
+    this.isLoggedIn()
+  }
+
+  componentDidUpdate = () => {
+    const { navigation } = this.props
+    // HACK: Call only once when we come to this page
+    if (navigation.getParam('getLoginStatus', false)) {
+      navigation.setParams({ getLoginStatus: false })
+      this.isLoggedIn()
+    } else if (navigation.getParam('reloadTickets', false)) {
+      navigation.setParams({ reloadTickets: false })
+      this._loadTickets()
+    }
+  }
+
+  isLoggedIn = () => {
+    userInfo.getUserInfo().then(resp => {
+      this.setState({
+        userLoggedIn: !!resp,
+      })
+    })
+  }
+
+  logoutUser = () => {
+    userInfo
+      .removeUser()
+      .then(() => {
+        this.setState({
+          userLoggedIn: false,
+        })
+        Toast.show({
+          text: 'Logging out...',
+          textStyle: { textAlign: 'center' },
+          type: 'success',
+        })
+      })
+      .catch(err => {
+        /* eslint-disable no-console */
+        console.log('logoutUser catch', err)
+        /* eslint-enable no-console */
+      })
   }
 
   _loadTickets() {
@@ -128,40 +140,46 @@ export default class Main extends React.Component {
       })
   }
 
-  // _onRegionChange(region) {
-  // this.setState({ region: region });
-  // console.log(region);
-  // }
-
   _onPress(e) {
     const { navigation } = this.props
-    const locationInfo = {
-      latitude: e.nativeEvent.coordinate.latitude,
-      longitude: e.nativeEvent.coordinate.longitude,
-    }
-    this.setState({
-      markers: [
-        //   ...this.state.markers,
-        {
-          latitude: e.nativeEvent.coordinate.latitude,
-          longitude: e.nativeEvent.coordinate.longitude,
-        },
-      ],
-    })
+    const { userLoggedIn } = this.state
 
-    navigation.navigate('AddTicket', {
-      locationInfo,
-    })
+    if (!userLoggedIn) {
+      // I want to show a Toast here.
+      Toast.show({
+        text: 'Log in to add an improvement!',
+        textStyle: { textAlign: 'center' },
+        type: 'danger',
+      })
+    } else {
+      const locationInfo = {
+        latitude: e.nativeEvent.coordinate.latitude,
+        longitude: e.nativeEvent.coordinate.longitude,
+      }
+      this.setState({
+        markers: [
+          //   ...this.state.markers,
+          {
+            latitude: e.nativeEvent.coordinate.latitude,
+            longitude: e.nativeEvent.coordinate.longitude,
+          },
+        ],
+      })
+
+      navigation.navigate('AddTicket', {
+        locationInfo,
+      })
+    }
   }
 
   _onMarkerPress(e) {
     const { navigation } = this.props
     const { tickets } = this.state
-    /* eslint-disable no-console */
-    console.log(e.nativeEvent)
-    /* eslint-enable no-console */
     const result = tickets.filter(obj => obj.id === parseInt(e.nativeEvent.id, 10))
 
+    /* eslint-disable no-console */
+    console.log('result:', result)
+    /* eslint-enable no-console */
     const ticketInfo = {
       category: result[0].category,
       description: result[0].description,
@@ -174,36 +192,33 @@ export default class Main extends React.Component {
       ticketLocationId: result[0].ticketLocationId,
     }
 
-    // this.setState({
-    //   ticketInfo: {
-    //     category: result[0].category,
-    //     description: result[0].description,
-    //     status: result[0].status,
-    //     user: result[0].user,
-    //     updated: result[0].lastUpdatedAt.toString(),
-    //   },
-    // })
-
     navigation.navigate('TicketDetails', {
       ticketInfo,
     })
   }
 
   render() {
-    const { region, markers, tickets } = this.state
+    const { region, markers, tickets, userLoggedIn } = this.state
     const { navigation } = this.props
 
     return (
       <Container>
         <StatusBar hidden />
-        <Header>
+        <Header style={{ backgroundColor: '#282828' }}>
           <Left>
-            <Icon name="md-menu" onPress={() => navigation.openDrawer()} />
+            <Icon
+              name="md-menu"
+              style={{ color: 'white' }}
+              onPress={() => navigation.openDrawer()}
+            />
           </Left>
           <Body />
           <Right>
-            <Button onPress={() => navigation.navigate('Login')} transparent>
-              <Text> Login </Text>
+            <Button
+              onPress={() => (userLoggedIn ? this.logoutUser() : navigation.navigate('Login'))}
+              transparent
+            >
+              <Text style={{ color: 'white' }}>{userLoggedIn ? 'Logout' : 'Login'}</Text>
             </Button>
           </Right>
         </Header>
@@ -214,20 +229,28 @@ export default class Main extends React.Component {
             style={styles.fullScreenMap}
             initialRegion={this.initialRegion}
             region={region}
-            // onRegionChange={this._onRegionChange}
             onPress={this._onPress}
           >
             {tickets.map(ticket => (
-              <MapView.Marker
+              <Marker
                 key={ticket.id}
                 coordinate={ticket}
                 onPress={this._onMarkerPress}
+                // onCalloutPress={this._onMarkerPress}
                 identifier={ticket.id.toString()}
-              />
+              >
+                <Callout tooltip style={styles.customView}>
+                  <View style={styles.calloutText}>
+                    {/* Limit the callout to 20 chars */}
+                    <Text>{ticket.description ? ticket.description.substring(0, 20) : ''}</Text>
+                  </View>
+                </Callout>
+              </Marker>
             ))}
+
             {markers.map((marker, i) => (
               /* eslint-disable react/no-array-index-key */
-              <MapView.Marker key={i} coordinate={marker} />
+              <Marker key={i} coordinate={marker} />
               /* eslint-enable react/no-array-index-key */
             ))}
           </MapView>

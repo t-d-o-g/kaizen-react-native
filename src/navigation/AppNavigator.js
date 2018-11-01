@@ -1,13 +1,12 @@
-// import React from 'react';
 import React from 'react'
 import { createDrawerNavigator, createStackNavigator, DrawerItems } from 'react-navigation'
 
-import { Body, Container, Content, Header, Thumbnail } from 'native-base'
+import { Body, Container, Content, Header, Root, Thumbnail } from 'native-base'
 
 /* import MainTabNavigator from './MainTabNavigator' */
 import HomeScreen from '../screens/HomeScreen'
 import CameraScreen from '../screens/CameraScreen'
-import EditProfile from '../screens/EditProfile'
+import ImprovementScreen from '../screens/ImprovementScreen'
 
 /* Screens to be used in a Stack Navigator */
 import RegisterScreen from '../screens/RegisterScreen'
@@ -16,10 +15,34 @@ import AddTicket from '../screens/AddTicketScreen'
 import TicketDetails from '../screens/TicketDetails'
 import UpdateTicket from '../screens/UpdateTicket'
 
-const AppNavigator = () => <DrawerNavigation />
+// import userInfo from '../../utils/userInfo'
+
+const AppNavigator = () => (
+  <Root>
+    <DrawerNavigator />
+  </Root>
+)
 const kaizenImg = require('../../assets/images/kaizen.png')
 
 export default AppNavigator
+
+/* returnDrawer = () => {
+  const nullDrawer = {
+    drawerLabel: () => null
+  }
+  userInfo.getUserInfo()
+    .then(response => {
+      if (response !== null) {
+        console.log("LOGGEDIN")
+        return nullDrawer
+      }
+      console.log("LOGGEDOUT")
+      return nullDrawer
+    })
+    .catch(err => {
+      throw err
+    })
+} */
 
 const StackNavigation = createStackNavigator(
   {
@@ -52,7 +75,7 @@ const StackNavigation = createStackNavigator(
   },
 )
 
-const DrawerNavigation = createDrawerNavigator(
+const DrawerNavigator = createDrawerNavigator(
   {
     // You could add another route here for autg/hentication.
     // Read more at https://reactnavigation.ordocs/en/auth-flow.html
@@ -62,15 +85,15 @@ const DrawerNavigation = createDrawerNavigator(
     Camera: {
       screen: CameraScreen,
     },
-    EditProfile: {
-      screen: EditProfile,
+    Improvement: {
+      screen: ImprovementScreen,
     },
   },
   {
     initialRouteName: 'Home',
     contentComponent: props => (
       <Container>
-        <Header style={{ height: 150 }}>
+        <Header style={{ height: 150, backgroundColor: '#606060' }}>
           <Body>
             <Thumbnail
               large
@@ -89,7 +112,3 @@ const DrawerNavigation = createDrawerNavigator(
     drawerPosition: 'left',
   },
 )
-
-/* const StackNavigation = createStackNavigator({
-
-}) */

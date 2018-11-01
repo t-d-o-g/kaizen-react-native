@@ -165,14 +165,18 @@ export default class CameraScreen extends React.Component {
     return (
       <View style={styles.wrapper}>
         <StatusBar hidden />
-        <Header>
+        <Header style={{ backgroundColor: '#282828' }}>
           <Left>
-            <Icon name="md-menu" onPress={() => navigation.openDrawer()} />
+            <Icon
+              name="md-menu"
+              style={{ color: 'white' }}
+              onPress={() => navigation.openDrawer()}
+            />
           </Left>
           <Right>
             <IconButton
               size={25}
-              color="#333"
+              color="white"
               onPress={() => {
                 navigation.state.params.openCamera()
               }}

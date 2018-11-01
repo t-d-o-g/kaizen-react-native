@@ -15,20 +15,48 @@ import {
   Right,
   Textarea,
 } from 'native-base'
+import API from '../../utils/API'
+import userInfo from '../../utils/userInfo'
 
 export default class AddTicket extends React.Component {
   static navigationOptions = {
     title: 'AddTicket',
   }
 
+  state = {
+    category: '',
+    status: '',
+    ticketText: 'Description',
+    userID: '',
+  }
+
   constructor(props) {
     super(props)
     this.setCategory = this.setCategory.bind(this)
     this.setStatus = this.setStatus.bind(this)
+    this.handleTextChange = this.handleTextChange.bind(this)
+
     this.state = {
-      category: 'key0',
-      status: 'key0',
+      category: 'key2',
+      status: 'key2',
     }
+  }
+
+  componentDidMount() {
+    userInfo
+      .getUserInfo()
+      .then(response => {
+        if (response !== null) {
+          /* eslint-disable no-console */
+          console.log(response)
+          /* eslint-enable no-console */
+          this.setState({ userID: response.id })
+        }
+        return ''
+      })
+      .catch(err => {
+        throw err
+      })
   }
 
   setCategory(category) {
@@ -43,23 +71,86 @@ export default class AddTicket extends React.Component {
     })
   }
 
+  handleSubmit = location => {
+    let ticketLocationID
+    let ticketID
+    const { navigation } = this.props
+    const { category, ticketText, status, userID } = this.state
+
+    const ticketsLocation = {
+      newLat: location.latitude,
+      newLng: location.longitude,
+    }
+
+    API.saveTicket({ ticket: ticketText })
+      .then(response => {
+        ticketID = response.data.id
+      })
+      .then(
+        API.saveLocation(ticketsLocation)
+          .then(response => {
+            ticketLocationID = response.data.id
+          })
+          .then(() => {
+            const TicketRef = {
+              CategoryId: category.substring(3),
+              StatusId: status.substring(3),
+              TicketLocationId: ticketLocationID,
+              TicketId: ticketID,
+              UserId: userID,
+            }
+            API.saveTicketXrefs(TicketRef)
+              .then(() => {
+                navigation.navigate('Home', { reloadTickets: true })
+              })
+              .catch(error => {
+                throw error
+              })
+          })
+          .catch(error => {
+            throw error
+          }),
+      )
+      .catch(error => {
+        throw error
+      })
+  }
+
+  handleTextChange(event) {
+    this.setState({ ticketText: event.nativeEvent.text })
+  }
+
   render() {
     const { navigation } = this.props
-    const { category, status } = this.state
+    const { category, status, ticketText } = this.state
+    const location = navigation.getParam('locationInfo')
 
     return (
       <Container>
         <StatusBar hidden />
-        <Header>
+        <Header style={{ backgroundColor: '#282828' }}>
           <Left>
-            <Icon name="md-home" onPress={() => navigation.navigate('Home')} />
+            <Icon
+              name="md-home"
+              style={{ color: 'white' }}
+              onPress={() => navigation.navigate('Home')}
+            />
           </Left>
           <Body />
           <Right />
         </Header>
         <Content>
           <Form>
-            <Text style={styles.text}> Select Category : </Text>
+            <Text
+              style={{
+                paddingTop: 50,
+                paddingBottom: 10,
+                paddingLeft: 50,
+              }}
+            >
+              {' '}
+              Select Category :{' '}
+            </Text>
             <Picker
               note
               mode="dropdown"
@@ -67,15 +158,24 @@ export default class AddTicket extends React.Component {
               selectedValue={category}
               onValueChange={this.setCategory}
             >
-              <Picker.Item label="None" value="key0" />
-              <Picker.Item label="Parking" value="key1" />
-              <Picker.Item label="Noise" value="key2" />
-              <Picker.Item label="Traffic" value="key3" />
-              <Picker.Item label="Other" value="key4" />
+              <Picker.Item label="Parking" value="key2" />
+              <Picker.Item label="Noise" value="key3" />
+              <Picker.Item label="Traffic" value="key4" />
             </Picker>
 
             <Text style={styles.text}> What is the Issue? </Text>
-            <Textarea style={styles.input} rowSpan={5} bordered />
+            <Textarea
+              bordered
+              onChange={this.handleTextChange}
+              rowSpan={5}
+              style={{
+                alignSelf: 'center',
+                borderWidth: 1,
+                padding: 10,
+                width: '80%',
+              }}
+              value={ticketText}
+            />
 
             <Text style={styles.text}> Select Status : </Text>
             <Picker
@@ -85,18 +185,22 @@ export default class AddTicket extends React.Component {
               selectedValue={status}
               onValueChange={this.setStatus}
             >
-              <Picker.Item label="None" value="key0" />
-              <Picker.Item label="Open" value="key1" />
-              <Picker.Item label="Closed" value="key2" />
+              <Picker.Item label="Open" value="key2" />
+              <Picker.Item label="Closed" value="key3" />
             </Picker>
 
             <Text style={styles.text}> Location : </Text>
             <Item style={styles.input} regular>
-              <Input />
+              <Input
+                disabled
+                value={`${Math.round(location.latitude * 10000) / 10000}, ${Math.round(
+                  location.longitude * 10000,
+                ) / 10000}`}
+              />
             </Item>
 
-            <Button success style={styles.submitButton}>
-              <Text> Submit Ticket </Text>
+            <Button onPress={() => this.handleSubmit(location)} success style={styles.submitButton}>
+              <Text style={{ color: 'white' }}> Submit Ticket </Text>
             </Button>
           </Form>
         </Content>
@@ -115,6 +219,7 @@ const styles = StyleSheet.create({
 
   submitButton: {
     alignSelf: 'center',
+    borderWidth: 1,
     borderRadius: 5,
     justifyContent: 'center',
     marginTop: 50,
@@ -122,8 +227,8 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    paddingTop: 30,
+    paddingTop: 25,
     paddingBottom: 10,
-    paddingLeft: 30,
+    paddingLeft: 50,
   },
 })

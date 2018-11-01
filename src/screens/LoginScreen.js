@@ -25,22 +25,23 @@ export default class LoginScreen extends React.Component {
   state = {
     username: undefined,
     password: undefined,
+    loginFailedMsg: undefined,
   }
 
   loginUser = () => {
     const { username, password } = this.state
+    const { navigation } = this.props
     // console.warn("In login user")
     // VIK_TODO: Do validation
     // VIK_TODO: Make changes so we use email instead of username
     API.loginUser({ username, password })
       .then(response => {
         /* eslint-disable no-console */
-        console.warn(JSON.stringify(response))
         if (response.status === 200) {
           userInfo
             .saveUserInfo(response.data)
-            .then(resp => {
-              console.warn(JSON.stringify(resp))
+            .then(() => {
+              navigation.navigate('Home', { getLoginStatus: true })
             })
             .catch(error => {
               console.warn(JSON.stringify(error))
@@ -49,51 +50,35 @@ export default class LoginScreen extends React.Component {
           // VIK_TODO: Give msg to user
         }
       })
-      .catch(error => {
+      .catch(() => {
         // VIK_TODO: Give msg to user
-        console.warn(error)
-        /* eslint-enable no-console */
+        this.setState({
+          loginFailedMsg: 'Login failed. Please try again',
+        })
       })
-    // console.warn("submitted");
   }
-
-  // saveAsyncStorage = () => {
-  //   userInfo.saveUserInfo('This is test user save')
-  //   .then(response => {
-  //     console.warn( JSON.stringify(response))
-  //   })
-  //   .catch(error => {
-  //     console.warn( JSON.stringify(error))
-  //   })
-  // }
-
-  // retrieveAsyncStorage = () => {
-  //   userInfo.getUserInfo()
-  //   .then(response => {
-  //     console.warn( 'getUserInfo:', JSON.stringify(response))
-  //   })
-  //   .catch(error => {
-  //     console.warn( JSON.stringify(error))
-  //   })
-  // }
 
   render() {
     const { navigation } = this.props
-    const { username, password } = this.state
+    const { username, password, loginFailedMsg } = this.state
 
     return (
       <Container>
         <StatusBar hidden />
-        <Header>
+        <Header style={{ backgroundColor: '#282828' }}>
           <Left>
-            <Icon name="md-home" onPress={() => navigation.navigate('Home')} />
+            <Icon
+              name="md-home"
+              style={{ color: 'white' }}
+              onPress={() => navigation.navigate('Home')}
+            />
           </Left>
           <Body />
           <Right />
         </Header>
         <Content>
           <Form>
-            <Item floatingLabel>
+            <Item floatingLabel style={{ alignSelf: 'center', marginTop: 50, width: '75%' }}>
               <Label> Username </Label>
               <Input
                 style={styles.input}
@@ -101,7 +86,7 @@ export default class LoginScreen extends React.Component {
                 onChangeText={inputValue => this.setState({ username: inputValue })}
               />
             </Item>
-            <Item floatingLabel last>
+            <Item floatingLabel style={{ alignSelf: 'center', width: '75%' }}>
               <Label> Password </Label>
               <Input
                 style={styles.input}
@@ -114,13 +99,6 @@ export default class LoginScreen extends React.Component {
           <Button primary style={styles.loginButton} onPress={this.loginUser}>
             <Text style={styles.loginText}> Login </Text>
           </Button>
-          {/* VIK_DEBUG: Remove following later on */}
-          {/* <Button primary style={styles.loginButton} onPress={this.saveAsyncStorage}>
-              <Text style={styles.loginText}> Save in AsyncStorage </Text>
-            </Button>
-            <Button primary style={styles.loginButton} onPress={this.retrieveAsyncStorage}>
-              <Text style={styles.loginText}> Retrieve from AsyncStorage </Text>
-            </Button> */}
           <Text style={styles.registerText}>
             {' '}
             Do not have an account?
@@ -129,6 +107,7 @@ export default class LoginScreen extends React.Component {
               Register here.{' '}
             </Text>
           </Text>
+          <Text style={styles.loginFailedText}>{loginFailedMsg}</Text>
         </Content>
       </Container>
     )
@@ -142,6 +121,7 @@ const styles = StyleSheet.create({
 
   loginButton: {
     alignSelf: 'center',
+    backgroundColor: '#484848',
     borderRadius: 5,
     justifyContent: 'center',
     marginTop: 50,
@@ -156,6 +136,12 @@ const styles = StyleSheet.create({
   registerText: {
     paddingTop: 25,
     textAlign: 'center',
+  },
+
+  loginFailedText: {
+    paddingTop: 25,
+    textAlign: 'center',
+    color: 'red',
   },
 
   anchorText: {

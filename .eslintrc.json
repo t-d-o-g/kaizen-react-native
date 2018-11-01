@@ -17,7 +17,8 @@
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "no-use-before-define": ["error", { "variables": false }],
     "no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
-    "react/prop-types": ["error", { "ignore": ["navigation"] }]
+    "react/prop-types": ["error", { "ignore": ["navigation"] }],
+    "no-unused-expressions": [2, { "allowTernary": true }]
   },
   "globals": {
       "__DEV__": false

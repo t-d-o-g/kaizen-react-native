@@ -1,250 +1,232 @@
 /* eslint no-underscore-dangle: 0 */
 
-import React, { Component } from 'react'
-import { View, Button, StyleSheet } from 'react-native'
-import t from 'tcomb-form-native'
+import React from 'react'
+import { StatusBar, StyleSheet, Text } from 'react-native'
+import {
+  Body,
+  Button,
+  Container,
+  Content,
+  Form,
+  Header,
+  Icon,
+  Input,
+  Left,
+  Picker,
+  Right,
+  Textarea,
+} from 'native-base'
 import API from '../../utils/API'
 
-const { Form } = t.form
-
-// const category = t.enums({
-//     None: 'None',
-//     Parking: 'Parking',
-//     Noise: 'Noise',
-//     Traffic: 'Traffic'
-//   });
-
-// const status = t.enums({
-//     None: 'None',
-//     Open: 'Open',
-//     Close: 'Close',
-// });
-
-// const Ticket = t.struct({
-//   category: category,
-//   description: t.String,
-//   status: status,
-// });
-
-// const formStyles = {
-//     ...Form.stylesheet,
-//     formGroup: {
-//       normal: {
-//         marginBottom: 10
-//       },
-//     },
-//     controlLabel: {
-//       normal: {
-//         color: 'blue',
-//         fontSize: 18,
-//         marginBottom: 7,
-//         fontWeight: '600'
-//       },
-//       // the style applied when a validation error occours
-//       error: {
-//         color: 'red',
-//         fontSize: 18,
-//         marginBottom: 7,
-//         fontWeight: '600'
-//       }
-//     }
-//   }
-
-//   const options = {
-//     fields: {
-//       category: {
-//         error: 'Please choose Catetory'
-//       },
-//       description: {
-//         error: 'error'
-//       },
-//       status: {
-//         error: 'Please confirm the Status'
-//       },
-//     },
-//     stylesheet: formStyles,
-//   };
-
-export default class UpdateTicket extends Component {
+export default class UpdateTicket extends React.Component {
   static navigationOptions = {
-    title: 'Update the Ticket...',
+    title: 'Update Ticket',
+  }
+
+  state = {
+    category: '',
+    status: '',
+    ticketText: '',
   }
 
   constructor(props) {
     super(props)
-
-    // this.state = {
-    //   value: {
-    //     category: '',
-    //     description: '',
-    //     status: '',
-    //     createdBy: '',
-    //   },
-    // }
-
-    const category = t.enums({
-      None: 'None',
-      Parking: 'Parking',
-      Noise: 'Noise',
-      Traffic: 'Traffic',
-    })
-
-    const status = t.enums({
-      None: 'None',
-      Open: 'Open',
-      Close: 'Close',
-    })
-
-    this.Ticket = t.struct({
-      category,
-      description: t.String,
-      status,
-      createdBy: t.String,
-    })
-
-    const formStyles = {
-      ...Form.stylesheet,
-      formGroup: {
-        normal: {
-          marginBottom: 10,
-        },
-      },
-      controlLabel: {
-        normal: {
-          color: 'blue',
-          fontSize: 18,
-          marginBottom: 7,
-          fontWeight: '600',
-        },
-        // the style applied when a validation error occours
-        error: {
-          color: 'red',
-          fontSize: 18,
-          marginBottom: 7,
-          fontWeight: '600',
-        },
-      },
-    }
-
-    this.options = {
-      fields: {
-        category: {
-          error: 'Please choose Catetory',
-        },
-        description: {
-          multiline: true,
-          numberOfLines: 4,
-          error: 'error',
-        },
-        status: {
-          error: 'Please confirm the Status',
-        },
-      },
-      stylesheet: formStyles,
-    }
+    this.setCategory = this.setCategory.bind(this)
+    this.setStatus = this.setStatus.bind(this)
+    this.handleTextChange = this.handleTextChange.bind(this)
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const { navigation } = this.props
+    const ticketInfo = navigation.getParam('ticketInfo')
+
+    ticketInfo.status === 'Open'
+      ? this.setState({ status: 'key2' })
+      : this.setState({ status: 'key3' })
+
+    switch (ticketInfo.category) {
+      case 'Parking':
+        this.setState({ category: 'key2' })
+        break
+      case 'Noise':
+        this.setState({ category: 'key3' })
+        break
+      default:
+        this.setState({ category: 'key4' })
+        break
+    }
+
+    this.setState({ ticketText: ticketInfo.description })
+  }
+
+  setCategory(category) {
+    this.setState({
+      category,
+    })
+  }
+
+  setStatus(status) {
+    this.setState({
+      status,
+    })
+  }
 
   handleUpdate = idInfo => {
-    const value = this._form.getValue()
-    /* eslint-disable no-console */
-    console.log(value)
-    console.log(idInfo.ticketLocationId)
-    /* eslint-enable no-console */
-
-    let categoryId
-    let statusId
-    // let ticketLocationId
-    // let ticketId
-    // let userId
-
-    if (value.category === 'None') {
-      categoryId = 1
-    } else if (value.category === 'Parking') {
-      categoryId = 2
-    } else if (value.category === 'Noise') {
-      categoryId = 3
-    } else if (value.category === 'Traffic') {
-      categoryId = 4
-    }
-
-    if (value.status === 'None') {
-      statusId = 1
-    } else if (value.status === 'Open') {
-      statusId = 2
-    } else if (value.status === 'Close') {
-      statusId = 3
-    }
+    const { navigation } = this.props
+    const { category, status, ticketText } = this.state
 
     const updatedTicket = {
       id: idInfo.ticketId,
-      ticket: value.description,
+      ticket: ticketText,
     }
 
-    const updatedTicketXrefs = {
+    const updatedTicketRef = {
       id: idInfo.ticketXrefsId,
       TicketId: idInfo.ticketId,
       TicketLocationId: idInfo.ticketLocationId,
-      CaegoryId: categoryId,
-      StatusId: statusId,
+      CategoryId: category.substring(3),
+      StatusId: status.substring(3),
       UserId: idInfo.userId,
     }
 
     API.updateTicket(updatedTicket)
-      .then(res => {
+      .then(response => {
         /* eslint-disable no-console */
-        console.log(res)
+        console.log(response)
         /* eslint-enable no-console */
       })
       .then(
-        API.updateTicketXrefs(updatedTicketXrefs)
-          .then(res => {
+        API.updateTicketXrefs(updatedTicketRef)
+          .then(response => {
             /* eslint-disable no-console */
-            console.log(res)
+            console.log(response)
             /* eslint-enable no-console */
           })
-          .catch(err => {
-            throw err
+          .catch(error => {
+            throw error
           }),
       )
-      .catch(err => {
-        throw err
+      .then(() => navigation.navigate('Home'))
+      .catch(error => {
+        throw error
       })
+  }
+
+  handleTextChange(event) {
+    this.setState({ ticketText: event.nativeEvent.text })
   }
 
   render() {
     const { navigation } = this.props
+    const { category, status, ticketText } = this.state
     const ticketInfo = navigation.getParam('ticketInfo')
     const idInfo = navigation.getParam('idInfo')
 
     return (
-      <View style={styles.container}>
-        <Form
-          ref={c => {
-            this._form = c
-            return this._form
-          }}
-          type={this.Ticket}
-          value={ticketInfo}
-          options={this.options}
-        />
-        <Button
-          title="Update"
-          onPress={() => {
-            this.handleUpdate(idInfo)
-          }}
-        />
-      </View>
+      <Container>
+        <StatusBar hidden />
+        <Header style={{ backgroundColor: '#282828' }}>
+          <Left>
+            <Icon
+              name="md-home"
+              style={{ color: 'white' }}
+              onPress={() => navigation.navigate('Home')}
+            />
+          </Left>
+          <Body />
+          <Right />
+        </Header>
+        <Content>
+          <Form>
+            <Text
+              style={{
+                paddingTop: 50,
+                paddingBottom: 10,
+                paddingLeft: 50,
+              }}
+            >
+              {' '}
+              Created By :{' '}
+            </Text>
+            <Input disabled style={styles.input} value={ticketInfo.createdBy} />
+
+            <Text style={styles.text}> Select Category : </Text>
+            <Picker
+              note
+              mode="dropdown"
+              style={styles.input}
+              selectedValue={category}
+              onValueChange={this.setCategory}
+            >
+              <Picker.Item label="Parking" value="key2" />
+              <Picker.Item label="Noise" value="key3" />
+              <Picker.Item label="Traffic" value="key4" />
+            </Picker>
+
+            <Text style={styles.text}> What is the Issue? </Text>
+            <Textarea
+              bordered
+              onChange={this.handleTextChange}
+              rowSpan={5}
+              style={{
+                alignSelf: 'center',
+                borderWidth: 0,
+                padding: 10,
+                width: '80%',
+              }}
+              value={ticketText}
+            />
+
+            <Text style={styles.text}> Select Status : </Text>
+            <Picker
+              note
+              mode="dropdown"
+              style={styles.input}
+              selectedValue={status}
+              onValueChange={this.setStatus}
+            >
+              <Picker.Item label="Open" value="key2" />
+              <Picker.Item
+                label="Closed"
+                value="key3
+              "
+              />
+            </Picker>
+            <Button
+              info
+              onPress={() => {
+                this.handleUpdate(idInfo)
+              }}
+              style={styles.updateButton}
+            >
+              <Text style={{ color: 'white' }}> Update Ticket </Text>
+            </Button>
+          </Form>
+        </Content>
+      </Container>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  input: {
+    alignSelf: 'center',
+    borderWidth: 0,
+    width: '80%',
+  },
+
+  updateButton: {
+    alignSelf: 'center',
+    borderWidth: 1,
+    borderRadius: 5,
     justifyContent: 'center',
     marginTop: 50,
-    padding: 20,
-    backgroundColor: '#ffffff',
+    width: '80%',
+  },
+
+  text: {
+    paddingTop: 25,
+    paddingBottom: 10,
+    paddingLeft: 50,
   },
 })
