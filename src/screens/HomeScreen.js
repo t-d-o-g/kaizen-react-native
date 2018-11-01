@@ -2,8 +2,8 @@
 
 import React from 'react'
 import { View, Text, StatusBar, StyleSheet } from 'react-native'
-import { Body, Button, Container, Header, Icon, Left, Right, Toast } from 'native-base'
-import MapView, {Marker, Callout} from 'react-native-maps'
+import { Body, Button, Container, Header, Icon, Left, Right } from 'native-base'
+import MapView, { Marker, Callout } from 'react-native-maps'
 import API from '../../utils/API'
 import userInfo from '../../utils/userInfo'
 
@@ -72,8 +72,7 @@ export default class Main extends React.Component {
     if (navigation.getParam('getLoginStatus', false)) {
       navigation.setParams({ getLoginStatus: false })
       this.isLoggedIn()
-    }
-    else if (navigation.getParam('reloadTickets', false)) {
+    } else if (navigation.getParam('reloadTickets', false)) {
       navigation.setParams({ reloadTickets: false })
       this._loadTickets()
     }
@@ -138,7 +137,9 @@ export default class Main extends React.Component {
 
   _onPress(e) {
     const { navigation } = this.props
-    if (!this.state.userLoggedIn) {
+    const { userLoggedIn } = this.state
+
+    if (!userLoggedIn) {
       // I want to show a Toast here.
       Toast.show({
         text: 'Log in to post a ticket!',
@@ -171,7 +172,9 @@ export default class Main extends React.Component {
     const { tickets } = this.state
     const result = tickets.filter(obj => obj.id === parseInt(e.nativeEvent.id, 10))
 
+    /* eslint-disable no-console */
     console.log('result:', result)
+    /* eslint-enable no-console */
     const ticketInfo = {
       category: result[0].category,
       description: result[0].description,
@@ -229,13 +232,14 @@ export default class Main extends React.Component {
                 coordinate={ticket}
                 onPress={this._onMarkerPress}
                 // onCalloutPress={this._onMarkerPress}
-                identifier={ticket.id.toString()}>
-                  <Callout tooltip style={styles.customView}>
-                    <View style={styles.calloutText}>
+                identifier={ticket.id.toString()}
+              >
+                <Callout tooltip style={styles.customView}>
+                  <View style={styles.calloutText}>
                     {/* Limit the callout to 20 chars */}
-                      <Text>{ticket.description ? ticket.description.substring(0, 20) : ""}</Text>
-                    </View>
-                  </Callout>
+                    <Text>{ticket.description ? ticket.description.substring(0, 20) : ''}</Text>
+                  </View>
+                </Callout>
               </Marker>
             ))}
 

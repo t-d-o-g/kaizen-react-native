@@ -16,7 +16,7 @@ import AddTicket from '../screens/AddTicketScreen'
 import TicketDetails from '../screens/TicketDetails'
 import UpdateTicket from '../screens/UpdateTicket'
 
-import userInfo from '../../utils/userInfo'
+// import userInfo from '../../utils/userInfo'
 
 const AppNavigator = () => {
   return (
@@ -97,26 +97,24 @@ const DrawerNavigator = createDrawerNavigator(
   },
   {
     initialRouteName: 'Home',
-    contentComponent: props => {
-      return (
-        <Container>
-          <Header style={{ height: 150 }}>
-            <Body>
-              <Thumbnail
-                large
-                source={kaizenImg}
-                square
-                // source={{ kaizenImg }}
-                style={{ alignSelf: 'center' }}
-              />
-            </Body>
-          </Header>
-          <Content>
-            <DrawerItems {...props} />
-          </Content>
-        </Container>
-      )
-    },
+    contentComponent: props => (
+      <Container>
+        <Header style={{ height: 150 }}>
+          <Body>
+            <Thumbnail
+              large
+              source={kaizenImg}
+              square
+              // source={{ kaizenImg }}
+              style={{ alignSelf: 'center' }}
+            />
+          </Body>
+        </Header>
+        <Content>
+          <DrawerItems {...props} />
+        </Content>
+      </Container>
+    ),
     drawerPosition: 'left',
   },
 )

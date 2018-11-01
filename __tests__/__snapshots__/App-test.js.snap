@@ -128,25 +128,30 @@ exports[`renders the root without loading screen 1`] = `
                 >
                   <View
                     style={
-                      Object {
-                        "backgroundColor": "#F8F8F8",
-                        "borderBottomColor": "#a7a6ab",
-                        "borderBottomWidth": 0.5,
-                        "elevation": 3,
-                        "flexDirection": "row",
-                        "height": 64,
-                        "justifyContent": "center",
-                        "left": 0,
-                        "paddingLeft": 6,
-                        "paddingRight": 10,
-                        "paddingTop": 18,
-                        "right": 0,
-                        "shadowColor": undefined,
-                        "shadowOffset": undefined,
-                        "shadowOpacity": undefined,
-                        "shadowRadius": undefined,
-                        "top": 0,
-                      }
+                      Array [
+                        Object {
+                          "backgroundColor": "#F8F8F8",
+                          "borderBottomColor": "#a7a6ab",
+                          "borderBottomWidth": 0.5,
+                          "elevation": 3,
+                          "flexDirection": "row",
+                          "height": 64,
+                          "justifyContent": "center",
+                          "left": 0,
+                          "paddingLeft": 6,
+                          "paddingRight": 10,
+                          "paddingTop": 18,
+                          "right": 0,
+                          "shadowColor": undefined,
+                          "shadowOffset": undefined,
+                          "shadowOpacity": undefined,
+                          "shadowRadius": undefined,
+                          "top": 0,
+                        },
+                        Object {
+                          "backgroundColor": "#282828",
+                        },
+                      ]
                     }
                     virtual={undefined}
                   >
@@ -179,6 +184,9 @@ exports[`renders the root without loading screen 1`] = `
                               Object {
                                 "color": "#000",
                                 "fontSize": 30,
+                              },
+                              Object {
+                                "color": "white",
                               },
                             ],
                             Object {
@@ -267,10 +275,13 @@ exports[`renders the root without loading screen 1`] = `
                           accessible={true}
                           allowFontScaling={true}
                           ellipsizeMode="tail"
+                          style={
+                            Object {
+                              "color": "white",
+                            }
+                          }
                         >
-                           
                           Login
-                           
                         </Text>
                       </View>
                     </View>
