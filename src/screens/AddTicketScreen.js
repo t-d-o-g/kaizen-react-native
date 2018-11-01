@@ -36,8 +36,6 @@ export default class AddTicket extends React.Component {
     this.setStatus = this.setStatus.bind(this)
     this.handleTextChange = this.handleTextChange.bind(this)
 
-    // const { navigation } = this.props
-
     this.state = {
       category: 'key2',
       status: 'key2',
@@ -72,7 +70,6 @@ export default class AddTicket extends React.Component {
   }
 
   handleSubmit = location => {
-    // let categoryID; let statusID; let userID
     let ticketLocationID
     let ticketID
     const { category, ticketText, status } = this.state
@@ -86,13 +83,11 @@ export default class AddTicket extends React.Component {
     API.saveTicket({ ticket: ticketText })
       .then(response => {
         ticketID = response.data.id
-        console.log(ticketID)
       })
       .then(
         API.saveLocation(ticketsLocation)
           .then(response => {
             ticketLocationID = response.data.id
-            console.log(ticketLocationID)
           })
           .then(() => {
             const TicketRef = {
@@ -102,11 +97,9 @@ export default class AddTicket extends React.Component {
               TicketId: ticketID,
               UserId: this.state.userID,
             }
-            console.log('TICKETREF', TicketRef)
             API.saveTicketXrefs(TicketRef)
               .then(response => {
-                console.log(response)
-                this.props.navigation.navigate('Home', { reloadTickets: true })
+                navigation.navigate('Home', { reloadTickets: true })
               })
               .catch(error => console.log(error))
           })
@@ -144,7 +137,16 @@ export default class AddTicket extends React.Component {
         </Header>
         <Content>
           <Form>
-            <Text style={styles.text}> Select Category : </Text>
+            <Text
+              style={{
+                paddingTop: 50,
+                paddingBottom: 10,
+                paddingLeft: 50,
+              }}
+            >
+              {' '}
+              Select Category :{' '}
+            </Text>
             <Picker
               note
               mode="dropdown"
@@ -162,7 +164,12 @@ export default class AddTicket extends React.Component {
               bordered
               onChange={this.handleTextChange}
               rowSpan={5}
-              style={styles.input}
+              style={{
+                alignSelf: 'center',
+                borderWidth: 1,
+                padding: 10,
+                width: '80%',
+              }}
               value={ticketText}
             />
 
@@ -189,7 +196,7 @@ export default class AddTicket extends React.Component {
             </Item>
 
             <Button onPress={() => this.handleSubmit(location)} success style={styles.submitButton}>
-              <Text> Submit Ticket </Text>
+              <Text style={{ color: 'white' }}> Submit Ticket </Text>
             </Button>
           </Form>
         </Content>
@@ -208,6 +215,7 @@ const styles = StyleSheet.create({
 
   submitButton: {
     alignSelf: 'center',
+    borderWidth: 1,
     borderRadius: 5,
     justifyContent: 'center',
     marginTop: 50,
@@ -215,8 +223,8 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    paddingTop: 30,
+    paddingTop: 25,
     paddingBottom: 10,
-    paddingLeft: 30,
+    paddingLeft: 50,
   },
 })

@@ -138,7 +138,16 @@ export default class UpdateTicket extends React.Component {
         </Header>
         <Content>
           <Form>
-            <Text style={styles.text}> Created By : </Text>
+            <Text
+              style={{
+                paddingTop: 50,
+                paddingBottom: 10,
+                paddingLeft: 50,
+              }}
+            >
+              {' '}
+              Created By :{' '}
+            </Text>
             <Input disabled style={styles.input} value={ticketInfo.createdBy} />
 
             <Text style={styles.text}> Select Category : </Text>
@@ -159,7 +168,12 @@ export default class UpdateTicket extends React.Component {
               bordered
               onChange={this.handleTextChange}
               rowSpan={5}
-              style={styles.input}
+              style={{
+                alignSelf: 'center',
+                borderWidth: 0,
+                padding: 10,
+                width: '80%',
+              }}
               value={ticketText}
             />
 
@@ -185,7 +199,7 @@ export default class UpdateTicket extends React.Component {
               }}
               style={styles.updateButton}
             >
-              <Text> Update Ticket </Text>
+              <Text style={{ color: 'white' }}> Update Ticket </Text>
             </Button>
           </Form>
         </Content>
@@ -203,6 +217,7 @@ const styles = StyleSheet.create({
 
   updateButton: {
     alignSelf: 'center',
+    borderWidth: 1,
     borderRadius: 5,
     justifyContent: 'center',
     marginTop: 50,
@@ -210,8 +225,8 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    paddingTop: 30,
+    paddingTop: 25,
     paddingBottom: 10,
-    paddingLeft: 30,
+    paddingLeft: 50,
   },
 })

@@ -92,7 +92,12 @@ export default class TicketDetails extends React.Component {
         <CardItem>
           <Body>
             <Button
-              style={{ alignSelf: 'center', justifyContent: 'center', width: 150 }}
+              style={{
+                alignSelf: 'center',
+                backgroundColor: '#484848',
+                justifyContent: 'center',
+                width: 150,
+              }}
               title="Review"
               onPress={() =>
                 navigation.navigate('UpdateTicket', {
@@ -140,7 +145,7 @@ export default class TicketDetails extends React.Component {
         </Header>
         <Content>
           <Card style={{ flex: 0 }}>
-            <CardItem>
+            <CardItem style={{ backgroundColor: '#606060' }}>
               <Left>
                 <Thumbnail
                   large
@@ -149,8 +154,11 @@ export default class TicketDetails extends React.Component {
                   style={{ alignSelf: 'center', borderWidth: 1 }}
                 />
                 <Body>
-                  <Text> {ticketInfo.user} </Text>
-                  <Text note> {this.getDateFormat(ticketInfo.updated)} </Text>
+                  <Text style={{ color: 'white' }}> {ticketInfo.user} </Text>
+                  <Text note style={{ color: 'white' }}>
+                    {' '}
+                    {this.getDateFormat(ticketInfo.updated)}{' '}
+                  </Text>
                 </Body>
               </Left>
             </CardItem>
@@ -160,14 +168,18 @@ export default class TicketDetails extends React.Component {
                   name={this.getStatus(ticketInfo.status)}
                   style={{ alignSelf: 'center', color: this.getStatusColor(ticketInfo.status) }}
                 />
-                <Text style={{ alignSelf: 'center' }}>{this.getStatusName(ticketInfo.status)}</Text>
+                <Text style={{ alignSelf: 'center', fontWeight: 'bold' }}>
+                  {this.getStatusName(ticketInfo.status)}
+                </Text>
               </Body>
             </CardItem>
             <CardItem>
               <Body>
                 <Text style={styles.category}>{ticketInfo.category}</Text>
-                <Text>Description: {'\n'}</Text>
-                <Text style={{ fontSize: 18, paddingBottom: 15 }}>{ticketInfo.description}</Text>
+                <Text style={{ borderBottomWidth: 0.5, width: '100%' }}>Description: {'\n'}</Text>
+                <Text style={{ fontSize: 18, paddingBottom: 15, paddingTop: 10 }}>
+                  {ticketInfo.description}
+                </Text>
                 <Image source={mockTraffic} style={{ alignSelf: 'center', maxWidth: 300 }} />
               </Body>
             </CardItem>
@@ -183,6 +195,7 @@ const styles = StyleSheet.create({
   category: {
     alignSelf: 'center',
     fontSize: 24,
+    fontWeight: 'bold',
   },
   status: {
     alignContent: 'center',

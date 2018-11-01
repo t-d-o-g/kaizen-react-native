@@ -7,7 +7,6 @@ import { Body, Container, Content, Header, Root, Thumbnail } from 'native-base'
 import HomeScreen from '../screens/HomeScreen'
 import CameraScreen from '../screens/CameraScreen'
 import TicketScreen from '../screens/TicketScreen'
-import EditProfile from '../screens/EditProfile'
 
 /* Screens to be used in a Stack Navigator */
 import RegisterScreen from '../screens/RegisterScreen'
@@ -91,16 +90,13 @@ const DrawerNavigator = createDrawerNavigator(
     Ticket: {
       screen: TicketScreen,
     },
-    EditProfile: {
-      screen: EditProfile,
-    },
   },
   {
     initialRouteName: 'Home',
     contentComponent: props => {
       return (
         <Container>
-          <Header style={{ height: 150 }}>
+          <Header style={{ backgroundColor: '#282828', height: 150 }}>
             <Body>
               <Thumbnail
                 large
