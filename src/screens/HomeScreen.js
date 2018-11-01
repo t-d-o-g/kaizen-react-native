@@ -1,9 +1,9 @@
 /* eslint no-underscore-dangle: 0 */
 
 import React from 'react'
-import { View, Font, Text, StatusBar, StyleSheet } from 'react-native'
+import { View, Text, StatusBar, StyleSheet } from 'react-native'
 import { Body, Button, Container, Header, Icon, Left, Right, Toast } from 'native-base'
-import MapView from 'react-native-maps'
+import MapView, {Marker, Callout} from 'react-native-maps'
 import API from '../../utils/API'
 import userInfo from '../../utils/userInfo'
 
@@ -75,6 +75,10 @@ export default class Main extends React.Component {
     if (navigation.getParam('getLoginStatus', false)) {
       navigation.setParams({ getLoginStatus: false })
       this.isLoggedIn()
+    }
+    else if (navigation.getParam('reloadTickets', false)) {
+      navigation.setParams({ reloadTickets: false })
+      this._loadTickets()
     }
   }
 
@@ -173,10 +177,11 @@ export default class Main extends React.Component {
     const { navigation } = this.props
     const { tickets } = this.state
     /* eslint-disable no-console */
-    console.log(e.nativeEvent)
+    console.log('e.nativeEvent', e.nativeEvent)
     /* eslint-enable no-console */
     const result = tickets.filter(obj => obj.id === parseInt(e.nativeEvent.id, 10))
 
+    console.log('result:', result)
     const ticketInfo = {
       category: result[0].category,
       description: result[0].description,
@@ -229,16 +234,24 @@ export default class Main extends React.Component {
             onPress={this._onPress}
           >
             {tickets.map(ticket => (
-              <MapView.Marker
+              <Marker
                 key={ticket.id}
                 coordinate={ticket}
                 onPress={this._onMarkerPress}
-                identifier={ticket.id.toString()}
-              />
+                // onCalloutPress={this._onMarkerPress}
+                identifier={ticket.id.toString()}>
+                  <Callout tooltip style={styles.customView}>
+                    <View style={styles.calloutText}>
+                    {/* Limit the callout to 20 chars */}
+                      <Text>{ticket.description ? ticket.description.substring(0, 20) : ""}</Text>
+                    </View>
+                  </Callout>
+              </Marker>
             ))}
+
             {markers.map((marker, i) => (
               /* eslint-disable react/no-array-index-key */
-              <MapView.Marker key={i} coordinate={marker} />
+              <Marker key={i} coordinate={marker} />
               /* eslint-enable react/no-array-index-key */
             ))}
           </MapView>
