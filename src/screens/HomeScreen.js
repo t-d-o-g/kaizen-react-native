@@ -18,7 +18,6 @@ export default class Main extends React.Component {
 
   constructor(props) {
     super(props)
-    console.log('constructor')
     // this._onRegionChange = this._onRegionChange.bind(this)
     this.state = {
       // Is user logged in
@@ -45,7 +44,6 @@ export default class Main extends React.Component {
   }
 
   componentDidMount() {
-    console.log('mounting')
     navigator.geolocation.getCurrentPosition(
       position => {
         const region = {
@@ -69,7 +67,6 @@ export default class Main extends React.Component {
   }
 
   componentDidUpdate = () => {
-    console.log('updating')
     const { navigation } = this.props
     // HACK: Call only once when we come to this page
     if (navigation.getParam('getLoginStatus', false)) {
@@ -110,7 +107,6 @@ export default class Main extends React.Component {
   }
 
   _loadTickets() {
-    console.log('loading tickets')
     API.getAllTickets()
       .then(res => {
         const tickets = []

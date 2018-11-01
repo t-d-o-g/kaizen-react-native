@@ -100,10 +100,12 @@ export default class AddTicket extends React.Component {
               UserId: userID,
             }
             API.saveTicketXrefs(TicketRef)
-              .then(response => {
+              .then(() => {
                 navigation.navigate('Home', { reloadTickets: true })
               })
-              .catch(error => console.log(error))
+              .catch(error => {
+                throw error
+              })
           })
           .catch(error => {
             throw error
