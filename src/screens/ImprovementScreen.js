@@ -19,7 +19,7 @@ export default class ImprovementScreen extends React.Component {
 
   componentDidMount() {
     const userTickets = []
-    const userTicket = {}
+    // const userTicket = {}
 
     const tickets = userInfo
       .getUserInfo()
