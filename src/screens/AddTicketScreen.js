@@ -47,7 +47,9 @@ export default class AddTicket extends React.Component {
       .getUserInfo()
       .then(response => {
         if (response !== null) {
+          /* eslint-disable no-console */
           console.log(response)
+          /* eslint-enable no-console */
           this.setState({ userID: response.id })
         }
         return ''
@@ -72,8 +74,8 @@ export default class AddTicket extends React.Component {
   handleSubmit = location => {
     let ticketLocationID
     let ticketID
-    const { category, ticketText, status } = this.state
     const { navigation } = this.props
+    const { category, ticketText, status, userID } = this.state
 
     const ticketsLocation = {
       newLat: location.latitude,
@@ -95,7 +97,7 @@ export default class AddTicket extends React.Component {
               StatusId: status.substring(3),
               TicketLocationId: ticketLocationID,
               TicketId: ticketID,
-              UserId: this.state.userID,
+              UserId: userID,
             }
             API.saveTicketXrefs(TicketRef)
               .then(response => {
@@ -108,7 +110,7 @@ export default class AddTicket extends React.Component {
           }),
       )
       .catch(error => {
-        console.log(error)
+        throw error
       })
   }
 

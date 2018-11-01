@@ -40,7 +40,7 @@ export default class LoginScreen extends React.Component {
         if (response.status === 200) {
           userInfo
             .saveUserInfo(response.data)
-            .then(resp => {
+            .then(() => {
               navigation.navigate('Home', { getLoginStatus: true })
             })
             .catch(error => {
