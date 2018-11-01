@@ -137,10 +137,12 @@ export default class Main extends React.Component {
 
   _onPress(e) {
     const { navigation } = this.props
-    if (!this.state.userLoggedIn) {
+    const { userLoggedIn } = this.state
+
+    if (!userLoggedIn) {
       // I want to show a Toast here.
       Toast.show({
-        text: 'Log in to post a ticket!',
+        text: 'Log in to add an improvement!',
         textStyle: { textAlign: 'center' },
         type: 'danger',
       })
@@ -170,7 +172,9 @@ export default class Main extends React.Component {
     const { tickets } = this.state
     const result = tickets.filter(obj => obj.id === parseInt(e.nativeEvent.id, 10))
 
+    /* eslint-disable no-console */
     console.log('result:', result)
+    /* eslint-enable no-console */
     const ticketInfo = {
       category: result[0].category,
       description: result[0].description,

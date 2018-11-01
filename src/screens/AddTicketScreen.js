@@ -49,7 +49,9 @@ export default class AddTicket extends React.Component {
       .getUserInfo()
       .then(response => {
         if (response !== null) {
+          /* eslint-disable no-console */
           console.log(response)
+          /* eslint-enable no-console */
           this.setState({ userID: response.id })
         }
         return ''
@@ -75,8 +77,8 @@ export default class AddTicket extends React.Component {
     // let categoryID; let statusID; let userID
     let ticketLocationID
     let ticketID
-    const { category, ticketText, status } = this.state
     const { navigation } = this.props
+    const { category, ticketText, status, userID } = this.state
 
     const ticketsLocation = {
       newLat: location.latitude,
@@ -86,13 +88,17 @@ export default class AddTicket extends React.Component {
     API.saveTicket({ ticket: ticketText })
       .then(response => {
         ticketID = response.data.id
+        /* eslint-disable no-console */
         console.log(ticketID)
+        /* eslint-enable no-console */
       })
       .then(
         API.saveLocation(ticketsLocation)
           .then(response => {
             ticketLocationID = response.data.id
+            /* eslint-disable no-console */
             console.log(ticketLocationID)
+            /* eslint-enable no-console */
           })
           .then(() => {
             const TicketRef = {
@@ -100,9 +106,11 @@ export default class AddTicket extends React.Component {
               StatusId: status.substring(3),
               TicketLocationId: ticketLocationID,
               TicketId: ticketID,
-              UserId: this.state.userID,
+              UserId: userID,
             }
+            /* eslint-disable no-console */
             console.log('TICKETREF', TicketRef)
+            /* eslint-enable no-console */
             API.saveTicketXrefs(TicketRef)
               .then(response => {
                 console.log(response)
@@ -115,7 +123,7 @@ export default class AddTicket extends React.Component {
           }),
       )
       .catch(error => {
-        console.log(error)
+        throw error
       })
   }
 

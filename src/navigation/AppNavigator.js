@@ -6,7 +6,7 @@ import { Body, Container, Content, Header, Root, Thumbnail } from 'native-base'
 /* import MainTabNavigator from './MainTabNavigator' */
 import HomeScreen from '../screens/HomeScreen'
 import CameraScreen from '../screens/CameraScreen'
-import TicketScreen from '../screens/TicketScreen'
+import ImprovementScreen from '../screens/ImprovementScreen'
 import EditProfile from '../screens/EditProfile'
 
 /* Screens to be used in a Stack Navigator */
@@ -16,15 +16,13 @@ import AddTicket from '../screens/AddTicketScreen'
 import TicketDetails from '../screens/TicketDetails'
 import UpdateTicket from '../screens/UpdateTicket'
 
-import userInfo from '../../utils/userInfo'
+// import userInfo from '../../utils/userInfo'
 
-const AppNavigator = () => {
-  return (
-    <Root>
-      <DrawerNavigator />
-    </Root>
-  )
-}
+const AppNavigator = () => (
+  <Root>
+    <DrawerNavigator />
+  </Root>
+)
 const kaizenImg = require('../../assets/images/kaizen.png')
 
 export default AppNavigator
@@ -88,8 +86,8 @@ const DrawerNavigator = createDrawerNavigator(
     Camera: {
       screen: CameraScreen,
     },
-    Ticket: {
-      screen: TicketScreen,
+    Improvement: {
+      screen: ImprovementScreen,
     },
     EditProfile: {
       screen: EditProfile,
@@ -97,26 +95,24 @@ const DrawerNavigator = createDrawerNavigator(
   },
   {
     initialRouteName: 'Home',
-    contentComponent: props => {
-      return (
-        <Container>
-          <Header style={{ height: 150 }}>
-            <Body>
-              <Thumbnail
-                large
-                source={kaizenImg}
-                square
-                // source={{ kaizenImg }}
-                style={{ alignSelf: 'center' }}
-              />
-            </Body>
-          </Header>
-          <Content>
-            <DrawerItems {...props} />
-          </Content>
-        </Container>
-      )
-    },
+    contentComponent: props => (
+      <Container>
+        <Header style={{ height: 150 }}>
+          <Body>
+            <Thumbnail
+              large
+              source={kaizenImg}
+              square
+              // source={{ kaizenImg }}
+              style={{ alignSelf: 'center' }}
+            />
+          </Body>
+        </Header>
+        <Content>
+          <DrawerItems {...props} />
+        </Content>
+      </Container>
+    ),
     drawerPosition: 'left',
   },
 )

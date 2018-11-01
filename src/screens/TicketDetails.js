@@ -19,12 +19,12 @@ const person = require('../../assets/images/person.jpg')
 const mockTraffic = require('../../assets/images/traffic.jpg')
 
 export default class TicketDetails extends React.Component {
-  state = {
-    userID: '',
-  }
-
   static navigationOptions = {
     title: 'Ticket Details',
+  }
+
+  state = {
+    userID: '',
   }
 
   componentDidMount() {
@@ -49,7 +49,9 @@ export default class TicketDetails extends React.Component {
   }
 
   getStatusName = status => {
+    /* eslint-disable no-console */
     console.log(status)
+    /* eslint-enable no-console */
     if (status === 'Close' || status === 'Closed') {
       return 'Closed'
     }
@@ -65,29 +67,32 @@ export default class TicketDetails extends React.Component {
 
   getDateFormat = date => {
     const time = this.getTimeFormat(date.substring(11, 16))
-    return date.substring(5, 10) + '-' + date.substring(0, 4) + ' ' + time
+    return `${date.substring(5, 10)}-${date.substring(0, 4)} ${time}`
   }
 
   getTimeFormat = time => {
-    const hour = parseInt(time.substring(0, 2))
+    const hour = parseInt(time.substring(0, 2), 10)
     if (hour === 0) {
-      return '12' + time.substring(2) + ' AM'
-    } else if (hour < 10) {
-      return time.substring(1) + ' AM'
-    } else if (hour >= 10 && hour < 12) {
-      return time + ' AM'
-    } else if (hour === 12) {
-      return time + ' PM'
-    } else {
-      return hour - 12 + time.substring(2) + ' PM'
+      return `12${time.substring(2)} AM`
     }
+    if (hour < 10) {
+      return `${time.substring(1)} AM`
+    }
+    if (hour >= 10 && hour < 12) {
+      return `${time} AM`
+    }
+    if (hour === 12) {
+      return `${time} PM`
+    }
+    return `${hour - 12 + time.substring(2)} PM`
   }
 
   showReviewButton = () => {
     const { navigation } = this.props
+    const { userID } = this.state
     const ticketInfo = navigation.getParam('ticketInfo')
 
-    if (this.state.userID === ticketInfo.userId) {
+    if (userID === ticketInfo.userId) {
       return (
         <CardItem>
           <Body>
@@ -117,6 +122,7 @@ export default class TicketDetails extends React.Component {
         </CardItem>
       )
     }
+    return undefined
   }
 
   render() {
