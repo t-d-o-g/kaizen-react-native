@@ -108,6 +108,9 @@ export default class AddTicket extends React.Component {
           .then(() => {
             navigation.navigate('Home')
           })
+          .then(() => {
+            navigation.navigate('Home')
+          })
           .catch(error => {
             throw error
           }),
