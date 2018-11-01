@@ -27,7 +27,8 @@ export default class ImprovementScreen extends React.Component {
         if (response !== null) {
           return API.getTicketsByUserId(response.id)
         }
-        userTicket.ticket = 'Login to see your improvements.'
+        userTicket.Ticket.ticket = 'Login to see your improvements.'
+        userTicket.Ticket.id = 1
         userTickets.push(userTicket)
         return undefined
       })
@@ -39,7 +40,8 @@ export default class ImprovementScreen extends React.Component {
       .then(response => {
         if (response !== undefined) {
           if (response.data.length === 0) {
-            userTicket.ticket = 'You do not have any improvements yet.'
+            userTicket.Ticket.ticket = 'You do not have any improvements yet.'
+            userTicket.Ticket.id = 1
             userTickets.push(userTicket)
           } else {
             for (let i = 0; i < response.data.length; i++) {
@@ -81,7 +83,7 @@ export default class ImprovementScreen extends React.Component {
           <List>
             <FlatList
               data={userTickets}
-              keyExtractor={item => item.id.toString()}
+              keyExtractor={item => item.Ticket.id.toString()}
               ListHeaderComponent={this.renderHeader}
               renderItem={({ item }) => (
                 <ListItem
