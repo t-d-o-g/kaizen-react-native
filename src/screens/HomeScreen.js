@@ -1,8 +1,8 @@
 /* eslint no-underscore-dangle: 0 */
 
 import React from 'react'
-import { View, Text, StatusBar, StyleSheet } from 'react-native'
-import { Body, Button, Container, Header, Icon, Left, Right } from 'native-base'
+import { View, Font, Text, StatusBar, StyleSheet } from 'react-native'
+import { Body, Button, Container, Header, Icon, Left, Right, Toast } from 'native-base'
 import MapView from 'react-native-maps'
 import API from '../../utils/API'
 import userInfo from '../../utils/userInfo'
@@ -31,35 +31,6 @@ export default class Main extends React.Component {
         longitudeDelta: 0.00421,
       },
       tickets: [],
-      // markerLocations: [
-      //   {
-      //     rotation: 78,
-      //     latitude: 40.731734,
-      //     longitude: -74.0605,
-      //     identifier: 'test1',
-      //     title: "it's noisy",
-      //     description: 'noisy after 10pm here',
-      //     status: 'open',
-      //   },
-      //   {
-      //     rotation: -10,
-      //     latitude: 40.730255,
-      //     longitude: -74.0656,
-      //     identifier: 'test2',
-      //     title: "it's quiet",
-      //     description: 'too quiet in this community',
-      //     status: 'open',
-      //   },
-      //   {
-      //     rotation: 262,
-      //     latitude: 40.732206,
-      //     longitude: -74.0669,
-      //     identifier: 'test3',
-      //     title: "it's rainy",
-      //     description: 'too much rain during fall here',
-      //     status: 'open',
-      //   },
-      // ],
     }
     this._onPress = this._onPress.bind(this)
     this._onMarkerPress = this._onMarkerPress.bind(this)
@@ -168,30 +139,34 @@ export default class Main extends React.Component {
       })
   }
 
-  // _onRegionChange(region) {
-  // this.setState({ region: region });
-  // console.log(region);
-  // }
-
   _onPress(e) {
     const { navigation } = this.props
-    const locationInfo = {
-      latitude: e.nativeEvent.coordinate.latitude,
-      longitude: e.nativeEvent.coordinate.longitude,
-    }
-    this.setState({
-      markers: [
-        //   ...this.state.markers,
-        {
-          latitude: e.nativeEvent.coordinate.latitude,
-          longitude: e.nativeEvent.coordinate.longitude,
-        },
-      ],
-    })
+    if (!this.state.userLoggedIn) {
+      // I want to show a Toast here.
+      /* Toast.show({
+        text: "Log in to post a ticket!",
+        type: "danger",
+        buttonText: "Okay"
+      }) */
+    } else {
+      const locationInfo = {
+        latitude: e.nativeEvent.coordinate.latitude,
+        longitude: e.nativeEvent.coordinate.longitude,
+      }
+      this.setState({
+        markers: [
+          //   ...this.state.markers,
+          {
+            latitude: e.nativeEvent.coordinate.latitude,
+            longitude: e.nativeEvent.coordinate.longitude,
+          },
+        ],
+      })
 
-    navigation.navigate('AddTicket', {
-      locationInfo,
-    })
+      navigation.navigate('AddTicket', {
+        locationInfo,
+      })
+    }
   }
 
   _onMarkerPress(e) {
@@ -214,16 +189,6 @@ export default class Main extends React.Component {
       ticketLocationId: result[0].ticketLocationId,
     }
 
-    // this.setState({
-    //   ticketInfo: {
-    //     category: result[0].category,
-    //     description: result[0].description,
-    //     status: result[0].status,
-    //     user: result[0].user,
-    //     updated: result[0].lastUpdatedAt.toString(),
-    //   },
-    // })
-
     navigation.navigate('TicketDetails', {
       ticketInfo,
     })
@@ -236,7 +201,7 @@ export default class Main extends React.Component {
     return (
       <Container>
         <StatusBar hidden />
-        <Header>
+        <Header style={{ backgroundColor: '#282828' }}>
           <Left>
             <Icon
               name="md-menu"
@@ -250,9 +215,7 @@ export default class Main extends React.Component {
               onPress={() => (userLoggedIn ? this.logoutUser() : navigation.navigate('Login'))}
               transparent
             >
-              <Text style={{ color: 'white' }}>
-                {userLoggedIn ? 'Logout' : 'Login'}
-              </Text>
+              <Text style={{ color: 'white' }}>{userLoggedIn ? 'Logout' : 'Login'}</Text>
             </Button>
           </Right>
         </Header>
@@ -263,7 +226,6 @@ export default class Main extends React.Component {
             style={styles.fullScreenMap}
             initialRegion={this.initialRegion}
             region={region}
-            // onRegionChange={this._onRegionChange}
             onPress={this._onPress}
           >
             {tickets.map(ticket => (

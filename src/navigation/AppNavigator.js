@@ -1,4 +1,3 @@
-// import React from 'react';
 import React from 'react'
 import { createDrawerNavigator, createStackNavigator, DrawerItems } from 'react-navigation'
 
@@ -17,10 +16,30 @@ import AddTicket from '../screens/AddTicketScreen'
 import TicketDetails from '../screens/TicketDetails'
 import UpdateTicket from '../screens/UpdateTicket'
 
-const AppNavigator = () => <DrawerNavigation />
+import userInfo from '../../utils/userInfo'
+
+const AppNavigator = () => <DrawerNavigator />
 const kaizenImg = require('../../assets/images/kaizen.png')
 
 export default AppNavigator
+
+/* returnDrawer = () => {
+  const nullDrawer = {
+    drawerLabel: () => null
+  }
+  userInfo.getUserInfo()
+    .then(response => {
+      if (response !== null) {
+        console.log("LOGGEDIN")
+        return nullDrawer
+      }
+      console.log("LOGGEDOUT")
+      return nullDrawer
+    })
+    .catch(err => {
+      throw err
+    })
+} */
 
 const StackNavigation = createStackNavigator(
   {
@@ -53,7 +72,7 @@ const StackNavigation = createStackNavigator(
   },
 )
 
-const DrawerNavigation = createDrawerNavigator(
+const DrawerNavigator = createDrawerNavigator(
   {
     // You could add another route here for autg/hentication.
     // Read more at https://reactnavigation.ordocs/en/auth-flow.html
@@ -72,28 +91,26 @@ const DrawerNavigation = createDrawerNavigator(
   },
   {
     initialRouteName: 'Home',
-    contentComponent: props => (
-      <Container>
-        <Header style={{ height: 150 }}>
-          <Body>
-            <Thumbnail
-              large
-              source={kaizenImg}
-              square
-              // source={{ kaizenImg }}
-              style={{ alignSelf: 'center' }}
-            />
-          </Body>
-        </Header>
-        <Content>
-          <DrawerItems {...props} />
-        </Content>
-      </Container>
-    ),
+    contentComponent: props => {
+      return (
+        <Container>
+          <Header style={{ height: 150 }}>
+            <Body>
+              <Thumbnail
+                large
+                source={kaizenImg}
+                square
+                // source={{ kaizenImg }}
+                style={{ alignSelf: 'center' }}
+              />
+            </Body>
+          </Header>
+          <Content>
+            <DrawerItems {...props} />
+          </Content>
+        </Container>
+      )
+    },
     drawerPosition: 'left',
   },
 )
-
-/* const StackNavigation = createStackNavigator({
-
-}) */

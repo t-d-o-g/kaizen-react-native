@@ -165,7 +165,7 @@ export default class CameraScreen extends React.Component {
     return (
       <View style={styles.wrapper}>
         <StatusBar hidden />
-        <Header>
+        <Header style={{ backgroundColor: '#282828' }}>
           <Left>
             <Icon
               name="md-menu"
