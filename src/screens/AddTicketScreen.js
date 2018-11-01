@@ -104,13 +104,9 @@ export default class AddTicket extends React.Component {
             }
             console.log('TICKETREF', TicketRef)
             API.saveTicketXrefs(TicketRef)
-              .then(response => {
-                console.log(response)
-              })
-              .catch(error => console.log(error))
           })
           .then(() => {
-            navigation.navigate('Home', {'reloadTickets': true})
+            navigation.navigate('Home')
           })
           .catch(error => {
             throw error
