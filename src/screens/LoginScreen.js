@@ -69,7 +69,11 @@ export default class LoginScreen extends React.Component {
         <StatusBar hidden />
         <Header>
           <Left>
-            <Icon name="md-home" onPress={() => navigation.navigate('Home')} />
+            <Icon
+              name="md-home"
+              style={{ color: 'white' }}
+              onPress={() => navigation.navigate('Home')}
+            />
           </Left>
           <Body />
           <Right />

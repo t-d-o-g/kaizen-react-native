@@ -65,6 +65,7 @@ export default class RegisterScreen extends React.Component {
             <Icon
               ios="ios-arrow-back"
               android="md-arrow-back"
+              style={{ color: 'white' }}
               onPress={() => navigation.navigate('Login')}
             />
           </Left>
