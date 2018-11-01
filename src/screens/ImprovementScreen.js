@@ -1,16 +1,7 @@
 import React from 'react'
-import { StatusBar, Text, FlatList } from 'react-native'
-import {
-  Container,
-  Header,
-  Body,
-  Content,
-  ListItem,
-  Left,
-  Right,
-  Icon,
-  Separator,
-} from 'native-base'
+import { StatusBar, FlatList } from 'react-native'
+import { List, ListItem, SearchBar } from 'react-native-elements'
+import { Container, Header, Body, Content, Left, Right, Icon } from 'native-base'
 import API from '../../utils/API'
 import userInfo from '../../utils/userInfo'
 
@@ -24,12 +15,11 @@ export default class ImprovementScreen extends React.Component {
     this.state = {
       userTickets: [],
     }
-    this.onTicketPress = this.onTicketPress.bind(this)
   }
 
   componentDidMount() {
     const userTickets = []
-    let userTicket = {}
+    const userTicket = {}
 
     const tickets = userInfo
       .getUserInfo()
@@ -53,12 +43,11 @@ export default class ImprovementScreen extends React.Component {
             userTickets.push(userTicket)
           } else {
             for (let i = 0; i < response.data.length; i++) {
-              userTickets.push(response.data[i].Ticket)
+              userTickets.push(response.data[i])
             }
           }
         }
 
-        console.log('userTickets', userTickets)
         this.setState({
           userTickets,
         })
@@ -68,35 +57,7 @@ export default class ImprovementScreen extends React.Component {
       })
   }
 
-  onTicketPress(e) {
-    const { navigation } = this.props
-    const { userTickets } = this.state
-    // const result = userTickets.filter(obj => obj.id === parseInt(e.nativeEvent.id, 10))
-    const result = userTickets
-
-    /* eslint-disable no-console */
-    console.log('e', e.nativeEvent)
-    console.log('RESULT:', result[0])
-    /* eslint-enable no-console */
-
-    /*
-    const ticketInfo = {
-      // category: result[0].category,
-      description: result[0].ticket,
-      // status: result[0].status,
-      // user: result[0].user,
-      updated: result[0].updatedAt.toString(),
-      // ticketXrefsId: result[0].id,
-      ticketId: result[0].id,
-      // userId: result[0].userId,
-      // ticketLocationId: result[0].ticketLocationId,
-    }
-
-    navigation.navigate('TicketDetails', {
-      ticketInfo,
-    })
-    */
-  }
+  renderHeader = () => <SearchBar placeholder="Type Here..." lightTheme round />
 
   render() {
     const { userTickets } = this.state
@@ -117,32 +78,31 @@ export default class ImprovementScreen extends React.Component {
           <Right />
         </Header>
         <Content>
-          <Separator>
-            <Text>My Improvements</Text>
-          </Separator>
-          {userTickets.map((userTicket, i) => (
-            /* eslint-disable react/no-array-index-key */
-            <ListItem key={userTicket.ticket} onPress={this.onTicketPress}>
-              <Left>
-                <Text>{userTicket.ticket}</Text>
-              </Left>
-              <Right>
-                <Icon type="FontAwesome" name="angle-right" />
-              </Right>
-            </ListItem>
-            /* eslint-enable react/no-array-index-key */
-          ))}
-          <Separator>
-            <Text>Improvements I like</Text>
-          </Separator>
-          <ListItem>
-            <Left>
-              <Text>You have not liked any improvements yet.</Text>
-            </Left>
-            <Right>
-              <Icon type="FontAwesome" name="angle-right" />
-            </Right>
-          </ListItem>
+          <List>
+            <FlatList
+              data={userTickets}
+              keyExtractor={item => item.id.toString()}
+              ListHeaderComponent={this.renderHeader}
+              renderItem={({ item }) => (
+                <ListItem
+                  title={`${item.Ticket.ticket}`}
+                  onPress={() =>
+                    navigation.navigate('TicketDetails', {
+                      ticketInfo: {
+                        user: `${item.User.first_name} ${item.User.last_name}`,
+                        status: item.Status.status,
+                        category: item.Category.category,
+                        description: item.Ticket.ticket,
+                        updated: item.Ticket.updatedAt,
+                        userId: item.User.id,
+                        ticketId: item.Ticket.id,
+                      },
+                    })
+                  }
+                />
+              )}
+            />
+          </List>
         </Content>
       </Container>
     )

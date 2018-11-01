@@ -170,7 +170,6 @@ export default class Main extends React.Component {
   _onMarkerPress(e) {
     const { navigation } = this.props
     const { tickets } = this.state
-    console.log('e', e.nativeEvent.id)
     const result = tickets.filter(obj => obj.id === parseInt(e.nativeEvent.id, 10))
 
     /* eslint-disable no-console */
