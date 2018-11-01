@@ -6,8 +6,8 @@ import { Body, Container, Content, Header, Root, Thumbnail } from 'native-base'
 /* import MainTabNavigator from './MainTabNavigator' */
 import HomeScreen from '../screens/HomeScreen'
 import CameraScreen from '../screens/CameraScreen'
-import ImprovementScreen from '../screens/ImprovementScreen'
-import EditProfile from '../screens/EditProfile'
+import TicketScreen from '../screens/TicketScreen'
+import ImprovementScreen from '../screens/ImprovementScreen
 
 /* Screens to be used in a Stack Navigator */
 import RegisterScreen from '../screens/RegisterScreen'
@@ -88,9 +88,6 @@ const DrawerNavigator = createDrawerNavigator(
     },
     Improvement: {
       screen: ImprovementScreen,
-    },
-    EditProfile: {
-      screen: EditProfile,
     },
   },
   {

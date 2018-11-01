@@ -1,5 +1,5 @@
 import React from 'react'
-import { StatusBar, StyleSheet, Text } from 'react-native'
+import { Dimensions, StatusBar, StyleSheet, Text } from 'react-native'
 import {
   Body,
   Button,
@@ -53,7 +53,7 @@ export default class LoginScreen extends React.Component {
       .catch(() => {
         // VIK_TODO: Give msg to user
         this.setState({
-          loginFailedMsg: 'Login failed. Please retry',
+          loginFailedMsg: 'Login failed. Please try again',
         })
       })
   }
@@ -78,7 +78,7 @@ export default class LoginScreen extends React.Component {
         </Header>
         <Content>
           <Form>
-            <Item floatingLabel>
+            <Item floatingLabel style={{ alignSelf: 'center', marginTop: 50, width: '75%' }}>
               <Label> Username </Label>
               <Input
                 style={styles.input}
@@ -86,7 +86,7 @@ export default class LoginScreen extends React.Component {
                 onChangeText={inputValue => this.setState({ username: inputValue })}
               />
             </Item>
-            <Item floatingLabel last>
+            <Item floatingLabel style={{ alignSelf: 'center', width: '75%' }}>
               <Label> Password </Label>
               <Input
                 style={styles.input}
@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
 
   loginButton: {
     alignSelf: 'center',
+    backgroundColor: '#484848',
     borderRadius: 5,
     justifyContent: 'center',
     marginTop: 50,
@@ -136,6 +137,7 @@ const styles = StyleSheet.create({
     paddingTop: 25,
     textAlign: 'center',
   },
+
   loginFailedText: {
     paddingTop: 25,
     textAlign: 'center',

@@ -74,7 +74,7 @@ export default class RegisterScreen extends React.Component {
         </Header>
         <Content>
           <Form>
-            <Item floatingLabel>
+            <Item floatingLabel style={{ alignSelf: 'center', marginTop: 50, width: '75%' }}>
               <Label> First Name </Label>
               <Input
                 style={styles.input}
@@ -82,7 +82,7 @@ export default class RegisterScreen extends React.Component {
                 onChangeText={inputValue => this.setState({ firstName: inputValue })}
               />
             </Item>
-            <Item floatingLabel>
+            <Item floatingLabel style={{ alignSelf: 'center', width: '75%' }}>
               <Label> Last Name </Label>
               <Input
                 style={styles.input}
@@ -90,7 +90,7 @@ export default class RegisterScreen extends React.Component {
                 onChangeText={inputValue => this.setState({ lastName: inputValue })}
               />
             </Item>
-            <Item floatingLabel>
+            <Item floatingLabel style={{ alignSelf: 'center', width: '75%' }}>
               <Label> Email </Label>
               <Input
                 style={styles.input}
@@ -98,7 +98,7 @@ export default class RegisterScreen extends React.Component {
                 onChangeText={inputValue => this.setState({ email: inputValue })}
               />
             </Item>
-            <Item floatingLabel>
+            <Item floatingLabel style={{ alignSelf: 'center', width: '75%' }}>
               <Label> Username </Label>
               <Input
                 style={styles.input}
@@ -106,7 +106,7 @@ export default class RegisterScreen extends React.Component {
                 onChangeText={inputValue => this.setState({ userName: inputValue })}
               />
             </Item>
-            <Item floatingLabel last>
+            <Item floatingLabel style={{ alignSelf: 'center', width: '75%' }}>
               <Label> Password </Label>
               <Input
                 style={styles.input}
@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
 
   registerButton: {
     alignSelf: 'center',
+    backgroundColor: '#484848',
     borderRadius: 5,
     justifyContent: 'center',
     marginTop: 50,
