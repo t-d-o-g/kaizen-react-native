@@ -46,9 +46,6 @@ export default class Main extends React.Component {
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       position => {
-        /* eslint-disable no-console */
-        console.log(position.coords)
-        /* eslint-enable no-console */
         const region = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -94,7 +91,6 @@ export default class Main extends React.Component {
     userInfo
       .removeUser()
       .then(() => {
-        // console.log("logoutUser then", resp)
         this.setState({
           userLoggedIn: false,
         })
@@ -109,9 +105,6 @@ export default class Main extends React.Component {
   _loadTickets() {
     API.getAllTickets()
       .then(res => {
-        /* eslint-disable no-console */
-        console.log('TICKETS: ', res)
-        /* eslint-enable no-console */
         const tickets = []
 
         for (let i = 0; i < res.data.length; i++) {
@@ -147,11 +140,11 @@ export default class Main extends React.Component {
     const { navigation } = this.props
     if (!this.state.userLoggedIn) {
       // I want to show a Toast here.
-      /* Toast.show({
-        text: "Log in to post a ticket!",
-        type: "danger",
-        buttonText: "Okay"
-      }) */
+      Toast.show({
+        text: 'Log in to post a ticket!',
+        textStyle: { textAlign: 'center' },
+        type: 'danger',
+      })
     } else {
       const locationInfo = {
         latitude: e.nativeEvent.coordinate.latitude,
@@ -176,9 +169,6 @@ export default class Main extends React.Component {
   _onMarkerPress(e) {
     const { navigation } = this.props
     const { tickets } = this.state
-    /* eslint-disable no-console */
-    console.log('e.nativeEvent', e.nativeEvent)
-    /* eslint-enable no-console */
     const result = tickets.filter(obj => obj.id === parseInt(e.nativeEvent.id, 10))
 
     console.log('result:', result)

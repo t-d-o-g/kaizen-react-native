@@ -76,6 +76,7 @@ export default class AddTicket extends React.Component {
     let ticketLocationID
     let ticketID
     const { category, ticketText, status } = this.state
+    const { navigation } = this.props
 
     const ticketsLocation = {
       newLat: location.latitude,
@@ -103,11 +104,12 @@ export default class AddTicket extends React.Component {
             }
             console.log('TICKETREF', TicketRef)
             API.saveTicketXrefs(TicketRef)
-              .then(response => {
-                console.log(response)
-                this.props.navigation.navigate('Home', {'reloadTickets': true}) 
-              })
-              .catch(error => console.log(error))
+          })
+          .then(() => {
+            navigation.navigate('Home')
+          })
+          .then(() => {
+            navigation.navigate('Home')
           })
           .catch(error => {
             throw error

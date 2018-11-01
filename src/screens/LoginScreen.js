@@ -37,12 +37,10 @@ export default class LoginScreen extends React.Component {
     API.loginUser({ username, password })
       .then(response => {
         /* eslint-disable no-console */
-        console.warn(JSON.stringify(response))
         if (response.status === 200) {
           userInfo
             .saveUserInfo(response.data)
             .then(resp => {
-              console.warn(JSON.stringify(resp))
               navigation.navigate('Home', { getLoginStatus: true })
             })
             .catch(error => {

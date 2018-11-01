@@ -48,6 +48,14 @@ export default class TicketDetails extends React.Component {
     return 'ios-close-circle'
   }
 
+  getStatusName = status => {
+    console.log(status)
+    if (status === 'Close' || status === 'Closed') {
+      return 'Closed'
+    }
+    return 'Open'
+  }
+
   getStatusColor = status => {
     if (status === 'Open') {
       return 'green'
@@ -78,8 +86,6 @@ export default class TicketDetails extends React.Component {
   showReviewButton = () => {
     const { navigation } = this.props
     const ticketInfo = navigation.getParam('ticketInfo')
-
-    console.log('TICKETINFO', ticketInfo, this.state.userID)
 
     if (this.state.userID === ticketInfo.userId) {
       return (
@@ -150,19 +156,19 @@ export default class TicketDetails extends React.Component {
             </CardItem>
             <CardItem>
               <Body>
-                <Text style={styles.category}>{ticketInfo.category}</Text>
-                <Text>Description: {'\n'}</Text>
-                <Text style={{ fontSize: 18, paddingBottom: 15 }}>{ticketInfo.description}</Text>
-                <Image source={mockTraffic} style={{ alignSelf: 'center', maxWidth: 300 }} />
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Body>
                 <Icon
                   name={this.getStatus(ticketInfo.status)}
                   style={{ alignSelf: 'center', color: this.getStatusColor(ticketInfo.status) }}
                 />
-                <Text style={{ alignSelf: 'center' }}>{ticketInfo.status}</Text>
+                <Text style={{ alignSelf: 'center' }}>{this.getStatusName(ticketInfo.status)}</Text>
+              </Body>
+            </CardItem>
+            <CardItem>
+              <Body>
+                <Text style={styles.category}>{ticketInfo.category}</Text>
+                <Text>Description: {'\n'}</Text>
+                <Text style={{ fontSize: 18, paddingBottom: 15 }}>{ticketInfo.description}</Text>
+                <Image source={mockTraffic} style={{ alignSelf: 'center', maxWidth: 300 }} />
               </Body>
             </CardItem>
             {this.showReviewButton()}
