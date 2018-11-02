@@ -16,7 +16,7 @@
   __Note:__ App can only be installed on Android devices from Expo. 
   See this [blog post](https://blog.expo.io/upcoming-limitations-to-ios-expo-client-8076d01aee1a) for details.
   * Install expo client on Android device
-  * Go to https://expo.io/@trc229/kaizen-react-native
-  * Install using QR code or open [expo link](exp://exp.host/@trc229/kaizen-react-native) on device
+  * Go to [Expo project](https://expo.io/@trc229/kaizen-react-native)
+  * Install using QR code or click "Open project using Expo" on device
 
 [CONTRIBUTING](CONTRIBUTING.md)
