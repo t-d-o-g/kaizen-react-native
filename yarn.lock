@@ -8075,11 +8075,6 @@ react-native-reanimated@1.0.0-alpha.6:
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.0.0-alpha.6.tgz#169d23b3b39d1c88e509ddc97027b1c8cc066da8"
   integrity sha512-0D99kvdFZCJMMIMd0ThosAWlOhDCPDuhMxLijWE0/ZBhGCknvihg0R5jEyv9spxXyvgjKhUE+aLm27XV+1eLhQ==
 
-react-native-restart@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/react-native-restart/-/react-native-restart-0.0.7.tgz#e2ec764dcb0a82918a301c8664c30df75225f7e3"
-  integrity sha512-/7TdL3pHM7H0Cut6U6SK1jd6fVYvLlQq0O4inJ7j4YD0w9BtAAFqLkLnBDOA0jL4oLw/89yR8HhLOzNFGvVsfw==
-
 react-native-safe-area-view@0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.11.0.tgz#4f3dda43c2bace37965e7c6aef5fc83d4f19d174"
